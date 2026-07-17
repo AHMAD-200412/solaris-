@@ -77,20 +77,18 @@ class CustomUser(AbstractUser):
         null=True
     )
 
-    logo = models.ImageField(ResizedImageField(
-        upload_to='company_logos/',
-        size=[600, 400],            # أقصى أبعاد (سيتناسب تلقائياً)
-        quality=75,                 # جودة ممتازة للويب
-        force_format='WEBP', 
-     )  
+    logo = ResizedImageField(
+      size=[600, 400],
+      quality=75,
+      force_format='WEBP',
+      upload_to='company_logos/',
     )
-    
-    commercial_license = models.ImageField(ResizedImageField(
-        upload_to='commercial_licenses/', 
-        size=[600, 400],            # أقصى أبعاد (سيتناسب تلقائياً)
-        quality=75,                 # جودة ممتازة للويب
-        force_format='WEBP',
-     ) 
+
+    commercial_license = ResizedImageField(
+      size=[600, 400],
+      quality=75,
+      force_format='WEBP',
+      upload_to='commercial_licenses/',
     )
     
     is_approved = models.BooleanField(
