@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 import uuid
 from django.utils import timezone
+from django_resized import ResizedImageField
 
 # ==========================================
 # 1️⃣ ملف الشركة (Company Profile) - لإعدادات الشركة
@@ -164,9 +165,12 @@ class SolarPackage(models.Model):
         default="standard"
     )
 
-    package_image = models.ImageField(
-        upload_to="packages/",
-        default="default/default_package.png"
+    package_image = ResizedImageField(
+      size=[600, 400],            # أقصى أبعاد (سيتناسب تلقائياً)
+      quality=75,                 # جودة ممتازة للويب
+      force_format='WEBP',        # يحولها إلى WebP تلقائياً
+      upload_to="packages/",
+      default="default/default_package.png"
     )
 
     # بيانات المنظومة

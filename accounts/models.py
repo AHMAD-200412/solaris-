@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django_resized import ResizedImageField
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
         ('user', 'User'),
@@ -77,16 +77,19 @@ class CustomUser(AbstractUser):
         null=True
     )
 
-    logo = models.ImageField(
+    logo = models.ImageField(ResizedImageField(
         upload_to='company_logos/',
-        blank=True,
-        null=True
+        size=[600, 400],            # أقصى أبعاد (سيتناسب تلقائياً)
+        quality=75,                 # جودة ممتازة للويب
+        force_format='WEBP', 
+     )  
     )
     
     commercial_license = models.ImageField(
         upload_to='commercial_licenses/', 
-        null=True, 
-        blank=True
+        size=[600, 400],            # أقصى أبعاد (سيتناسب تلقائياً)
+        quality=75,                 # جودة ممتازة للويب
+        force_format='WEBP', 
     )
     
     is_approved = models.BooleanField(
