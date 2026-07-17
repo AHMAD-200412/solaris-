@@ -1,0 +1,357 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SolarIQ</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/splash.css' %}">
+
+</head>
+
+<body>
+    <!-- =========================
+     SolarIQ Cinematic Splash
+========================= -->
+
+    <div id="splash-screen">
+
+        <!-- Background -->
+
+        <div class="sky-layer"></div>
+
+        <div class="sun-glow"></div>
+
+        <div class="energy-grid"></div>
+
+        <!-- Light Beams -->
+
+        <div class="light-beams">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Floating Particles -->
+
+        <div class="floating-particles">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Main Content -->
+
+        <div class="splash-content">
+
+            <!-- Logo -->
+
+            <div class="logo-container">
+
+                <!-- Rotating Orbits -->
+
+                <div class="orbit orbit-1"></div>
+                <div class="orbit orbit-2"></div>
+                <div class="orbit orbit-3"></div>
+                <div class="orbit orbit-4"></div>
+
+                <!-- Glow -->
+
+                <div class="logo-glow"></div>
+
+                <!-- Solar Logo -->
+
+                <div class="solar-logo">
+
+                    <!-- Sun -->
+
+                    <div class="sun-core"></div>
+
+                    <div class="sun-rays">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+                    <!-- Solar Panel -->
+
+                    <div class="solar-panel">
+
+                        <div class="panel-grid">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                        <div class="panel-shine"></div>
+
+                    </div>
+
+                    <!-- Energy Ring -->
+
+                    <div class="energy-ring"></div>
+
+                    <!-- Floating Energy Dots -->
+
+                    <div class="energy-dot dot-1"></div>
+                    <div class="energy-dot dot-2"></div>
+                    <div class="energy-dot dot-3"></div>
+                    <div class="energy-dot dot-4"></div>
+
+                </div>
+
+            </div>
+
+            <!-- Title -->
+
+            <h1 id="typing-title"></h1>
+
+            <h3 class="subtitle">
+                مستقبل الطاقة الشمسية يبدأ هنا
+            </h3>
+
+            <!-- Divider -->
+
+            <div class="gold-divider">
+                <div class="gold-fill"></div>
+            </div>
+
+            <!-- Loading -->
+
+            <div class="loading-section">
+
+                <span class="loading-text">
+                    Initializing Smart Solar System
+                </span>
+
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- =========================
+     Website Starts Here
+========================= -->
+
+    <div id="page-content">
+        <!-- Navbar -->
+
+        <nav class="navbar navbar-expand-lg navbar-dark">
+
+            <div class="container">
+
+                <a class="navbar-brand logo" href="#">
+                    <i class="fa-solid fa-solar-panel"></i>
+                    SolarIQ
+                </a>
+            </div>
+
+        </nav>
+
+        <!-- Hero Section -->
+
+        <section class="hero">
+            <div id="particles-js"></div>
+
+            <div class="overlay">
+
+                <div class="container hero-content">
+
+                    <h1>
+                        مستقبل الطاقة الشمسية يبدأ هنا
+                    </h1>
+
+                    <p>
+                        منصة ذكية تساعدك على حساب احتياجك من الطاقة الشمسية
+                        واختيار أفضل منظومة من أفضل الشركات داخل العراق
+                    </p>
+
+                    <div class="buttons">
+
+                        <a href="/accounts/login/" class="btn custom-btn">
+                            <i class="fa-solid fa-user"></i>
+                            تسجيل كمستخدم
+                        </a>
+
+                        <a href="/accounts/login/" class="btn company-btn">
+                            <i class="fa-solid fa-building"></i>
+                            تسجيل كشركة
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+        <!-- How It Works -->
+
+        <section class="how-it-works">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <h2>
+                        كيف يعمل النظام ؟
+                    </h2>
+
+                    <p>
+                        خطوات بسيطة للحصول على أفضل منظومة طاقة شمسية
+                    </p>
+
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- Card 1 -->
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="work-card">
+
+                            <div class="icon">
+
+                                <i class="fa-solid fa-sliders"></i>
+
+                            </div>
+
+                            <h3>
+                                أدخل احتياجك
+                            </h3>
+
+                            <p>
+                                قم بإدخال معلومات استهلاك الكهرباء والأجهزة الخاصة بك
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Card 2 -->
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="work-card">
+
+                            <div class="icon">
+
+                                <i class="fa-solid fa-solar-panel"></i>
+
+                            </div>
+
+                            <h3>
+                                النظام يحسب
+                            </h3>
+
+                            <p>
+                                يقوم النظام بتحليل البيانات واختيار أفضل منظومة مناسبة
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Card 3 -->
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="work-card">
+
+                            <div class="icon">
+
+                                <i class="fa-solid fa-building"></i>
+
+                            </div>
+
+                            <h3>
+                                اختر الشركة
+                            </h3>
+
+                            <p>
+                                قارن بين الشركات والأسعار واختر العرض المناسب لك
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Bootstrap JS -->
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Particles -->
+
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+        <!-- JS -->
+
+        <script src="{% static 'js/main.js' %}"></script>
+
+        <script src="{% static 'js/splash.js' %}"></script>
+
+    </div>
+
+</body>
+
+</html>

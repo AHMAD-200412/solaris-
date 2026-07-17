@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+    <!-- نفس الـ head السابق -->
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/best_recmmendation.css' %}">
+</head>
+
+<body>
+    <div class="app">
+        <div class="screen">
+            <!-- Hero -->
+            <section class="hero">
+                <div class="hero-glow"></div>
+                <div class="hero-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                <h1>أفضل منظومة تناسب احتياجك</h1>
+                <p>بعد تحليل استهلاكك ومقارنة جميع الباقات، وجدنا هذه المنظومة الأنسب.</p>
+            </section>
+
+            <!-- رسالة AI -->
+            <section class="recommendation-card">
+                <div class="ai-message">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>
+                        {% if recommended_packages %}
+                        تم تحليل {{ device_count }} جهازاً واختيار أفضل {{ recommended_packages|length }} باقة بناءً على
+                        أسلوب ({{ mode_label }}).
+                        {% else %}
+                        لم نتمكن من العثور على باقات مناسبة لاستهلاكك الحالي.
+                        {% endif %}
+                    </span>
+                </div>
+            </section>
+
+            {% for pkg in recommended_packages %}
+            <section class="recommendation-card package-card">
+                <div class="package-badge">
+                    {% if pkg.is_promotion_active %}🔥 باقة مروجة{% else %}⭐ موصى بها{% endif %}
+                </div>
+                <div class="package-header">
+                    {% if pkg.package_image %}
+                    <img src="{{ pkg.package_image.url }}" alt="{{ pkg.title }}" class="package-image">
+                    {% else %}
+                    <div class="package-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                    {% endif %}
+                    <div>
+                        <h2>{{ pkg.title }}</h2>
+                        <span>{{ pkg.description|default:"منظومة متكاملة" }}</span>
+                    </div>
+                    <div class="company-name">
+                        <i class="fa-solid fa-building"></i> {{ pkg.company.company_name }}
+                    </div>
+                </div>
+
+                <div class="package-grid">
+                    <div class="info-box"><i class="fa-solid fa-sun"></i><strong>{{ pkg.daily_production }}
+                            kWh</strong><span>الإنتاج اليومي</span></div>
+                    <div class="info-box"><i class="fa-solid fa-bolt"></i><strong>{{ pkg.inverter_capacity }}
+                            kW</strong><span>الانفرتر</span></div>
+                    <div class="info-box"><i class="fa-solid fa-car-battery"></i><strong>{{ pkg.battery_capacity }}
+                            kWh</strong><span>البطارية</span></div>
+                    <div class="info-box">
+                        <i class="fa-solid fa-table-cells-large"></i>
+                        <strong>
+                            {% if pkg.panel_watt > 0 %}
+                            {{ pkg.panel_count }} لوح × {{ pkg.panel_watt }}W
+                            {% else %}
+                            {{ pkg.total_panel_power }} kWp
+                            {% endif %}
+                        </strong>
+                        <span>الألواح</span>
+                    </div>
+
+                </div>
+                <div class="price-section">
+                    <span class="price">{{ pkg.formatted_price_iqd }}</span>
+                    {% if pkg.is_installment_available %}<span class="installment-badge">بالتقسيط</span>{% endif %}
+                </div>
+
+                <div class="compare-box">
+                    <div class="compare-item"><span>احتياجك اليومي</span><strong>{{ user_consumption }} kWh</strong>
+                    </div>
+                    <div class="compare-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                    <div class="compare-item"><span>إنتاج المنظومة</span><strong>{{ pkg.daily_production }} kWh</strong>
+                    </div>
+                    <div class="compare-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+                    <div class="compare-item success"><span>الفائض اليومي</span><strong>+{{ pkg.surplus }} kWh</strong>
+                    </div>
+                </div>
+                <div class="package-actions">
+                    <a href="{% url 'feasibility_study' %}?package_id={{ pkg.id }}" class="outline-btn">
+                        <i class="fa-solid fa-chart-line"></i> دراسة جدوى لهذه الباقة
+                    </a>
+                    <button class="gold-btn request-btn" data-package-id="{{ pkg.id }}">
+                        <i class="fa-solid fa-cart-shopping"></i> اطلب هذه الباقة
+                    </button>
+                    {% if pkg.whatsapp_link != '#' %}
+                    <a href="{{ pkg.whatsapp_link }}" target="_blank" class="whatsapp-btn">
+                        <i class="fa-brands fa-whatsapp"></i> واتساب
+                    </a>
+                    {% endif %}
+                </div>
+            </section>
+            {% endfor %}
+
+            <!-- إعادة اختيار أسلوب الترشيح -->
+            <section class="recommendation-card">
+                <div class="bottom-box">
+                    <i class="fa-solid fa-rotate"></i>
+                    <h3>هل تريد تجربة خيار آخر؟</h3>
+                    <p>يمكنك الرجوع واختيار أسلوب ترشيح مختلف.</p>
+                    <a href="{% url 'recmmendation' %}" class="outline-btn">
+                        <i class="fa-solid fa-arrow-rotate-left"></i> إعادة اختيار أسلوب الترشيح
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- ========== مودال طلب الباقة ========== -->
+    <div id="bundleRequestModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal">
+            <h3>تقديم طلب الباقة</h3>
+            <p>اختر طريقة تحديد موقعك لإرسال الطلب للشركة:</p>
+
+            <div class="modal-location-options">
+                <button id="btnUseGPS" class="location-option-btn">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>تحديد الموقع جغرافياً</span>
+                </button>
+                <button id="btnManualAddress" class="location-option-btn">
+                    <i class="fa-solid fa-pen"></i>
+                    <span>كتابة العنوان يدوياً</span>
+                </button>
+            </div>
+
+            <!-- حقل مخفي يظهر عند اختيار يدوي -->
+            <div id="manualAddressDiv" class="hidden" style="margin-top: 20px;">
+                <label for="manualAddressInput">العنوان أو رابط الموقع:</label>
+                <input type="text" id="manualAddressInput" placeholder="مثال: حي العدن، شارع..." class="modal-input">
+                <button id="btnSubmitManual" class="gold-btn" style="margin-top: 10px; width: 100%;">
+                    <i class="fa-solid fa-paper-plane"></i> إرسال الطلب
+                </button>
+            </div>
+
+            <!-- رسالة أثناء تحميل الموقع GPS -->
+            <div id="gpsLoadingMessage" class="hidden"
+                style="margin-top: 20px; text-align: center; color: var(--primary);">
+                <i class="fa-solid fa-spinner fa-spin"></i> جاري تحديد موقعك...
+            </div>
+
+            <div class="modal-actions" style="margin-top: 20px; justify-content: center;">
+                <button id="btnCancelRequest" class="modal-btn cancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+    <!-- مودال نجاح / خطأ عام -->
+    <div id="messageModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal">
+            <h3 id="messageModalTitle"></h3>
+            <p id="messageModalText"></p>
+            <div class="modal-actions" style="justify-content: center;">
+                <button id="messageModalOk" class="gold-btn">موافق</button>
+            </div>
+        </div>
+    </div>
+    <!-- مودال تفعيل الموقع الجغرافي -->
+    <div id="locationConsentModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal location-consent-modal">
+            <div class="consent-icon">
+                <i class="fa-solid fa-map-marker-alt"></i>
+            </div>
+            <h3>للحصول على تجربة أفضل</h3>
+            <p>ننصحك بتفعيل ميزة "دقة الموقع الجغرافي" على جهازك.</p>
+            <div class="consent-steps">
+                <div class="step"><i class="fa-solid fa-circle-check"></i> يسمح للتطبيق بتزويدنا بموقعك الحالي.</div>
+                <div class="step"><i class="fa-solid fa-circle-check"></i> يساعدنا في إرسال طلبك للشركة بدقة عالية.
+                </div>
+                <div class="step"><i class="fa-solid fa-circle-check"></i> يمكنك تغيير الإعداد لاحقاً من إعدادات الموقع.
+                </div>
+            </div>
+            <div class="consent-actions">
+                <button id="btnEnableLocation" class="gold-btn">
+                    <i class="fa-solid fa-check"></i> تفعيل
+                </button>
+                <button id="btnCancelConsent" class="modal-btn cancel">لاحقاً</button>
+            </div>
+        </div>
+    </div>
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+        // نستخدم اسم المسار الصحيح ونستبدل الصفر في JavaScript
+        const requestBundlePattern = "{% url 'request_bundle' 0 %}";
+    </script>
+    <script src="{% static 'user_dashboard/js/best_recmmendation.js' %}"></script>
+</body>
+
+</html>

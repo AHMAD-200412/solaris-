@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حسابي - Solaris</title>
+    <!-- الخطوط -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/account.css' %}">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+
+</head>
+
+<body>
+    <div class="app">
+        <div class="screen">
+            <!-- رأس الصفحة -->
+            <div class="account-header">
+                <div class="avatar-section">
+                    <div class="avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h1 id="displayName">{{ request.user.get_full_name|default:request.user.username }}</h1>
+                        <span id="displayEmail">{{ request.user.email }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 👤 الحساب -->
+            <div class="section-title"><i class="fa-solid fa-user-gear"></i> الحساب</div>
+            <div class="menu-card">
+                <button class="menu-item" id="editNameBtn">
+                    <div class="menu-icon"><i class="fa-solid fa-pen"></i></div>
+                    <div class="menu-text">✏️ تعديل الاسم</div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="menu-item" id="changeEmailBtn">
+                    <div class="menu-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="menu-text">📧 تغيير البريد الإلكتروني</div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="menu-item" id="changePhoneBtn">
+                    <div class="menu-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="menu-text">📱 تغيير رقم الهاتف</div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="menu-item" id="changePasswordBtn">
+                    <div class="menu-icon"><i class="fa-solid fa-lock"></i></div>
+                    <div class="menu-text">🔒 تغيير كلمة المرور</div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+            </div>
+
+            <!-- 📦 طلباتي -->
+            <div class="section-title"><i class="fa-solid fa-boxes-stacked"></i> طلباتي</div>
+            <div class="menu-card">
+                <a href="{% url 'my_orders' %}" class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-list-check"></i></div>
+                    <div class="menu-text">📦 عرض طلبات المنظومات</div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+            </div>
+
+            <!-- ⚙️ الإعدادات -->
+            <div class="section-title"><i class="fa-solid fa-sliders"></i> الإعدادات</div>
+            <div class="menu-card">
+                <div class="menu-item toggle-item">
+                    <div class="menu-icon"><i class="fa-solid fa-moon"></i></div>
+                    <div class="menu-text">🌙 الوضع الداكن</div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="darkModeCheckbox" checked>
+                        <label for="darkModeCheckbox"></label>
+                    </div>
+                </div>
+                <a href="#" class="menu-item" id="languageLink">
+                    <div class="menu-icon"><i class="fa-solid fa-language"></i></div>
+                    <div class="menu-text">🌐 تغيير اللغة</div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="#" class="menu-item" id="notificationsLink">
+                    <div class="menu-icon"><i class="fa-solid fa-bell"></i></div>
+                    <div class="menu-text">🔔 الإشعارات</div>
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+            </div>
+
+            <!-- 💬 الدعم -->
+            <div class="section-title"><i class="fa-solid fa-headset"></i> الدعم</div>
+            <div class="menu-card">
+                <a href="#" class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                    <div class="menu-text">📝 إرسال شكوى</div><i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                    <div class="menu-text">💡 إرسال اقتراح</div><i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="{% url 'faq' %}" class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-circle-question"></i></div>
+                    <div class="menu-text">❓ الأسئلة الشائعة</div><i class="fa-solid fa-chevron-left"></i>
+                </a>
+            </div>
+
+            <!-- ℹ️ عن التطبيق -->
+            <div class="section-title"><i class="fa-solid fa-circle-info"></i> عن التطبيق</div>
+            <div class="menu-card">
+                <a href="{% url 'static_page' 'about' %}" class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-sun"></i></div>
+                    <div class="menu-text">📖 عن Solaris</div><i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="{% url 'static_page' 'privacy' %}" class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="menu-text">🔒 سياسة الخصوصية</div><i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="{% url 'static_page' 'terms' %}" class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-file-contract"></i></div>
+                    <div class="menu-text">📄 شروط الاستخدام</div><i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="#" class="menu-item" id="rateApp">
+                    <div class="menu-icon"><i class="fa-solid fa-star"></i></div>
+                    <div class="menu-text">⭐ قيّم التطبيق</div><i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <div class="menu-item">
+                    <div class="menu-icon"><i class="fa-solid fa-code-branch"></i></div>
+                    <div class="menu-text">📱 إصدار التطبيق</div><span class="version">v1.0.0</span>
+                </div>
+            </div>
+
+            <!-- 🔴 منطقة الخطر -->
+            <div class="section-title danger"><i class="fa-solid fa-triangle-exclamation"></i> الإجراءات </div>
+            <div class="menu-card danger-card">
+                <button class="menu-item danger-item" id="deleteAccountBtn">
+                    <div class="menu-icon"><i class="fa-solid fa-trash"></i></div>
+                    <div class="menu-text">🗑️ حذف الحساب</div><i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="menu-item logout-item" id="logoutBtn">
+                    <div class="menu-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+                    <div class="menu-text">🚪 تسجيل الخروج</div><i class="fa-solid fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== المودالات ========== -->
+
+    <!-- تعديل الاسم -->
+    <div id="editNameModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>✏️ تعديل الاسم</h3>
+            <input type="text" id="newName" class="modal-input" placeholder="الاسم الكامل الجديد">
+            <div class="modal-actions">
+                <button class="modal-btn cancel" data-close="editNameModal">إلغاء</button>
+                <button class="modal-btn gold" id="saveNameBtn">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تغيير البريد الإلكتروني (الخطوة 1: طلب OTP) -->
+    <div id="emailOtpModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>📧 تغيير البريد الإلكتروني</h3>
+            <p>سيتم إرسال رمز تحقق إلى بريدك الحالي <strong>{{ request.user.email }}</strong>.</p>
+            <button class="modal-btn gold" id="sendEmailOtpBtn">إرسال رمز التحقق</button>
+            <div class="modal-actions"><button class="modal-btn cancel" data-close="emailOtpModal">إلغاء</button></div>
+        </div>
+    </div>
+
+    <!-- تغيير البريد الإلكتروني (الخطوة 2: إدخال OTP والبريد الجديد) -->
+    <div id="emailVerifyModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>📧 التحقق من الرمز</h3>
+            <input type="text" id="emailOtp" class="modal-input" placeholder="رمز التحقق">
+            <input type="email" id="newEmail" class="modal-input" placeholder="البريد الإلكتروني الجديد">
+            <button class="modal-btn gold" id="verifyEmailOtpBtn">تحديث البريد</button>
+            <div class="modal-actions"><button class="modal-btn cancel" data-close="emailVerifyModal">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تغيير رقم الهاتف (الخطوة 1: طلب OTP) -->
+    <div id="phoneOtpModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>📱 تغيير رقم الهاتف</h3>
+            <p>سيتم إرسال رمز تحقق إلى رقمك الحالي.</p>
+            <button class="modal-btn gold" id="sendPhoneOtpBtn">إرسال رمز التحقق</button>
+            <div class="modal-actions"><button class="modal-btn cancel" data-close="phoneOtpModal">إلغاء</button></div>
+        </div>
+    </div>
+
+    <!-- تغيير رقم الهاتف (الخطوة 2: إدخال OTP والرقم الجديد) -->
+    <div id="phoneVerifyModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>📱 التحقق من الرمز</h3>
+            <input type="text" id="phoneOtp" class="modal-input" placeholder="رمز التحقق">
+            <input type="tel" id="newPhone" class="modal-input" placeholder="رقم الهاتف الجديد">
+            <button class="modal-btn gold" id="verifyPhoneOtpBtn">تحديث الرقم</button>
+            <div class="modal-actions"><button class="modal-btn cancel" data-close="phoneVerifyModal">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تغيير كلمة المرور -->
+    <div id="changePasswordModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>🔒 تغيير كلمة المرور</h3>
+            <input type="password" id="currentPassword" class="modal-input" placeholder="كلمة المرور الحالية">
+            <input type="password" id="newPassword" class="modal-input" placeholder="كلمة المرور الجديدة">
+            <input type="password" id="confirmNewPassword" class="modal-input"
+                placeholder="إعادة كتابة كلمة المرور الجديدة">
+            <div class="modal-actions">
+                <button class="modal-btn cancel" data-close="changePasswordModal">إلغاء</button>
+                <button class="modal-btn gold" id="changePasswordSubmitBtn">تغيير</button>
+            </div>
+            <a href="#" class="forgot-password">هل نسيت كلمة المرور؟</a>
+        </div>
+    </div>
+
+    <!-- حذف الحساب -->
+    <div id="deleteAccountModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>🗑️ حذف الحساب</h3>
+            <p>هذا الإجراء لا يمكن التراجع عنه. يرجى إدخال كلمة المرور للتأكيد.</p>
+            <input type="password" id="deletePassword" class="modal-input" placeholder="كلمة المرور">
+            <div class="modal-actions">
+                <button class="modal-btn cancel" data-close="deleteAccountModal">إلغاء</button>
+                <button class="modal-btn danger" id="confirmDeleteBtn">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تسجيل الخروج -->
+    <div id="logoutModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>🚪 تسجيل الخروج</h3>
+            <p>هل تريد تسجيل الخروج من حسابك؟</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" data-close="logoutModal">إلغاء</button>
+                <button class="modal-btn danger" id="confirmLogoutBtn">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
+    <!-- مودال نجاح / خطأ عام -->
+    <div id="messageModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="message-icon" id="messageIcon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <h3 id="messageModalTitle"></h3>
+            <p id="messageModalText"></p>
+            <div class="modal-actions" style="justify-content: center;">
+                <button id="messageModalOk" class="modal-btn gold">موافق</button>
+            </div>
+        </div>
+    </div>
+    <!-- ========== مودال نجاح العملية ========== -->
+    <div id="successModal" class="modal-overlay hidden">
+        <div class="modal success-modal">
+            <div class="success-icon" id="successIcon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 id="successTitle">تم بنجاح</h3>
+            <p id="successMessage">تمت العملية بنجاح.</p>
+            <div class="modal-actions" style="justify-content: center;">
+                <button class="modal-btn gold" id="successOkBtn">موافق</button>
+            </div>
+        </div>
+    </div>
+    <!-- مودال الشكوى / الاقتراح -->
+    <div id="feedbackModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3 id="feedbackModalTitle">إرسال شكوى</h3>
+            <textarea id="feedbackMessage" class="modal-input" rows="4" placeholder="اكتب رسالتك هنا..."></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" data-close="feedbackModal">إلغاء</button>
+                <button class="modal-btn gold" id="sendFeedbackBtn">إرسال</button>
+            </div>
+        </div>
+    </div>
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+        const logoutUrl = "{% url 'logout' %}";
+        const sendFeedbackUrl = "{% url 'send_feedback' %}";
+        const updateNameUrl = "{% url 'update_name' %}";
+        const sendEmailOtpUrl = "{% url 'send_email_otp' %}";
+        const verifyEmailOtpUrl = "{% url 'verify_email_otp' %}";
+        const sendPhoneOtpUrl = "{% url 'send_phone_otp' %}";
+        const verifyPhoneOtpUrl = "{% url 'verify_phone_otp' %}";
+        const changePasswordUrl = "{% url 'change_password' %}";
+        const deleteAccountUrl = "{% url 'delete_account' %}";
+        const currentEmail = "{{ request.user.email }}";
+    </script>
+    <script src="{% static 'user_dashboard/js/account.js' %}"></script>
+</body>
+
+</html>

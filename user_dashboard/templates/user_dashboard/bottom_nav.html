@@ -1,0 +1,36 @@
+{% load static %}
+<html lang="ar" dir="rtl" id="htmlTag">
+
+<head>
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+</head>
+<body>
+<nav class="bottom-nav" id="bottomNav">
+    <a href="{% url 'solar_calculator' %}" class="nav-item {% if request.resolver_match.url_name == 'solar_calculator' %}active{% endif %}" id="nav-calc-btn">
+        <div class="icon-wrapper"><i class="fa-solid fa-calculator"></i></div>
+        <span id="txt-nav-calc">الحاسبة</span>
+    </a>
+                                                                                                                                                                                                                                                                                                             
+    <a href="{% url 'assistant_home' %}" class="nav-item {% if  request.resolver_match.url_name == 'assistant_home' or request.resolver_match.url_name == 'recmmendation' or request.resolver_match.url_name == 'best_recmmendation' or request.resolver_match.url_name == 'feasibility_study' %}active{% endif %}" id="nav-ai-btn">
+        <div class="icon-wrapper"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <span id="txt-nav-ai">المساعد الذكي</span>
+    </a>
+
+    <a href="{% url 'user_home' %}" class="nav-item {% if request.resolver_match.url_name == 'user_home' %}active{% endif %}" id="nav-home-btn">
+        <div class="icon-wrapper"><i class="fa-solid fa-house"></i></div>
+        <span id="txt-nav-home">الرئيسية</span>
+    </a>
+     
+    <a href="{% url 'marketplace' %}" class="nav-item {% if request.resolver_match.url_name == 'marketplace' %}active{% endif %}" id="nav-packages-btn">
+        <div class="icon-wrapper"><i class="fa-solid fa-solar-panel"></i></div>
+        <span id="txt-nav-packages">العروض</span>
+    </a>
+
+    <a href="{% url 'account-user' %}" class="nav-item {% if request.resolver_match.url_name == 'account-user' or request.resolver_match.url_name == 'my_orders' %}active{% endif %}" id="nav-account-btn">
+        <div class="icon-wrapper"><i class="fa-regular fa-user"></i></div>
+        <span id="txt-nav-account">حسابي</span>
+    </a>
+    
+</nav>
+</body>
+</html>

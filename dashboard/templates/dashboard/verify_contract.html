@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحقق من الضمان الرقمي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet font-display: swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 15px;
+            color: #212529;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .verify-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* أنيميشن الشارة الخضراء */
+        .success-badge {
+            width: 80px;
+            height: 80px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2);
+        }
+
+        .status-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin: 0 0 5px 0;
+        }
+
+        .status-subtitle {
+            font-size: 13px;
+            color: #6c757d;
+            margin: 0 0 25px 0;
+        }
+
+        /* كارت معلومات الشركة */
+        .company-info-box {
+            background: #fdfdfd;
+            border: 1px solid #eef0f2;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: right;
+        }
+
+        .company-info-box img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+            border-radius: 6px;
+            background-color: #fff;
+        }
+
+        /* الأيقونة البديلة في حال عدم وجود لوكو */
+        .default-company-icon {
+            width: 65px;
+            height: 65px;
+            background: #f1f3f5;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .company-details h4 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .company-details p {
+            margin: 0;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* تفاصيل العقد والزبون */
+        .details-section {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px dashed #f1f3f5;
+        }
+
+        .info-label {
+            color: #6c757d;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        /* كارتات القطع المشمولة بالضمان */
+        .serial-card {
+            background: #f8f9fa;
+            border-right: 4px solid #212529;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: right;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .serial-meta h5 {
+            margin: 0 0 3px 0;
+            font-size: 13px;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .serial-meta p {
+            margin: 0;
+            font-size: 12px;
+            color: #495057;
+            font-family: monospace, sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .warranty-badge {
+            background: #212529;
+            color: #fff;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .verified-footer {
+            font-size: 11px;
+            color: #adb5bd;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed #eef0f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="verify-card">
+
+        <div class="success-badge">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2 class="status-title">ضمان رقمي موثق</h2>
+        <p class="status-subtitle">تم التحقق من صحة هذه الوثيقة والقطع بنجاح</p>
+
+        <div class="company-info-box">
+
+            {% if company and company.logo %}
+            <img src="{{ company.logo.url }}" alt="شعار الشركة">
+            {% else %}
+            <div class="default-company-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+            {% endif %}
+
+            <div class="company-details">
+                <h4>
+                    {% if company and company.company_name %}
+                    {% if "شركة" in company.company_name %}
+                    {{ company.company_name }}
+                    {% else %}
+                    شركة {{ company.company_name }}
+                    {% endif %}
+                    {% else %}
+                    الشركة المصدرة للضمان
+                    {% endif %}
+                </h4>
+
+                {% if company and company.phone %}
+                <p><i class="fa-solid fa-phone" style="font-size: 10px; color: #2e7d32;"></i> {{ company.phone }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="details-section">
+            <div class="section-header"><i class="fa-solid fa-user-shield"></i> بيانات وثيقة الضمان</div>
+
+            <div class="info-row">
+                <span class="info-label">اسم الزبون:</span>
+                <span class="info-value">{{ contract.order.customer|default:"غير محدد" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">رقم العقد / الطلب:</span>
+                <span class="info-value">#{{ contract.order_id|default:contract.id }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">تاريخ الإصدار:</span>
+                <span class="info-value">{{ contract.issued_at|date:"Y-m-d" }}</span>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <div class="section-header"><i class="fa-solid fa-microchip"></i> المعدات المشمولة والسيريالات</div>
+
+            {% if contract.panels_serial %}
+            <div class="serial-card" style="border-right-color: #43a047;">
+                <div class="serial-meta">
+                    <h5>الألواح الشمسية</h5>
+                    <p>S/N: {{ contract.panels_serial }}</p>
+                </div>
+                <span class="warranty-badge">{{ contract.panel_warranty_years }} سنة</span>
+            </div>
+            {% endif %}{% if contract.inverter_serial %}
+            <div class="serial-card" style="border-right-color: #1e88e5;">
+                <div class="serial-meta">
+                    <h5>انفيرتر المنظومة</h5>
+                    <p>S/N: {{ contract.inverter_serial }}</p>
+                </div>
+                <span class="warranty-badge">{{ contract.inverter_warranty_years }} سنة</span>
+            </div>
+            {% endif %}
+
+            {% if contract.batteries_serial %}
+            <div class="serial-card" style="border-right-color: #fdd835;">
+                <div class="serial-meta">
+                    <h5>خلايا البطاريات</h5>
+                    <p>S/N: {{ contract.batteries_serial }}</p>
+                </div>
+                <span class="warranty-badge">{{ contract.battery_warranty_years }} سنة</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="verified-footer">
+            <i class="fa-solid fa-shield-halved" style="color: #2e7d32; margin-left: 5px;"></i>
+            نظام حماية وتوثيق الضمانات الرقمية |
+            <span style="font-weight: 600; color: #6c757d;">
+                {% if company and company.company_name %}
+                {{ company.company_name }}
+                {% elif company %}
+                {{ company.username }}
+                {% else %}
+                الشركة المصدرة
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+</body>
+
+</html>

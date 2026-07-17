@@ -1,0 +1,68 @@
+:root {
+    /* ضفت هذا المتغير كاحتياط في حال ما كنت معرفه بملف style.css الرئيسي */
+    --gold: #dfa535; 
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto; /* هذا يضمن توسيط الشريط في الشاشات الأكبر من 414 بكسل */
+    width: 100%;
+    max-width: 414px;
+    background-color: #090c11;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0 5px 15px 5px;
+    height: 75px;
+    z-index: 100;
+    direction: rtl; /* لضمان الترتيب من اليمين لليسار */
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #5d6575;
+    text-decoration: none;
+    flex: 1; /* يوزع الأزرار بالتساوي */
+    transition: all 0.3s ease;
+}
+
+.nav-item i {
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.nav-item span {
+    font-size: 8.5px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.nav-item .icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-item.active {
+    color: var(--gold);
+}
+
+.nav-item.active .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--gold);
+    background-color: #090c11;
+    margin-top: -20px; /* رفع الأيقونة للأعلى */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,197 @@
+:root {
+    --bg: #07111f;
+    --card: #101d31;
+    --gold: #e7b45e;
+    --gold2: #f2ca7b;
+    --text: #ffffff;
+    --muted: #aeb9c8;
+    --border: rgba(255, 255, 255, .08);
+    --shadow: 0 14px 40px rgba(0, 0, 0, .35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Tajawal", sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top right, rgba(231, 180, 94, .10), transparent 25%), radial-gradient(circle at bottom left, rgba(231, 180, 94, .08), transparent 20%), linear-gradient(180deg, #07111f, #050d18);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.app {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #081321, #050d18);
+}
+
+.screen {
+    padding: 22px 18px 100px;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    text-decoration: none;
+    transition: .3s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, .1);
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.content-card {
+    background: linear-gradient(180deg, var(--card), #091321);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    line-height: 1.9;
+}
+
+.content-card h2 {
+    color: var(--gold2);
+    margin: 25px 0 12px 0;
+    font-size: 20px;
+}
+
+.content-card h2:first-child {
+    margin-top: 0;
+}
+
+.content-card p,
+.content-card li {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.content-card ul {
+    padding-right: 20px;
+    margin: 10px 0;
+}
+
+/* الوضع الفاتح */
+body.light-mode .app {
+    background: #f5f7fb;
+}
+
+body.light-mode .content-card {
+    background: #fff;
+    border-color: #e0e4ea;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .content-card h2 {
+    color: #b45309;
+}
+
+body.light-mode .content-card p,
+body.light-mode .content-card li {
+    color: #4b5563;
+}
+
+body.light-mode .back-btn {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1d2939;
+}
+
+body.light-mode .page-header h1 {
+    color: #1d2939;
+}
+
+/* مودال الموافقة (في home.html) */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.terms-modal {
+    background: rgba(18, 32, 58, 0.95);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 28px;
+    padding: 36px 28px;
+    width: 90%;
+    max-width: 400px;
+    color: #fff;
+    text-align: center;
+}
+
+.terms-modal .modal-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+}
+
+.terms-modal h3 {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #ffd36d;
+}
+
+.terms-modal p {
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+}
+
+.terms-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.terms-links a {
+    color: var(--gold2);
+    text-decoration: none;
+    font-weight: 700;
+    transition: .2s;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.terms-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.gold-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #f2ca7b, #dca84c);
+    color: #1c1407;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+}

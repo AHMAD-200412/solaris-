@@ -1,0 +1,251 @@
+{% extends 'dashboard/company_base.html' %}
+{% load static %}
+
+{% block title %}الضمان الرقمي | {{ company.company_name|default:"SolarLQ" }}{% endblock %}
+
+{% block page_css %}
+<!-- ربط الملفات المشتركة والخاصة بالصفحة مثل صفحة الأقساط -->
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/contracts_management.css' %}">
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content" id="mainContent">
+
+    <!-- 1️⃣ الهيدر الموحد ويفعل المنيو المشترك مالتكم مية بالمية -->
+    <div class="top-navbar">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+        <div class="page-title">
+            <i class="fa-solid fa-file-contract"></i>
+            <span>إدارة العقود والضمان الرقمي</span>
+        </div>
+    </div>
+
+    <!-- رسائل النظام والتنبيهات -->
+    {% if messages %}
+    <div class="messages-container" style="margin-bottom: 20px;">
+        {% for message in messages %}
+        <div class="custom-alert {{ message.tags }}">
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- 2️⃣ شريط البحث الممتد للاخير حسب الـ CSS المشترك مالتكم -->
+    <div class="action-bar-container">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchContracts" placeholder=" ابحث باسم المشترك أو رقم الطلب أو رقم التسلسي..."
+                class="search-input-full">
+        </div>
+
+        <button class="btn-add-contract" id="openContractModalBtn">
+            <i class="fas fa-plus"></i> إصدار عقد وضمان جديد
+        </button>
+    </div>
+
+    <!-- 4️⃣ جدول عرض العقود والبيانات -->
+    <div class="table-card-custom" style="margin-top: 20px;">
+        <div class="table-responsive-custom">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>الزبون</th>
+                        <th>الطلب المرتبط</th>
+                        <th>تاريخ الإصدار</th>
+                        <th>القطع المشمولة (مع الأرقام التسلسلية)</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contract in contracts %}
+                    <tr>
+                        <td class="fw-bold">{{ contract.order.customer.first_name }}</td>
+                        <td><span class="badge-order">#ORD-{{ contract.order.id }}</span></td>
+                        <td class="text-muted">{{ contract.issued_at|date:"Y-m-d" }}</td>
+
+                        <td>
+                            <div class="warranty-stack">
+
+                                {% if contract.panels_serial or contract.batteries_serial or contract.inverter_serial %}
+
+                                {% if contract.panels_serial %}
+                                <div style="margin-bottom: 8px;">
+                                    <span class="w-badge panels">☀️ الألواح ({{ contract.panels_warranty }} سنة)</span>
+                                    <div class="text-muted" style="font-size: 0.85em; margin-top: 4px;">
+                                        <strong>S/N:</strong> {{ contract.panels_serial }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if contract.batteries_serial %}
+                                <div style="margin-bottom: 8px;">
+                                    <span class="w-badge batteries">🔋 البطاريات ({{ contract.batteries_warranty }}
+                                        سنة)</span>
+                                    <div class="text-muted" style="font-size: 0.85em; margin-top: 4px;">
+                                        <strong>S/N:</strong> {{ contract.batteries_serial }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if contract.inverter_serial %}
+                                <div style="margin-bottom: 8px;">
+                                    <span class="w-badge inverter">⚡ العاكس ({{ contract.inverter_warranty }}
+                                        سنة)</span>
+                                    <div class="text-muted" style="font-size: 0.85em; margin-top: 4px;">
+                                        <strong>S/N:</strong> {{ contract.inverter_serial }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% else %}
+                                <span class="text-danger" style="font-size: 12px;">لم يتم تسجيل قطع أو أرقام
+                                    تسلسلية</span>
+                                {% endif %}
+
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'print_contract' contract.id %}" target="_blank" class="btn-print-action">
+                                <i class="fa-solid fa-print"></i> طباعة العقد
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-state"><i class="fa-solid fa-folder-open"></i>
+                            <h4>لا توجد عقود مسجلة</h4>
+                            <p>لم تقم بإصدار أي ضمان رقمي للزبائن حتى الآن.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- 5️⃣ النافذة المنبثقة الذكية (المودل الديناميكي) -->
+<div id="customContractModal" class="custom-modal-overlay">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+            <h3><i class="fa-solid fa-file-contract"></i> إنشاء عقد وضمان رقمي جديد</h3>
+            <button class="close-modal-btn">&times;</button>
+        </div>
+
+        <form method="POST" action="{% url 'add_contract' %}">
+            {% csrf_token %}
+            <div class="custom-modal-body">
+
+                <div class="form-group-custom mb-4">
+                    <label>اختر الطلب المكتمل ميدانياً</label>
+                    <select name="order_id" required>
+                        <option value="" disabled selected>--- اختر زبوناً جاهزاً للعقد ---</option>
+                        {% for o in completed_orders %}
+                        <option value="{{ o.id }}">#ORD-{{ o.id }} - {{ o.customer.first_name }} ({{ o.phone_number }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="selection-box-wrapper mb-4">
+                    <label class="section-title-label"><i class="fa-solid fa-list-check"></i> حدد القطع المبيوعة
+                        المشمولة بالضمان الحالي:</label>
+                    <div class="checkbox-grid-custom">
+                        <label class="checkbox-card">
+                            <input type="checkbox" id="chk-panels" name="has_panels">
+                            <div class="card-indicator">
+                                <i class="fa-solid fa-solar-panel"></i>
+                                <span>الألواح الشمسية</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" id="chk-batteries" name="has_batteries">
+                            <div class="card-indicator">
+                                <i class="fa-solid fa-car-battery"></i>
+                                <span>البطاريات</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-card">
+                            <input type="checkbox" id="chk-inverter" name="has_inverter">
+                            <div class="card-indicator">
+                                <i class="fa-solid fa-charging-station"></i>
+                                <span>جهاز العاكس (Inverter)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- حقول الألواح الديناميكية -->
+                <div id="group-panels" class="dynamic-component-section" style="display: none;">
+                    <h5 class="section-title text-panels"><i class="fa-solid fa-solar-panel"></i> بيانات ضمان الألواح
+                        الشمسية</h5>
+                    <div class="form-row-custom">
+                        <div class="form-group-custom">
+                            <label>مدة ضمان الألواح (بالسنوات)</label>
+                            <input type="number" name="panels_warranty" value="10" min="0">
+                        </div>
+                        <div class="form-group-custom">
+                            <label>الأرقام التسلسلية للألواح (S/N)</label>
+                            <textarea name="panels_serial" rows="2" placeholder="أدخل السيريالات هنا..."></textarea>
+                        </div>
+                    </div>
+                </div><!-- حقول البطاريات الديناميكية -->
+                <div id="group-batteries" class="dynamic-component-section" style="display: none;">
+                    <h5 class="section-title text-batteries"><i class="fa-solid fa-car-battery"></i> بيانات ضمان
+                        البطاريات</h5>
+                    <div class="form-row-custom">
+                        <div class="form-group-custom">
+                            <label>مدة ضمان البطاريات (بالسنوات)</label>
+                            <input type="number" name="batteries_warranty" value="1" min="0">
+                        </div>
+                        <div class="form-group-custom">
+                            <label>الأرقام التسلسلية للبطاريات (S/N)</label>
+                            <textarea name="batteries_serial" rows="2"
+                                placeholder="أدخل سيريالات البطاريات..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- حقول العاكس الديناميكية -->
+                <div id="group-inverter" class="dynamic-component-section" style="display: none;">
+                    <h5 class="section-title text-inverter"><i class="fa-solid fa-charging-station"></i> بيانات ضمان
+                        العاكس (Inverter)</h5>
+                    <div class="form-row-custom">
+                        <div class="form-group-custom">
+                            <label>مدة ضمان العاكس (بالسنوات)</label>
+                            <input type="number" name="inverter_warranty" value="1" min="0">
+                        </div>
+                        <div class="form-group-custom">
+                            <label>الرقم التسلسلي لجهاز العاكس (S/N)</label>
+                            <input type="text" name="inverter_serial" placeholder="أدخل سيريال العاكس">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-custom mt-4">
+                    <label class="text-danger">الشروط والأحكام القانونية المطبوعة بالعقد:</label>
+                    <textarea name="legal_terms" rows="4" required>1. تضمن الشركة عمل القطع المحددة بكفاءة فنية وحسب المواصفات طوال فترة الضمان المذكورة كلاً حسب قطعته.
+2. لا يشمل الضمان الأعطال الناتجة عن سوء الاستخدام، التحميل الزائد، أو الصواعق والكوارث الطبيعية.
+3. يعتبر الضمان لاغياً في حال قيام جهة غير مخولة بصيانة الأجهزة أو التلاعب بالسيريالات.</textarea>
+                </div>
+            </div>
+
+            <div class="custom-modal-footer">
+                <button type="button" class="btn-cancel-action close-modal-btn-footer">إلغاء</button>
+                <button type="submit" class="btn-save-action"><i class="fa-solid fa-check"></i> حفظ وإصدار
+                    الضمان</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- استدعاء ملف الجافا سكربت المشترك والخاص بالعقود بدون تكرار الأكواد -->
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/contracts_management.js' %}"></script>
+{% endblock %}

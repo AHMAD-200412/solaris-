@@ -1,0 +1,422 @@
+
+.top-navbar {
+    background: white;
+    padding: 18px 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 25px;
+    
+    /* تفعيل توزيع مرن باتجاه عربي صافي لإجبار العناصر على اليمين */
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start; /* يجعل كل شيء يبدأ من اليمين بصف المنيو */
+    gap: 15px; /* مسافة ثابتة ومريحة بين المنيو والعنوان */
+    direction: rtl !important;
+}
+
+.menu-toggle {
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--primary-dark);
+    transition: var(--transition);
+}
+.menu-toggle:hover {
+    background: var(--accent-orange);
+    color: white;
+}
+/* CARD ACTIONS (EDIT & DELETE BUTTONS) */
+.pm-card-actions {
+    display: flex;
+    gap: 8px;
+}
+.pm-action-btn {
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+.pm-edit-btn {
+    color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+.pm-edit-btn:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+.pm-delete-btn {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+}
+.pm-delete-btn:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* CONTAINER & HEADER */
+.pm-section-container {
+    padding: 20px;
+    direction: rtl;
+    font-family: 'Cairo', sans-serif;
+}
+.pm-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+.pm-header-title h2 {
+    margin: 0 0 5px 0;
+    color: #212529;
+    font-size: 22px;
+}
+.pm-header-title p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* BUTTONS */
+.pm-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.pm-btn-success {
+    background-color: #2e7d32;
+    color: white;
+}
+.pm-btn-success:hover {
+    background-color: #1b5e20;
+}
+.pm-btn-secondary {
+    background-color: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+}
+.pm-btn-secondary:hover {
+    background-color: #e2e6ea;
+}
+
+/* ALERTS */
+.pm-alert {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.pm-alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* PROJECTS GRID & CARDS */
+.pm-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+}
+.pm-project-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #edf2f7;
+}
+.pm-card-image-box {
+    position: relative;
+    height: 200px;
+    width: 100%;
+}
+.pm-card-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.pm-badge-location {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    backdrop-filter: blur(3px);
+}
+.pm-card-body {
+    padding: 20px;
+    flex-grow: 1;
+}
+.pm-badge-package {
+    display: inline-block;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+.pm-card-title {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #212529;
+    line-height: 1.4;
+}
+.pm-card-desc {
+    color: #6c757d;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+.pm-card-feedback {
+    background: #f8f9fa;
+    border-right: 4px solid #2e7d32;
+    padding: 12px;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+    margin-top: 15px;
+}
+.pm-quote-icon {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: #dee2e6;
+    font-size: 18px;
+}
+.pm-card-feedback p {
+    margin: 0 0 5px 0;
+    font-style: italic;
+    font-size: 12.5px;
+    color: #495057;
+}
+.pm-feedback-owner {
+    font-size: 11px;
+    color: #6c757d;
+    font-weight: bold;
+}
+.pm-card-footer {
+    padding: 12px 20px;
+    background: #fdfdfd;
+    border-top: 1px solid #f1f3f5;
+    font-size: 12px;
+    color: #adb5bd;
+}
+
+/* MODAL STRUCTURE (يخفي الفورم ويظهره كنافذة منبثقة) */
+.pm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none; /* هذا السطر هو اللي كان مفقود عندك وسبب المشكلة */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+.pm-modal-content {
+    background: #ffffff;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    animation: pmSlideDown 0.3s ease-out;overflow: hidden;
+}
+@keyframes pmSlideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.pm-modal-header {
+    background: #f8f9fa;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+}
+.pm-modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #212529;
+}
+.pm-modal-close {
+    font-size: 28px;
+    cursor: pointer;
+    color: #adb5bd;
+    transition: color 0.2s;
+}
+.pm-modal-close:hover {
+    color: #dc3545;
+}
+
+/* MODAL FORM */
+.pm-modal-form {
+    padding: 24px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+.pm-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.pm-full-width {
+    grid-column: span 2;
+}
+.pm-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.pm-form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* تصفيف مدخلات دجانغو */
+.pm-form-group .form-control, 
+.pm-form-group input, 
+.pm-form-group select, 
+.pm-form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-family: 'Cairo', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+.pm-form-group .form-control:focus,
+.pm-form-group input:focus,
+.pm-form-group select:focus,
+.pm-form-group textarea:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+.pm-modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: #f8f9fa;
+    margin: 20px -24px -24px -24px;
+}
+
+/* EMPTY STATE */
+.pm-empty-state {
+    grid-column: span 3;
+    text-align: center;
+    padding: 60px 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 2px dashed #dee2e6;
+}
+.pm-empty-icon {
+    font-size: 50px;
+    color: #ced4da;
+    margin-bottom: 15px;
+}
+/* تصغير حجم كارتات المشاريع (متوسط) */
+.pm-projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* صغرنا العرض */
+    gap: 20px;
+}
+.pm-card-image-box {
+    height: 170px; /* صغرنا ارتفاع الصورة */
+    cursor: pointer; /* تغيير شكل الماوس ليدل على إمكانية الضغط */
+    overflow: hidden;
+}
+.pm-card-image-box img {
+    transition: transform 0.3s ease;
+}
+.pm-card-image-box:hover img {
+    transform: scale(1.05); /* زووم خفيف عند التأشير */
+}
+
+/* نافذة عرض الصورة الكبيرة (Lightbox) */
+.pm-image-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    justify-content: center; align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+}
+.pm-image-modal-content {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: pmZoomIn 0.3s ease;
+    object-fit: contain;
+}
+@keyframes pmZoomIn {
+    from {transform: scale(0.8); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+.pm-image-modal-close {
+    position: absolute;
+    top: 20px; right: 30px;
+    font-size: 40px; color: white;
+    cursor: pointer; transition: color 0.2s;
+}
+.pm-image-modal-close:hover {
+    color: #dc3545;
+}
+/* حل مشكلة التصميم في الموبايل */
+@media (max-width: 600px) {
+    .pm-header-wrapper {
+        flex-direction: column !important; /* يخلي العنوان والزر واحد فوك الثاني */
+        align-items: flex-start !important;
+        gap: 15px !important;
+    }
+    
+    .pm-header-title {
+        text-align: right;
+        width: 100%;
+    }
+    
+    .pm-btn {
+        width: 100%; /* الزر يصير بعرض الشاشة كاملة حتى لا يتقطع */
+        justify-content: center;
+    }
+}

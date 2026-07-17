@@ -1,0 +1,188 @@
+/* ==================================
+   FAQ Page (Solaris Theme)
+   ================================== */
+:root {
+    --bg: #07111f;
+    --card: #101d31;
+    --gold: #e7b45e;
+    --gold2: #f2ca7b;
+    --text: #ffffff;
+    --muted: #aeb9c8;
+    --border: rgba(255, 255, 255, .08);
+    --shadow: 0 14px 40px rgba(0, 0, 0, .35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Tajawal", sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top right, rgba(231, 180, 94, .10), transparent 25%),
+        radial-gradient(circle at bottom left, rgba(231, 180, 94, .08), transparent 20%),
+        linear-gradient(180deg, #07111f, #050d18);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.app {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #081321, #050d18);
+}
+
+.screen {
+    padding: 22px 18px 100px;
+}
+
+/* رأس الصفحة */
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    text-decoration: none;
+    transition: .3s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, .1);
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+/* عنصر السؤال */
+.faq-item {
+    background: linear-gradient(180deg, var(--card), #091321);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.faq-item.active {
+    border-color: var(--gold);
+}
+
+.faq-question {
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.faq-question h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text);
+}
+
+.faq-question i {
+    font-size: 16px;
+    color: var(--gold2);
+    transition: transform 0.3s;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    /* كبير كفاية للمحتوى */
+    padding: 0 20px 18px;
+}
+
+.faq-answer p {
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 15px;
+    margin: 0;
+}
+
+/* تحسينات للوضع الفاتح */
+body.light-mode .app {
+    background: #f5f7fb;
+}
+
+body.light-mode .faq-item {
+    background: #ffffff;
+    border-color: #e0e4ea;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .faq-question h3 {
+    color: #1d2939;
+}
+
+body.light-mode .faq-answer p {
+    color: #4b5563;
+}
+
+body.light-mode .faq-question:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-mode .back-btn {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1d2939;
+}
+
+body.light-mode .back-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .page-header h1 {
+    color: #1d2939;
+}
+
+/* استجابة */
+@media (max-width:480px) {
+    .screen {
+        padding: 18px 14px 110px;
+    }
+
+    .faq-question h3 {
+        font-size: 16px;
+    }
+
+    .faq-answer p {
+        font-size: 14px;
+    }
+}

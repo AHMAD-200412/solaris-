@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>لوحة تحكم المستخدم - الطاقة الشمسية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #ffffff;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .dashboard-card {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        .icon-header {
+            font-size: 50px;
+            color: #f59e0b;
+            margin-bottom: 15px;
+        }
+        h1 { color: #f59e0b; margin-top: 0; font-size: 24px; }
+        p { color: #94a3b8; font-size: 15px; line-height: 1.6; }
+        .user-details {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: right;
+            margin: 20px 0;
+            border: 1px solid #334155;
+        }
+        .user-details div {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .user-details span { color: #f59e0b; font-weight: bold; }
+        .btn-logout {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: #ef4444;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-logout:hover { background: #dc2626; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-card">
+        <div class="icon-header"><i class="fa-solid fa-user-shield"></i></div>
+        <h1>👤 لوحة تحكم المستخدم الفردي</h1>
+        <p>أهلاً بك في فضاء الطاقة الشمسية. هنا يمكنك حساب الأحمال المنزلية ومتابعة طلباتك.</p>
+        
+        <div class="user-details">
+            <div>اسم المستخدم: <span>{{ user.username }}</span></div>
+            <div>البريد الإلكتروني: <span>{{ user.email }}</span></div>
+            <div>نوع الحساب: <span>مستفيد فردي</span></div>
+            <div>رقم الهاتف: <span>{{ user.phone|default:"غير مسجل" }}</span></div>
+        </div>
+
+        <a href="/accounts/logout/" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</a>
+    </div>
+
+</body>
+</html>

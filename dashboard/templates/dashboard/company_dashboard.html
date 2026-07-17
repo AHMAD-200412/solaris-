@@ -1,0 +1,83 @@
+{% extends 'dashboard/company_base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}لوحة تحكم الشركة | {{ company.company_name|default:"SolarLQ" }}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/company_dashboard.css' %}">
+
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content" id="mainContent">
+    <header class="top-navbar">
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+        <div class="welcome-text">
+            <h2>مرحباً، <span>{{ company.first_name|default:"مدير الشركة" }}</span> 👋</h2>
+        </div>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="stat-info">
+                <p>القطع في المخزن</p>
+                <h3>{{ total_products|default:"0" }}</h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="stat-info">
+                <p>الباقات الجاهزة</p>
+                <h3>{{ total_packages|default:"0" }}</h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="stat-info">
+                <p>طلبات قيد الانتظار</p>
+                <h3>{{ pending_orders_count|default:"0" }}</h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="stat-info">
+                <p>إجمالي المبيعات</p>
+                <h3>{{ total_earnings|smart_money }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3>أرباح الشركة خلال العام</h3>
+            </div>
+            <canvas id="revenueChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3>الباقات الأكثر مبيعاً</h3>
+            </div>
+            <canvas id="packagesChart"></canvas>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // إعطاء قيم افتراضية مفرغة ومصفرة لكي تظهر المخططات حتى لو كانت قاعدة البيانات خالية
+    const djangoRevenueData = {{ monthly_revenue_json|default:"[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" | safe }};
+    const djangoPackageLabels = {{ package_labels_json|default:"['لا توجد باقات مباعة']" | safe }};
+    const djangoPackageCounts = {{ package_counts_json|default:"[0]" | safe }};
+
+</script>
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/company_dashboard.js' %}"></script>
+{% endblock %}

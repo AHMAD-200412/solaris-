@@ -1,0 +1,117 @@
+{% extends 'dashboard/company_base.html' %}
+{% load static %}
+
+{% block title %}إعدادات الشركة | {{ request.user.company_name|default:"لوحة التحكم" }}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content" id="mainContent">
+
+    <div class="top-navbar">
+        <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars-staggered"></i></button>
+        <div class="page-title">
+            <i class="fa-solid fa-sliders"></i><span>إعدادات الهوية والشركة</span>
+        </div>
+    </div>
+
+    <div class="set-container">
+        
+        <div class="set-header">
+            <div class="set-header-text">
+                <h2>إعدادات ملف الشركة 🛠️</h2>
+                <p>تحديث الهوية البصرية، أرقام الدعم الفني، وأوقات عمل شركتكم وتصحيح الموقع الجغرافي</p>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="set-alert set-alert-success">
+                    <i class="fa-solid fa-circle-check"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="set-card">
+                <div class="set-avatar-section">
+                    <div class="set-avatar-wrapper">
+                        {% if request.user.logo %}
+                            <img src="{{ request.user.logo.url }}" id="logoPreview" alt="شعار الشركة">
+                        {% else %}
+                            <img src="{% static 'images/default-company.png' %}" id="logoPreview" alt="شعار افتراضي">
+                        {% endif %}
+                        <label for="id_logo" class="set-avatar-edit" title="تغيير الشعار">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" name="logo" id="id_logo" accept="image/*" style="display: none;">
+                        </label>
+                    </div>
+                    <div class="set-avatar-text">
+                        <h3>شعار الشركة الرسمي</h3>
+                        <p>يفضل رفع صورة مربعة بخلفية شفافة وبحجم لا يتعدى 2 ميغابايت</p>
+                    </div>
+                </div>
+
+                <div class="set-grid">
+                    
+                    <div class="set-group">
+                        <label><i class="fa-solid fa-building"></i> اسم الشركة الرسمي</label>
+                        {{ u_form.company_name }}
+                    </div>
+
+                    <div class="set-group">
+                        <label><i class="fa-solid fa-map-pin"></i> المحافظة (مقر الشركة)</label>
+                        {{ u_form.governorate }}
+                    </div>
+
+                    <div class="set-group">
+                        <label><i class="fa-solid fa-headset"></i> رقم هاتف الدعم الفني</label>
+                        {{ p_form.support_phone }}
+                    </div>
+
+                    <div class="set-group">
+                        <label><i class="fa-brands fa-whatsapp"></i> رقم الواتساب المربوط</label>
+                        {{ p_form.whatsapp_number }}
+                    </div>
+
+                    <div class="set-group full-width gps-settings-box">
+                        <label><i class="fa-solid fa-map-location-dot"></i> إحداثيات الموقع على الخريطة (GPS)</label>
+                        <button type="button" id="getLocationBtn" class="set-btn-gps">
+                            <span id="gpsBtnText"><i class="fa-solid fa-location-crosshairs"></i> تحديث وتصحيح موقع مقر الشركة الحالي عبر الـ GPS</span>
+                        </button>
+                        {{ u_form.gps_coordinates }}
+                        <small class="set-hint">اضغط على الزر أعلاه أثناء تواجدك في مقر الشركة ليتم التقاط إحداثياتكم على الخريطة تلقائياً وبأعلى دقة.</small>
+                    </div>
+                    <div class="set-group full-width">
+                        <label><i class="fa-solid fa-clock"></i> ساعات العمل الرسمية</label>
+                        {{ p_form.working_hours }}
+                    </div>
+
+                    <div class="set-group full-width">
+                        <label><i class="fa-solid fa-address-card"></i> نبذة عن الشركة (تظهر في البروفايل العام)</label>
+                        {{ p_form.about_us }}
+                    </div>
+                </div>
+
+                <div class="set-footer">
+                    <button type="submit" class="set-btn set-btn-success">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات الجديدة 💾
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}

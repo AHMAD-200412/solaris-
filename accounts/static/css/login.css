@@ -1,0 +1,253 @@
+/* ==========================================
+   Login Page – Solaris Unified Theme
+   متجاوب، متمركز، وموحد مع باقي التطبيق
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(231, 180, 94, .10), transparent 25%),
+        radial-gradient(circle at 85% 90%, rgba(231, 180, 94, .08), transparent 20%),
+        linear-gradient(180deg, #07111f, #050d18);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+    /* مسافة أمان للجوال */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* وهج الخلفية (محفوظ كما هو) */
+.background-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(231, 180, 94, 0.12) 0%, rgba(15, 23, 42, 0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* الحاوية الرئيسية */
+.login-container {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(180deg, #101d31, #091321);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(231, 180, 94, 0.15);
+    padding: 40px 30px;
+    border-radius: 28px;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* أيقونة الطاقة */
+.icon-box {
+    width: 70px;
+    height: 70px;
+    background: rgba(231, 180, 94, 0.1);
+    border: 1px solid rgba(231, 180, 94, 0.25);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+}
+
+.icon-box i {
+    font-size: 32px;
+    color: #e7b45e;
+}
+
+/* العناوين */
+h2 {
+    font-size: 26px;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+p {
+    color: #aeb9c8;
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* رسائل التنبيه (Django Messages) */
+.messages-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.login-alert {
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.alert-error,
+.alert-danger {
+    background-color: rgba(255, 77, 79, 0.1);
+    color: #ff4d4f;
+    border: 1px solid rgba(255, 77, 79, 0.3);
+}
+
+.alert-success {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+/* مجموعة الإدخال */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aeb9c8;
+    font-size: 18px;
+    z-index: 3;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px 45px 15px 15px;
+    background: #0d1829;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-input:focus {
+    border-color: #e7b45e;
+    box-shadow: 0 0 0 2px rgba(231, 180, 94, 0.25);
+}
+
+.form-input::placeholder {
+    color: #64748b;
+}
+
+/* زر إظهار/إخفاء كلمة المرور */
+.toggle-password {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aeb9c8;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 3;
+}
+
+.toggle-password:hover {
+    color: #e7b45e;
+}
+
+/* رابط نسيت كلمة المرور */
+.forgot-pass-container {
+    text-align: right;
+    margin-bottom: 24px;
+}
+
+.forgot-pass-link {
+    color: #e7b45e;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.forgot-pass-link:hover {
+    text-decoration: underline;
+    color: #f2ca7b;
+}
+
+/* زر تسجيل الدخول */
+.btn-login {
+    width: 100%;
+    background: linear-gradient(180deg, #f2ca7b, #dca84c);
+    color: #1c1407;
+    border: none;
+    padding: 16px;
+    border-radius: 16px;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(231, 180, 94, 0.35);
+}
+
+/* رابط إنشاء حساب جديد */
+.register-link-container {
+    font-size: 14px;
+    color: #aeb9c8;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 20px;
+}
+
+.register-link {
+    color: #e7b45e;
+    text-decoration: none;
+    font-weight: 700;
+    margin-right: 5px;
+    transition: 0.3s;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+    color: #f2ca7b;
+}
+
+/* تحسينات الشاشات الصغيرة */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+    }
+
+    .icon-box i {
+        font-size: 28px;
+    }
+
+    .btn-login {
+        padding: 14px;
+        font-size: 16px;
+    }
+}

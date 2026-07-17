@@ -1,0 +1,190 @@
+/* ===================================================
+   🎨 استدعاء الخطوط والتهيئة العامة المشتركة لكل المنصة
+   =================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+:root {
+    --primary-dark: #0f172a;    /* كحلي داكن وفخم جداً */
+    --accent-orange: #f59e0b;   /* برتقالي/ذهبي للطاقة */
+    --accent-blue: #3b82f6;     /* أزرق مريح للإجراءات */
+    --accent-red: #ef4444;      /* أحمر للتحذير والحذف */
+    --accent-green: #10b981;    /* أخضر للأرباح والنجاح */
+    --bg-light: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;      /* مسميات مشتركة لمنع أي تضارب */
+    --text-light: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* ===================================================
+   🏢 القائمة الجانبية الموحدة (Sidebar)
+   =================================================== */
+.sidebar {
+    width: 260px;
+    background-color: var(--primary-dark);
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1000; /* لضمان ظهورها دائماً فوق كل العناصر والمودلز */
+    transition: var(--transition);
+    box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+    overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 10px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-orange); 
+}
+
+.sidebar.closed { 
+    transform: translateX(100%); 
+    right: -260px; /* تغطي الطريقتين المستخدمة في الملفات */
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.logo-icon {
+    font-size: 40px;
+    color: var(--accent-orange);
+    margin-bottom: 10px;
+}
+
+.sidebar-header h3 { 
+    color: #fff; 
+    font-size: 1.3rem; 
+    font-weight: 800; 
+    letter-spacing: 1px; 
+}
+
+.sidebar-menu { 
+    list-style: none; 
+    margin-top: 20px; 
+}
+
+.sidebar-menu li a {
+    display: flex; 
+    align-items: center; 
+    gap: 15px;
+    padding: 16px 25px;
+    color: #94a3b8;
+    text-decoration: none; 
+    font-weight: 600; 
+    font-size: 1.05rem;
+    transition: var(--transition);
+    border-right: 4px solid transparent;
+}
+
+.sidebar-menu li a i { 
+    font-size: 1.2rem; 
+    width: 25px; 
+    text-align: center; 
+}
+
+.sidebar-menu li a:hover, 
+.sidebar-menu li.active a {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--accent-orange);
+    border-right-color: var(--accent-orange);
+}
+
+.sidebar-menu li.logout { 
+    margin-top: 40px; 
+    border-top: 1px solid rgba(255,255,255,0.05); 
+}
+.sidebar-menu li.logout a { 
+    color: var(--accent-red); 
+}
+.sidebar-menu li.logout a:hover { 
+    color: #f87171; 
+    border-right-color: #ef4444; 
+    background: rgba(239, 68, 68, 0.05); 
+}
+
+/* ===================================================
+   🖥️ الهيكل والمحتوى الرئيسي الأساسي (Layout)
+   =================================================== */
+/* المحتوى الأساسي */
+.main-content {
+    margin-right: 260px;
+    padding: 30px;
+    width: calc(100% - 260px);
+    transition: all 0.3s ease;
+    min-height: 100vh;
+}
+
+/* عند إغلاق القائمة: يمتد المحتوى */
+.main-content.expanded {
+    margin-right: 0;
+    width: 100%;
+}
+
+/* عندما تكون القائمة مغلقة (يمتد المحتوى) */
+.sidebar-closed .main-content {
+    width: 100%;
+    }
+
+/* التجاوب الأساسي لإخفاء السايدبار في الموبايل */
+@media (max-width: 992px) {
+    .sidebar { 
+        transform: translateX(100%); 
+        right: -260px; 
+    }
+    .sidebar.open { 
+        transform: translateX(0); 
+        right: 0; 
+    }
+    .main-content { 
+        margin-right: 0; 
+        width: 100%; 
+        padding: 15px; 
+    }
+}
+/* تنسيق الشعار في القائمة الجانبية */
+.sidebar-logo {
+    width: 90px;           /* عرض الدائرة */
+    height: 90px;          /* طول الدائرة (لازم يكون نفس العرض) */
+    border-radius: 50%;    /* يسويها دائرة 100% */
+    object-fit: cover;     /* السر هنا: يمنع تمطط الصورة ويقصها باحترافية */
+    border: 3px solid rgba(255, 255, 255, 0.2); /* إطار شفاف خفيف يضيف فخامة */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);  /* ظل خفيف يعطيها عمق (3D) */
+    display: block;        
+    margin: 0 auto 15px auto; /* يوسطها بالنص ويبعدها عن الاسم الجواها */
+    transition: transform 0.3s ease; /* حركة ناعمة */
+}
+
+/* حركة بسيطة من يمرر الماوس عليها */
+.sidebar-logo:hover {
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.5);
+}

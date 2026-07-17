@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>اختيار أفضل منظومة</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/recmmendation.css' %}">
+
+</head>
+
+<body>
+
+    <div class="app">
+
+        <div class="screen">
+
+            <!-- ========================= -->
+            <!-- Top Bar -->
+            <!-- ========================= -->
+
+            <header class="topbar">
+
+                <button class="circle-btn">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </header>
+
+
+            <!-- ========================= -->
+            <!-- Hero -->
+            <!-- ========================= -->
+
+            <section class="hero">
+
+                <div class="hero-glow"></div>
+
+                <div class="hero-icon">
+
+                    <i class="fa-solid fa-solar-panel"></i>
+
+                </div>
+
+                <h1>
+
+                    اختيار أفضل منظومة
+
+                </h1>
+
+                <p>
+
+                    دعنا نتعرف على استهلاك منزلك لنختار أفضل منظومة
+                    طاقة شمسية تناسب احتياجك وميزانيتك.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- Data Source -->
+            <!-- ========================= -->
+
+            <!-- ========================= -->
+            <!-- Calculator Summary -->
+            <!-- ========================= -->
+
+            <section class="recommendation-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            بيانات الحاسبة
+                        </h2>
+
+                        <span>
+                            سيتم استخدام هذه البيانات لاختيار المنظومة
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="summary-grid">
+
+                    <div class="summary-box">
+
+                        <span>
+                            الاستهلاك اليومي
+                        </span>
+
+                        <strong id="totalKwh">
+                            {{ total_kwh }} kWh
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-box">
+
+                        <span>
+                            أعلى لود
+                        </span>
+
+                        <strong id="maxSurge">
+                            {{ max_surge }} W
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-box">
+
+                        <span>
+                            عدد الأجهزة
+                        </span>
+
+                        <strong id="deviceCount">
+                            {{ device_count }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- Devices -->
+            <!-- ========================= -->
+
+            <section class="recommendation-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-plug-circle-bolt"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            الأجهزة الموجودة
+                        </h2>
+
+                        <span>
+                            الأجهزة التي سيتم احتسابها
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="devices-list" id="devicesList">
+
+                    {% if devices %}
+
+                    {% for device in devices %}
+
+                    <div class="device-item">
+
+                        <div>
+
+                            <strong>{{ device.name }}</strong>
+
+                            <small>
+                                {{ device.qty }} ×
+                                {{ device.hours }} ساعة
+                            </small>
+
+                        </div>
+
+                        <span>
+                            {{ device.amp }} A
+                        </span>
+
+                    </div>
+
+                    {% endfor %}
+
+                    {% else %}
+
+                    <p class="empty-devices">
+                        لا توجد أجهزة محفوظة.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <a href="{% url 'solar_calculator' %}" class="gold-btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    تعديل الأجهزة
+                </a>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- Recommendation Mode -->
+            <!-- ========================= -->
+
+            <section class="recommendation-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            أسلوب الترشيح
+                        </h2>
+
+                        <span>
+                            اختر طريقة اختيار المنظومة
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="mode-grid">
+
+                    <div class="mode-option selected" data-mode="economic">
+
+                        <i class="fa-solid fa-money-bill-wave"></i>
+
+                        <h3>اقتصادي</h3>
+
+                        <p>أقل تكلفة ممكنة.</p>
+
+                    </div>
+
+                    <div class="mode-option" data-mode="balanced">
+
+                        <i class="fa-solid fa-scale-balanced"></i>
+
+                        <h3>متوازن</h3>
+
+                        <p>أفضل قيمة مقابل السعر.</p>
+
+                    </div>
+
+                    <div class="mode-option" data-mode="performance">
+
+                        <i class="fa-solid fa-rocket"></i>
+
+                        <h3>أعلى أداء</h3>
+
+                        <p>أفضل إنتاج للطاقة.</p>
+
+                    </div>
+
+                </div>
+
+                <button class="gold-btn" id="startRecommendation" data-url="{% url 'best_recmmendation' %}">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    حلول المنظومة المناسبة
+                </button>
+
+            </section>
+
+        </div>
+
+    </div>
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script src="{% static 'user_dashboard/js/recmmendation.js' %}"></script>
+
+</body>
+
+</html>

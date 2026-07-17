@@ -1,0 +1,72 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+{% block page_css %}{% endblock %}
+{% endblock %}
+
+{% block body_content %}
+{% block main_layout %}
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px 15px 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+
+        <img src="{{ request.user.logo.url }}" alt="شعار الشركة" class="sidebar-logo">
+
+        <h5 style="color: #ffffff; font-size: 17px; font-weight: bold; margin: 0; text-align: center;">
+            {{ request.user.company_name }}
+        </h5>
+
+    </div>
+    <ul class="sidebar-menu">
+        <li class="{% if request.resolver_match.url_name == 'company_dashboard' %}active{% endif %}">
+            <a href="{% url 'company_dashboard' %}">
+                <i class="fa-solid fa-chart-pie"></i> <span>المؤشرات العامة</span>
+            </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'company_store' %}active{% endif %}">
+            <a href="{% url 'company_store' %}">
+                <i class="fa-solid fa-boxes-stacked"></i> <span>المخزن والقطع</span>
+            </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'create_bundle' %}active{% endif %}">
+            <a href="{% url 'create_bundle' %}">
+                <i class="fa-solid fa-layer-group"></i> <span>صانع الباقات</span>
+            </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'installments' %}active{% endif %}">
+            <a href="{% url 'installments' %}">
+                <i class="fa-solid fa-hand-holding-dollar"></i> <span>إدارة الأقساط</span>
+            </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'orders_management' %}active{% endif %}">
+            <a href="{% url 'orders_management' %}">
+                <i class="fa-solid fa-users-gear"></i> <span>إدارة الطلبات CRM</span>
+            </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'contracts_management' %}active{% endif %}">
+            <a href="{% url 'contracts_management' %}">
+                <i class="fa-solid fa-file-contract me-2"></i> <span>الضمان الرقمي</span>
+            </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'manage_portfolio' %}active{% endif %}">
+            <a href="{% url 'manage_portfolio' %}">
+                <i class="fa-solid fa-images"></i> <span>معرض المشاريع الحية</span>
+            </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'settings_view' %}active{% endif %}">
+            <a href="{% url 'settings_view' %}">
+               <i class="fa-solid fa-gear"></i> <span>إعدادات الشركة</span>
+            </a>
+        </li>
+        <li class="logout">
+            <a href="/accounts/logout/">
+                <i class="fa-solid fa-right-from-bracket"></i> <span>تسجيل الخروج</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+{% block page_content %}{% endblock %}
+{% endblock %}
+{% endblock %}

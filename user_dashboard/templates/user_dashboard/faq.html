@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأسئلة الشائعة - Solaris</title>
+    <!-- الخطوط والأيقونات -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- CSS الخاص بالصفحة -->
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/faq.css' %}">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+</head>
+
+<body>
+    <div class="app">
+        <div class="screen">
+            <!-- رأس الصفحة -->
+            <div class="page-header">
+                <a href="javascript:history.back()" class="back-btn">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <h1>الأسئلة الشائعة</h1>
+            </div>
+
+            <!-- قائمة الأسئلة -->
+            <div class="faq-list">
+
+                <!-- السؤال 1 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>كيف أستخدم حاسبة الأحمال؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>توجه إلى صفحة "الحاسبة" من القائمة الرئيسية، ثم أضف الأجهزة التي تستخدمها وعددها وساعات
+                            تشغيلها. ستقوم الحاسبة تلقائياً بحساب استهلاكك اليومي وأعلى حمل كهربائي.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 2 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>ما هي أفضل منظومة شمسية لمنزلي؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>بعد استخدام حاسبة الأحمال، انتقل إلى "اختيار أفضل منظومة". سيحلل النظام استهلاكك ويقارن بين
+                            الباقات المتاحة من الشركات المعتمدة، ثم يرشح لك الأنسب حسب ميزانيتك واحتياجك.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 3 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل يمكنني طلب منظومة من داخل التطبيق؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، بعد اختيار الباقة المناسبة، اضغط على "اطلب هذه الباقة". سيقوم التطبيق بإرسال طلبك مباشرة
+                            إلى الشركة المزودة، ويمكنها التواصل معك لاحقاً.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 4 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>ما الفرق بين البطارية السائلة والجافة (AGM/GEL)؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>البطاريات السائلة أرخص ولكن تحتاج صيانة دورية (إضافة ماء مقطر). بطاريات AGM و GEL لا تحتاج
+                            صيانة، تدوم لفترة أطول، وتتحمل درجات حرارة أعلى، لكن سعرها أعلى.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 5 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>كم عدد الألواح التي أحتاجها؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يعتمد عدد الألواح على استهلاكك اليومي وقدرة اللوح الواحد. مثلاً، إذا كنت تستهلك 20 كيلوواط
+                            يومياً وتستخدم ألواح 500 واط، فأنت بحاجة إلى حوالي 10-12 لوح حسب عدد ساعات الشمس في منطقتك.
+                        </p>
+                    </div>
+                </div>
+                <!-- السؤال 6 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل يمكن تشغيل المكيفات على الطاقة الشمسية؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، ولكن المكيفات تستهلك طاقة عالية. تحتاج إلى منظومة بحجم مناسب (عدد ألواح كبير، إنفرتر
+                            قوي، وبطاريات كافية) لتشغيلها لساعات طويلة.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 7 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>ما هو عمر الألواح الشمسية الافتراضي؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>معظم الألواح الشمسية تأتي بضمان يصل إلى 25 سنة، وتستمر في إنتاج الطاقة حتى بعد هذه الفترة
+                            ولكن بكفاءة أقل (حوالي 80% بعد 25 سنة).</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 8 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>كيف أحافظ على بطاريات المنظومة؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>تجنب تفريغ البطارية بالكامل، وحافظ على نظافتها وجفافها. تأكد من إعدادات منظم الشحن (MPPT)
+                            لتناسب نوع بطاريتك. للبطاريات السائلة، تفقد مستوى الماء المقطر شهرياً.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 9 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل يمكنني بيع الكهرباء الفائضة للحكومة؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>حالياً في العراق، لا يوجد نظام متكامل لبيع الفائض للشبكة الوطنية. لذلك ينصح بتصميم المنظومة
+                            لتغطية احتياجك الفعلي دون فائض كبير.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 10 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل المنظومة تعمل في أيام الغبار والغيوم؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، ولكن الإنتاج ينخفض. الألواح تنتج حوالي 10-25% من طاقتها القصوى في الأيام الغائمة. الغبار
+                            يقلل الكفاءة أيضاً، لذا ينصح بتنظيف الألواح دورياً.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 11 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>ما هو الانفرتر المناسب لمنزلي؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>الانفرتر يحول الكهرباء من DC إلى AC. اختر انفرتر بقدرة أكبر من إجمالي أحمالك التي ستعمل في
+                            نفس الوقت. يفضل أن يكون ذو موجة جيبية نقية لتشغيل الأجهزة الحساسة.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 12 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>كيف أختار بين نظام 12V أو 24V؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>إذا كان استهلاكك أقل من 2000 واط، قد يكفي نظام 12V. أما الاستهلاك الأعلى فيفضل 24V أو 48V
+                            لتقليل الفقد في الأسلاك وزيادة الكفاءة. غالباً المنظومات المنزلية تستخدم 48V.</p>
+                    </div>
+                </div>
+                <!-- السؤال 13 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل يجب تنظيف الألواح الشمسية؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، ينصح بتنظيف الألواح كل شهر أو شهرين خاصة في فصل الصيف والمناطق المغبرة. الأتربة تقلل
+                            إنتاجية اللوح بنسبة قد تصل إلى 30%.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 14 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل يمكن تركيب المنظومة بنفسي؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>ننصح بالاستعانة بفني مختص لضمان التركيب الآمن والصحيح، وتجنب أي مشاكل كهربائية. لكن إذا كانت
+                            لديك خبرة كافية، يمكنك تركيبها بنفسك مع اتباع تعليمات السلامة.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 15 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل الطاقة الشمسية توفر فعلاً؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، بعد استرداد تكلفة التركيب (عادة بين سنتين إلى خمس سنوات)، تصبح الكهرباء مجانية تقريباً
+                            طوال عمر المنظومة. بالإضافة إلى الاستقلال عن المولدات وتقلبات الكهرباء الوطنية.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 16 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>كيف أضمن جودة البطاريات؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>اشتري من شركات موثوقة، وتأكد من وجود ضمان. اختر بطاريات مصممة للطاقة الشمسية (Deep Cycle).
+                            تجنب البطاريات المستعملة أو المقلدة.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 17 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل يمكن إضافة ألواح أو بطاريات لاحقاً؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، يمكن توسعة المنظومة لاحقاً بشرط أن يكون الانفرتر ومنظم الشحن لديهما القدرة على استيعاب
+                            الزيادة، أو يمكن استبدالهما بأجهزة أكبر.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 18 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>هل التطبيق مجاني؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، تطبيق Solaris مجاني بالكامل للمستخدمين، ولا توجد أي رسوم مخفية.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 19 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>كيف أتأكد من أمان معلوماتي؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نحن نستخدم بروتوكولات أمان حديثة، ولا نشارك بياناتك مع أي طرف ثالث. يمكنك مراجعة سياسة
+                            الخصوصية لمزيد من التفاصيل.</p>
+                    </div>
+                </div>
+
+                <!-- السؤال 20 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>كيف أتواصل مع الدعم الفني؟</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يمكنك إرسال شكوى أو اقتراح من صفحة "حسابي" > "الدعم"، وسنقوم بالرد عليك في أقرب وقت ممكن.</p>
+                    </div>
+                </div>
+
+            </div><!-- نهاية قائمة الأسئلة -->
+        </div>
+    </div>
+
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/faq.js' %}"></script>
+</body>
+
+</html>

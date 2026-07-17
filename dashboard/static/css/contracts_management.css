@@ -1,0 +1,475 @@
+/* تنسيقات صفحة إدارة العقود والضمان الرقمي */
+
+.top-navbar {
+    background: white;
+    padding: 18px 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* ليكون الزر على اليمين في الـ RTL */
+    gap: 15px;
+    direction: rtl;
+}
+
+.menu-toggle {
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--primary-dark);
+    transition: var(--transition);
+}
+.menu-toggle:hover {
+    background: var(--accent-orange);
+    color: white;
+}
+.store-controls { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 25px; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+    direction: rtl; 
+}
+
+.search-box { 
+    position: relative; 
+    width: 300px; 
+}
+
+.search-box i { 
+    position: absolute; 
+    right: 15px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    color: var(--text-light); 
+}
+
+.search-box input { 
+    width: 100%; 
+    padding: 10px 40px 10px 15px; 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    outline: none; 
+    transition: var(--transition); 
+}
+
+.search-box input:focus { 
+    border-color: var(--accent-orange); 
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1); 
+}
+
+.btn-add-item { 
+    background-color: var(--accent-orange); 
+    color: white; 
+    border: none; 
+    padding: 10px 24px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: var(--transition); 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    text-decoration: none;
+    margin-right: auto; 
+}
+
+.btn-add-item:hover { 
+    background-color: #d97706; 
+}
+
+.contracts-page-wrapper { 
+    direction: rtl; 
+    width: 100%; 
+}
+
+/* 📊 ستايل جدول عرض العقود */
+.table-card-custom { 
+    background-color: var(--card-bg); 
+    border-radius: 12px; 
+    box-shadow: var(--shadow-sm); 
+    border: 1px solid var(--border-color); 
+    overflow: hidden; 
+}
+
+.table-responsive-custom { 
+    overflow-x: auto; 
+}
+
+.styled-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    text-align: right; 
+}
+
+.styled-table thead tr { 
+    background-color: var(--bg-light); 
+    color: var(--primary-dark); 
+    border-bottom: 2px solid var(--border-color); 
+}
+
+.styled-table th, .styled-table td { 
+    padding: 16px 20px; 
+}
+
+.styled-table tbody tr { 
+    border-bottom: 1px solid var(--border-color); 
+    transition: var(--transition); 
+}
+
+.styled-table tbody tr:hover { 
+    background-color: rgba(59, 130, 246, 0.02); 
+}
+
+/* 🏷️ البادجات الملونة للقطع المشحونة داخل الجدول */
+.badge-order { 
+    background-color: var(--bg-light); 
+    border: 1px solid var(--border-color); 
+    padding: 5px 10px; 
+    border-radius: 6px; 
+    font-size: 0.85rem; 
+}
+
+.warranty-stack { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 6px; 
+}
+
+.w-badge { 
+    padding: 4px 10px; 
+    border-radius: 6px; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+}
+
+.w-badge.panels { 
+    background: rgba(16, 185, 129, 0.1); 
+    color: var(--accent-green); 
+}
+
+.w-badge.batteries { 
+    background: rgba(59, 130, 246, 0.1); 
+    color: var(--accent-blue); 
+}
+
+.w-badge.inverter { 
+    background: rgba(245, 158, 11, 0.1); 
+    color: var(--accent-orange); 
+}
+
+/* زر طباعة العقد */
+.btn-print-action { 
+    display: inline-block; 
+    padding: 6px 14px; 
+    color: var(--accent-green); 
+    border: 1px solid var(--accent-green); 
+    border-radius: 6px; 
+    text-decoration: none; 
+    font-weight: 600; 
+    transition: var(--transition); 
+}
+
+.btn-print-action:hover { 
+    background-color: var(--accent-green); 
+    color: white; 
+}
+
+.empty-state { 
+    text-align: center; 
+    padding: 60px 20px; 
+    color: var(--text-muted); 
+}
+
+.empty-state i { 
+    font-size: 3rem; 
+    margin-bottom: 15px; 
+    opacity: 0.5; 
+}
+
+/* 🛡️ النافذة المنبثقة (المودل المطور مع السكرول الذكي) */
+.custom-modal-overlay {
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6); 
+    z-index: 99999; 
+    backdrop-filter: blur(4px);
+    overflow-y: auto; 
+    padding: 40px 0;
+}
+
+.custom-modal-content {
+    background-color: var(--card-bg); 
+    width: 90%; 
+    max-width: 850px; 
+    margin: 0 auto;
+    border-radius: 12px; 
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: modalSlideIn 0.25s ease-out; 
+    display: flex; 
+    flex-direction: column;
+}
+
+@keyframes modalSlideIn { 
+    from { transform: translateY(-30px); opacity: 0; } 
+    to { transform: translateY(0); opacity: 1; } 
+}
+
+.custom-modal-header { 
+    background-color: var(--primary-dark); 
+    color: white; 
+    padding: 20px 25px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.close-modal-btn { 
+    background: transparent; 
+    border: none; 
+    color: white; 
+    font-size: 1.8rem; 
+    cursor: pointer; 
+}
+
+.custom-modal-body { 
+    padding: 25px; 
+    max-height: 75vh; 
+    overflow-y: auto; 
+}
+
+/* 🗂️ كارتات التشيك بوكس لاختيار القطع المشمولة بالضمان */
+.section-title-label { 
+    font-weight: 700; 
+    color: var(--primary-dark); 
+    display: block; 
+    margin-bottom: 12px; 
+}
+
+.checkbox-grid-custom { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 15px; 
+}
+
+.checkbox-card { 
+    cursor: pointer; 
+    position: relative; 
+}
+
+.checkbox-card input { 
+    position: absolute; 
+    opacity: 0; 
+    width: 0; 
+    height: 0; 
+}.card-indicator {
+    border: 2px solid var(--border-color); 
+    padding: 15px; 
+    border-radius: 8px; 
+    text-align: center;
+    transition: var(--transition); 
+    background: var(--bg-light); 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    align-items: center;
+}
+
+.card-indicator i { 
+    font-size: 1.4rem; 
+    color: var(--text-muted); 
+}
+
+.card-indicator span { 
+    font-weight: 700; 
+    font-size: 0.9rem; 
+}
+
+/* تأثير اختيار كارت القطعة المشمولة */
+.checkbox-card input:checked + .card-indicator { 
+    border-color: var(--accent-blue); 
+    background-color: rgba(59, 130, 246, 0.05); 
+}
+
+.checkbox-card input:checked + .card-indicator i { 
+    color: var(--accent-blue); 
+}
+
+/* الأقسام الديناميكية المدعومة بحركات الظهور */
+.dynamic-component-section {
+    background: #fff; 
+    border: 1px solid var(--border-color); 
+    padding: 20px; 
+    border-radius: 8px; 
+    margin-top: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(5px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+.section-title { 
+    font-size: 1rem; 
+    font-weight: 800; 
+    margin-bottom: 15px; 
+    padding-bottom: 8px; 
+    border-bottom: 2px solid var(--bg-light); 
+}
+
+.text-panels { color: var(--accent-green); }
+.text-batteries { color: var(--accent-blue); }
+.text-inverter { color: var(--accent-orange); }
+
+.form-row-custom { 
+    display: grid; 
+    grid-template-columns: 1fr 2fr; 
+    gap: 15px; 
+}
+
+.form-group-custom label { 
+    display: block; 
+    margin-bottom: 6px; 
+    font-weight: 700; 
+    font-size: 0.85rem; 
+    color: var(--text-main); 
+}
+
+.form-group-custom input, .form-group-custom select, .form-group-custom textarea {
+    width: 100%; 
+    padding: 10px 12px; 
+    border: 1px solid var(--border-color); 
+    border-radius: 6px; 
+    font-family: 'Cairo', sans-serif; 
+    outline: none;
+}
+
+.form-group-custom input:focus, .form-group-custom select:focus, .form-group-custom textarea:focus { 
+    border-color: var(--accent-blue); 
+}
+
+.custom-modal-footer { 
+    padding: 15px 25px; 
+    background-color: var(--bg-light); 
+    border-top: 1px solid var(--border-color); 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 12px; 
+}
+
+.btn-cancel-action { 
+    background: transparent; 
+    color: var(--text-muted); 
+    border: 1px solid var(--border-color); 
+    padding: 10px 20px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: 700; 
+}
+
+.btn-save-action { 
+    background-color: var(--accent-blue); 
+    color: white; 
+    border: none; 
+    padding: 10px 22px; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: 700; 
+}
+
+.mb-4 { margin-bottom: 20px; }
+.mt-4 { margin-top: 20px; }
+.text-danger { color: var(--accent-red); }
+/* ---------------------------------------------------
+   تنسيقات شريط البحث وزر الإضافة (ستايل صانع الباقات)
+------------------------------------------------------ */
+.action-bar-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    margin-top: 20px;
+    align-items: center;
+    width: 100%;
+}
+
+.search-wrapper {
+    position: relative;
+    flex-grow: 1; /* هذا السر! يخلي شريط البحث يتمدد وياخذ كل المساحة المتبقية */
+}
+
+.search-input-full {
+    width: 100%;
+    height: 48px;
+    padding: 0 45px 0 15px; /* مسافة للأيقونة على اليمين */
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+.search-input-full:focus {
+    border-color: var(--accent-blue, #007bff);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.btn-add-contract {
+    height: 48px;
+    background-color: var(--accent-blue, #007bff);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 24px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    white-space: nowrap; /* يمنع نزول النص سطر ثاني */
+}
+
+.btn-add-contract:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* التجاوب مع شاشات الموبايل (ينزل الزر جوه شريط البحث) */
+@media (max-width: 768px) {
+    .action-bar-container {
+        flex-direction: column;
+    }
+    .btn-add-contract {
+        width: 100%;
+        justify-content: center;
+    }
+}

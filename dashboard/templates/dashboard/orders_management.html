@@ -1,0 +1,393 @@
+{% extends 'dashboard/company_base.html' %}
+{% load static %}
+{% load l10n %}
+
+{% block title %} إدارة الطلبات الميدانية | {{ company.company_name|default:"SolarLQ" }}{% endblock %}
+
+{% block page_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/orders_management.css' %}">
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content direction-rtl-custom" id="mainContent">
+    <header class="top-navbar d-flex align-items-center gap-3 direction-rtl-custom">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+        <div class="page-title d-flex align-items-center gap-2">
+            <i class="fa-solid fa-clipboard-list header-icon"></i>
+            <span>إدارة الطلبات الميدانية (CRM)</span>
+        </div>
+    </header>
+
+    <!-- العدادات -->
+    <div class="stats-grid mb-4">
+        <div class="stat-card border-start border-4 border-warning">
+            <div class="stat-icon text-warning"><i class="fa-solid fa-clock"></i></div>
+            <div class="stat-info">
+                <h3>{{ stats.new_pending }}</h3>
+                <p>طلبات جديدة</p>
+            </div>
+        </div>
+        <div class="stat-card border-start border-4 border-info">
+            <div class="stat-icon text-info"><i class="fa-solid fa-person-digging"></i></div>
+            <div class="stat-info">
+                <h3>{{ stats.in_survey }}</h3>
+                <p>قيد الكشف الموقعي</p>
+            </div>
+        </div>
+        <div class="stat-card border-start border-4 border-primary">
+            <div class="stat-icon text-primary"><i class="fa-solid fa-truck-fast"></i></div>
+            <div class="stat-info">
+                <h3>{{ stats.in_progress }}</h3>
+                <p>قيد التجهيز</p>
+            </div>
+        </div>
+        <div class="stat-card border-start border-4 border-success">
+            <div class="stat-icon text-success"><i class="fa-solid fa-check-double"></i></div>
+            <div class="stat-info">
+                <h3>{{ stats.completed }}</h3>
+                <p>منظومات مكتملة</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- التبويبات -->
+    <div class="workspace-layout">
+        <ul class="nav nav-tabs custom-tabs mb-4" id="ordersTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#active">
+                    <i class="fa-solid fa-spinner"></i> الطلبات النشطة
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link text-success" data-bs-toggle="tab" data-bs-target="#completed">
+                    <i class="fa-solid fa-check-circle"></i> المكتملة
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link text-danger" data-bs-toggle="tab" data-bs-target="#canceled">
+                    <i class="fa-solid fa-trash-can-arrow-up"></i> سلة الملغية
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="ordersTabsContent">
+
+            <!-- 🟡 تبويب الطلبات النشطة -->
+            <div class="tab-pane fade show active" id="active">
+                <div class="table-responsive bg-white rounded shadow-sm border">
+                    <table class="table table-hover align-middle mb-0 orders-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>الزبون</th>
+                                <th>الباقة والحساب</th>
+                                <th>تقرير الأحمال (AI)</th>
+                                <th>الموقع (GPS)</th>
+                                <th>الحالة</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in active_orders %}
+                            <tr>
+                                <td class="fw-bold text-primary">#ORD-{{ order.id }}</td>
+                                <td>
+                                    <div class="fw-bold">{{ order.customer.first_name }}</div>
+                                    <div class="small text-muted">{{ order.phone_number }}</div>
+                                </td>
+                                <td>
+                                    <div>{{ order.package.title|default:"باقة مخصصة" }}</div>
+                                    <div class="text-success fw-bold">${{ order.final_total_amount }}</div>
+                                </td>
+                                <td>
+                                    {% if order.load_calculation %}
+                                    <span class="badge bg-info text-dark"><i class="fa-solid fa-robot"></i> متوفر</span>
+                                    {% else %}
+                                    <span class="text-muted small">قيد الانتظار</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if order.gps_location_url %}
+                                    <a href="{{ order.gps_location_url }}" target="_blank">
+                                        📍 فتح الموقع على خرائط Google
+                                    </a>
+                                    {% elif order.installation_address %}
+                                    <span>📍 {{ order.installation_address }}</span>
+                                    {% else %}
+                                    <span>غير متوفر</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary btn-update-order" data-id="{{ order.id }}"
+                                        data-status="{{ order.status }}"
+                                        data-extrafees="{{ order.extra_fees|unlocalize }}"
+                                        data-reason="{{ order.extra_fees_reason|default:''|escapejs }}"
+                                        data-report="{{ order.technical_report|default:''|escapejs }}"
+                                        data-loadcalc="{{ order.load_calculation|default:''|escape }}">
+                                        تحديث
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">لا توجد طلبات نشطة.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 🟢 تبويب الطلبات المكتملة -->
+            <div class="tab-pane fade" id="completed">
+                <div class="table-responsive bg-white rounded shadow-sm border">
+                    <table class="table table-hover align-middle mb-0 orders-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>الزبون</th>
+                                <th>الباقة</th>
+                                <th>طريقة الدفع</th>
+                                <th>تاريخ الإكتمال</th>
+                                <th>الحالة</th>
+                                <th>إجراءات الحسابات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in completed_orders %}
+                            <tr>
+                                <td class="fw-bold text-success">#ORD-{{ order.id }}</td>
+                                <td>
+                                    <div class="fw-bold">{{ order.customer.first_name }}</div>
+                                    <div class="small text-muted">{{ order.phone_number }}</div>
+                                </td>
+                                <td>{{ order.package.title|default:"باقة مخصصة" }}</td>
+                                <td>
+                                    {% if order.payment_method == 'installment' %}
+                                    <span class="badge bg-warning text-dark"><i class="fa-solid fa-credit-card"></i>
+                                        أقساط</span>
+                                    {% else %}
+                                    <span class="badge bg-success"><i class="fa-solid fa-money-bill-wave"></i>
+                                        كاش</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ order.updated_at|date:"Y-m-d" }}</td>
+                                <td><span class="status-badge status-completed"><i class="fa-solid fa-check-double"></i>
+                                        مكتمل ميدانياً</span></td>
+
+                                <td>
+                                    {% if order.payment_method == 'installment' %}
+                                    {% if order.installment_plan %}
+                                    <span class="text-success small fw-bold"><i class="fa-solid fa-check-circle"></i> تم
+                                        التحويل للأقساط</span>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-success fw-bold btn-generate-plan"
+                                        data-order-id="{{ order.id }}" data-customer="{{ order.customer.first_name }}"
+                                        data-total="{{ order.final_total_amount|unlocalize }}">
+                                        <i class="fa-solid fa-money-bill-wave"></i> توليد خطة الأقساط
+                                    </button>
+                                    {% endif %}
+                                    {% else %}
+                                    <span class="text-muted small">دفع كاش</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">لا توجد منظومات مكتملة.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 🔴 تبويب الطلبات الملغية -->
+            <div class="tab-pane fade" id="canceled">
+                <div class="table-responsive bg-white rounded shadow-sm border">
+                    <table class="table table-hover align-middle mb-0 orders-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>الزبون</th>
+                                <th>الباقة</th>
+                                <th>الحالة</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in canceled_orders %}
+                            <tr>
+                                <td class="fw-bold text-danger">#ORD-{{ order.id }}</td>
+                                <td>
+                                    <div class="fw-bold">{{ order.customer.first_name }}</div>
+                                    <div class="small text-muted">{{ order.phone_number }}</div>
+                                </td>
+                                <td>{{ order.package.title|default:"باقة مخصصة" }}</td>
+                                <td><span class="status-badge status-canceled"><i class="fa-solid fa-xmark"></i>
+                                        ملغي</span></td>
+                                <td>
+                                    <a href="{% url 'delete_order' order.id %}" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('هل أنت متأكد من الحذف النهائي للطلب من قاعدة البيانات؟');">
+                                        <i class="fa-solid fa-trash"></i> حذف نهائي
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">لا توجد طلبات ملغية.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- 🌟 المودل الجديد الخاص بتوليد الأقساط الذكي -->
+<div class="modal fade" id="generatePlanModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-success">
+            <div class="modal-header d-flex justify-content-between align-items-center direction-rtl-custom bg-success text-white"
+                style="border-radius: 6px 6px 0 0;">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-invoice-dollar"></i> تحويل الطلب لنظام
+                    الأقساط</h5>
+                <button type="button" class="btn-close btn-close-white m-0" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="generatePlanForm" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-body direction-rtl-custom text-end">
+
+                    <div class="alert alert-success small mb-3">
+                        <i class="fa-solid fa-circle-info"></i> جاري تحويل هذا الطلب المكتمل ميدانياً إلى قسم الحسابات
+                        لجدولة الدفعات.
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">اسم الزبون المشترك</label>
+                        <input type="text" id="planCustomerName" class="form-control bg-light fw-bold" readonly>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-bold">المبلغ الكلي النهائي للباقة والإضافات ($)</label>
+                            <input type="number" step="0.01" name="total_amount" id="planTotalAmount"
+                                class="form-control border-success" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-primary">المقدمة المدفوعة نقداً ($)</label>
+                            <input type="number" step="0.01" name="down_payment" id="planDownPayment"
+                                class="form-control" placeholder="مثال: 1500" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-primary">عدد أشهر التقسيط</label>
+                            <input type="number" name="months" id="planMonths" class="form-control"
+                                placeholder="مثال: 12" required>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning small mb-0">
+                        <i class="fa-solid fa-calculator"></i> سيقوم النظام تلقائياً بخصم المقدمة وتقسيم الباقي على عدد
+                        الأشهر.
+                    </div>
+
+                </div>
+                <div class="modal-footer direction-rtl-custom">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-success fw-bold"><i class="fa-solid fa-check"></i> حفظ وتوليد
+                        الخطة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- المودل القديم الخاص بتحديث حالة الطلب -->
+<div class="modal fade" id="updateOrderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center direction-rtl-custom">
+                <h5 class="modal-title fw-bold text-primary"><i class="fa-solid fa-user-pen"></i> تحديث الطلب الفني</h5>
+                <button type="button" class="btn-close m-0" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="updateOrderForm" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-body direction-rtl-custom text-end">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">حالة الطلب</label>
+                            <select name="status" id="modalOrderStatus" class="form-select border-primary">
+                                <option value="pending">🟡 قيد المراجعة</option>
+                                <option value="survey">👨‍🔧 جاري الكشف الموقعي</option>
+                                <option value="preparing">🟠 جاري التجهيز</option>
+                                <option value="on_way">🔵 في الطريق</option>
+                                <option value="completed">🟢 تم التشغيل (يصدر العقد)</option>
+                                <option value="canceled">🔴 ملغي</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <div class="alert alert-success m-0 w-100 py-2 d-flex align-items-center gap-2"
+                                style="border-radius: 8px;">
+                                <i class="fa-solid fa-gift"></i> <strong>الكشف الموقعي:</strong> مجاني للزبون
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-success"><i class="fa-solid fa-robot"></i> تقرير الذكاء
+                            الاصطناعي (حساب الأحمال)</label>
+                        <div id="modalLoadCalc" class="form-control bg-light border-success"
+                            style="height: auto; min-height: 120px; overflow-x: auto; padding: 15px;">
+                        </div>
+                        <small class="text-muted mt-1 d-block">هذا التقرير تم توليده بواسطة المساعد الذكي بناءً على
+                            محادثة الزبون (للقراءة فقط).</small>
+                    </div>
+
+                    <div class="card bg-light border-warning mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title text-warning fw-bold"><i class="fa-solid fa-coins"></i> الإضافات
+                                المالية بعد الكشف</h6>
+                            <div class="row mt-2">
+                                <div class="col-md-4">
+                                    <label class="form-label small">مبلغ إضافي ($)</label>
+                                    <input type="number" step="0.01" name="extra_fees" id="modalExtraFees"
+                                        class="form-control" placeholder="0.00">
+                                </div>
+                                <div class="col-md-8"><label class="form-label small">السبب</label>
+                                    <input type="text" name="extra_fees_reason" id="modalExtraReason"
+                                        class="form-control" placeholder="مثال: أسلاك إضافية">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label fw-bold">التقرير الهندسي الداخلي (لفريق التركيب)</label>
+                        <textarea name="technical_report" id="modalTechReport" class="form-control" rows="3"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer direction-rtl-custom">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ التحديثات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/orders_management.js' %}?v={% now 'U' %}"></script>
+{% endblock %}

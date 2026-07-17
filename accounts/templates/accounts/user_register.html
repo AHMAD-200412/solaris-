@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>تسجيل مستخدم</title>
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_register.css' %}">
+    
+
+</head>
+
+<body>
+    <!-- Background Animation -->
+
+    <div class="background">
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+    <div class="register-box">
+
+        <h1>
+
+            <i class="fa-solid fa-user"></i>
+
+            إنشاء حساب مستخدم
+
+        </h1>
+
+        <form method="POST">
+
+                  {% csrf_token %}
+
+                    {% if messages %}
+                     {% for message in messages %}
+                       <div class="alert alert-danger" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 12px; border-radius: 6px; margin-bottom: 20px; text-align: right; font-family: 'Cairo', sans-serif;">
+                         <i class="fa-solid fa-circle-exclamation"></i> {{ message }}
+                       </div>
+                     {% endfor %}
+                    {% endif %}
+
+            <div class="input-box">
+                {{ form.full_name }}
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="input-box">
+                {{ form.email }}
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+
+            <div class="input-box">
+                {{ form.phone }}
+                <i class="fa-solid fa-phone"></i>
+            </div>
+
+            <div class="input-box">
+                {{ form.password }}
+                <i class="fa-solid fa-lock"></i>
+            </div>
+    
+            <button type="submit" class="register-btn">
+                إنشاء الحساب
+            </button>
+
+        </form>
+
+    </div>
+
+    <script src="{% static 'js/user_register.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,395 @@
+{% extends 'dashboard/company_base.html' %}
+{% load static %}
+{% load l10n %}
+{% load humanize %}
+
+{% block title %}صانع الباقات والعروض | {{ company.company_name|default:"SolarLQ" }}{% endblock %}
+
+{% block page_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/create_bundle.css' %}">
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content direction-rtl-custom" id="mainContent">
+    <div class="top-navbar">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+        <div class="page-title">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>صانع الباقات والعروض ونظام الترويج</span>
+        </div>
+    </div>
+
+    <div class="workspace-layout">
+        <div class="alert alert-info d-flex justify-content-between align-items-center direction-rtl-custom mb-4">
+            <div>
+                <i class="fa-solid fa-gift text-warning me-2"></i>
+                <span>استهلكت <strong>{{ promotions_count }}</strong> من أصل <strong>3</strong> حملات مجانية.</span>
+            </div>
+            {% if promotions_count == 0 %}
+            <span class="badge bg-success p-2">متاح لك ترويج مجاني أول لـ (7 أيام) 🎁</span>
+            {% elif promotions_count < 3 %} <span class="badge bg-primary p-2">متاح لك ترويج مجاني لـ (3 أيام فقط)
+                ⚡</span>
+                {% else %}
+                <span class="badge bg-secondary p-2">الترويج القادم يتطلب وصل دفع 💳</span>
+                {% endif %}
+        </div>
+
+        <div class="store-controls d-flex justify-content-between align-items-center mb-4" style="gap: 15px;">
+            <div class="search-box flex-grow-1">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="package-search" placeholder="ابحث عن باقة...">
+            </div>
+            <button type="button" class="btn-add-item" data-bs-toggle="modal" data-bs-target="#addPackageModal">
+                <i class="fa-solid fa-plus"></i> إضافة باقة جديدة
+            </button>
+        </div>
+
+        <div class="products-grid" id="packages-container">
+            {% for package in packages %}
+            <div class="product-card package-item-card" data-title="{{ package.title|lower }}"
+                style="position: relative;">
+
+                {% if package.is_promotion_active %}
+                <span class="promotion-status-badge bg-success">
+                    <i class="fa-solid fa-rocket animate-bounce"></i> إعلان مروج نشط
+                </span>
+                {% elif package.is_promotion_pending %}
+                <span class="promotion-status-badge bg-warning text-dark">
+                    <i class="fa-solid fa-clock"></i> قيد مراجعة الوصل
+                </span>
+                {% endif %}
+
+                <div class="product-image">
+                    <span class="category-badge">منظومة جاهزة</span>
+                    {% if package.package_image %}
+                    <img src="{{ package.package_image.url }}" alt="{{ package.title }}">
+                    {% else %}
+                    <i class="fa-solid fa-solar-panel"></i>
+                    {% endif %}
+                </div>
+
+                <div class="product-details text-end">
+                    <h3 class="fw-bold text-dark mb-2">{{ package.title }}</h3>
+                    {% if package.description %}
+                    <p class="description-text text-muted mb-2">
+                        {{ package.description }}
+                    </p>
+                    {% endif %}
+                    <div class="price text-success fw-bold fs-5 mb-2">السعر النقدي: {{ package.formatted_price_iqd }}
+                    </div>
+                    {% if package.package_components.all %}
+                    <div class="components-badge-info mb-2">
+                        <div class="small fw-bold text-secondary mb-1"><i class="fa-solid fa-cubes"></i> القطع والمكونات المشمولة:</div>
+                        <div class="d-flex flex-wrap gap-1">
+                            {% for item in package.package_components.all %}
+                            <span class="badge bg-white text-dark border">
+                                {{ item.quantity }}x {{ item.product.name }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if package.is_installment_available or package.monthly_installment > 0 %}
+                    <div class="installment-badge-info mb-3">
+                        <div class="fw-bold mb-1"><i class="fa-solid fa-credit-card"></i> تفاصيل نظام الأقساط:</div>
+                        <div class="d-flex justify-content-between">
+                            <span>المقدمة: <strong>{{ package.formatted_down_payment }} دينار</strong></span>
+                            <span>القسط: <strong>{{ package.formatted_monthly }} دينار/ش</strong></span>
+                            <span>المدة: <strong>{{ package.duration_months|default:"0" }} أشهر</strong></span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-muted small mb-3"><i class="fa-solid fa-money-bill-wave"></i> هذه الباقة متوفرة بيع
+                        نقدي فقط.</div>
+                    {% endif %}
+
+                    <div class="action-buttons-group d-flex gap-2 pt-2 border-top">
+                        <button type="button" class="btn-edit-package btn-edit btn btn-sm btn-outline-primary w-100"
+                            data-id="{{ package.id }}" data-title="{{ package.title }}"
+                            data-description="{{ package.description|escapejs }}"
+                            data-price="{{ package.total_price|unlocalize }}"
+                            data-installment="{% if package.is_installment_available %}true{% else %}false{% endif %}"
+                            data-downpayment="{{ package.down_payment|unlocalize|default:'0' }}"
+                            data-monthly="{{ package.monthly_installment|unlocalize|default:'0' }}"
+                            data-duration="{{ package.duration_months|unlocalize|default:'0' }}"
+                            data-components="{% for item in package.package_components.all %}{{ item.product.id }}:{{ item.quantity }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                            <i class="fa-solid fa-pen-to-square"></i> تعديل
+                        </button>
+
+                        <button type="button" class="btn-promote-package btn btn-sm btn-outline-warning w-100 fw-bold"
+                            data-id="{{ package.id }}" data-title="{{ package.title }}">
+                            <i class="fa-solid fa-bullhorn"></i> ترويج 🚀
+                        </button>
+
+                        <a href="{% url 'delete_bundle' package.id %}"
+                            onclick="return confirm('هل أنت متأكد من حذف هذه الباقة؟');"
+                            class="btn-delete btn btn-sm btn-outline-danger">
+                            <i class="fa-solid fa-trash"></i> حذف
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-items-placeholder text-center w-100 py-5">
+                <i class="fa-solid fa-boxes-packing fa-3x text-muted mb-3"></i>
+                <h4>لا يوجد أي باقات مضافة حالياً بالمتجر!</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="addPackageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center direction-rtl-custom">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-circle-plus"></i> إضافة باقة منظومة جديدة</h5>
+                <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'create_bundle' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body overflow-auto direction-rtl-custom text-end">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">عنوان الباقة *</label>
+                            <input type="text" name="title" class="form-control" required
+                                placeholder="مثال: منظومة 5 أمبير">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-danger fw-bold"><i class="fa-solid fa-coins"></i> السعر
+                                الإجمالي (بالدينار العراقي) * <br><small class="text-muted"></small></label>
+                            <input type="number" step="1" name="total_price" class="form-control" required
+                                placeholder="مثال: 7500000">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">صورة المنظومة (اختياري)</label>
+                            <input type="file" name="package_image" class="form-control" accept="image/*">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">وصف المنظومة والأحمال</label>
+                            <textarea name="description" class="form-control" rows="3"
+                                placeholder="تفاصيل التشغيل..."></textarea>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <label class="form-label fw-bold">قطع الغيار المشمولة بالباقة (اختيار متعدد)</label>
+                            <div class="checkbox-scroll-container">
+                                {% for product in products %}
+                                <div class="checkbox-item-row align-items-center d-flex gap-2">
+
+                                    <input class="form-check-input add-component-checkbox" type="checkbox"
+                                        name="components" value="{{ product.id }}" id="add_comp_{{ product.id }}">
+
+                                    <label class="form-check-label flex-grow-1 text-end"
+                                        for="add_comp_{{ product.id }}">
+                                        {{ product.name }}
+                                    </label>
+
+                                    <input type="number" name="quantities" class="form-control quantity-input" min="1"
+                                        value="1" style="width:90px;display:none;" disabled>
+
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <div class="fix-switch-wrapper">
+                                <input class="form-check-input" type="checkbox" name="is_installment_available"
+                                    id="addIsInstallment" value="on">
+                                <label class="form-check-label fw-bold text-success" for="addIsInstallment">متاح للبيع
+                                    بنظام الأقساط؟</label>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 w-100 m-0" id="addInstallmentFieldsContainer" style="display: none;">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">المقدمة (بالدينار العراقي)</label>
+                                <input type="number" step="1" name="down_payment" class="form-control"
+                                    placeholder="مثال: 1500000">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">القسط الشهري (بالدينار العراقي)</label><input type="number"
+                                    step="1" name="monthly_installment" class="form-control" placeholder="مثال: 250000">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">مدة السداد (أشهر)</label>
+                                <input type="number" name="duration_months" class="form-control" placeholder="أشهر">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer direction-rtl-custom">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-orange-primary text-white">حفظ ونشر الباقة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editPackageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center direction-rtl-custom">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square"></i> تعديل كافة بيانات الباقة</h5>
+                <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editPackageForm" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body overflow-auto direction-rtl-custom text-end">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">عنوان الباقة *</label>
+                            <input type="text" name="title" id="editTitle" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-danger fw-bold"><i class="fa-solid fa-coins"></i> السعر
+                                الإجمالي (بالدينار العراقي) * <br><small class="text-muted"></small></label>
+                            <input type="number" step="1" name="total_price" id="editTotalPrice" class="form-control"
+                                required placeholder="مثال: 7500000">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">تغيير صورة المنظومة (اختياري)</label>
+                            <input type="file" name="image" id="editImage" class="form-control" accept="image/*">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">وصف المنظومة والأحمال</label>
+                            <textarea name="description" id="editDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <label class="form-label fw-bold">تعديل القطع المشمولة (اختيار متعدد)</label>
+                            <div class="checkbox-scroll-container">
+                                {% for product in products %}
+                                <div class="checkbox-item-row align-items-center d-flex gap-2">
+
+                                    <input class="form-check-input edit-component-checkbox" type="checkbox"
+                                        name="components" value="{{ product.id }}" id="edit_comp_{{ product.id }}">
+
+                                    <label class="form-check-label flex-grow-1 text-end"
+                                        for="edit_comp_{{ product.id }}">
+                                        {{ product.name }}
+                                    </label>
+
+                                    <input type="number" name="quantities" class="form-control quantity-input" min="1"
+                                        value="1" style="width:90px;display:none;" disabled>
+
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="fix-switch-wrapper">
+                                <input class="form-check-input" type="checkbox" name="is_installment_available"
+                                    id="editIsInstallment" value="on">
+                                <label class="form-check-label fw-bold text-success" for="editIsInstallment">متاح للبيع
+                                    بنظام الأقساط؟</label>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 w-100 m-0" id="editInstallmentFieldsContainer" style="display: none;">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">المقدمة (بالدينار العراقي)</label>
+                                <input type="number" step="1" name="down_payment" id="editDownPayment"
+                                    class="form-control" placeholder="مثال: 1500000">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">القسط الشهري (بالدينار العراقي)</label>
+                                <input type="number" step="1" name="monthly_installment" id="editMonthlyInstallment"
+                                    class="form-control" placeholder="مثال: 250000">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">مدة السداد (أشهر)</label>
+                                <input type="number" name="duration_months" id="editDurationMonths"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer direction-rtl-custom">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-orange-primary text-white">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="promotePackageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center direction-rtl-custom">
+                <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-rocket text-warning"></i> ترويج الباقة:
+                    <span id="promotePackageTitle" class="text-primary"></span>
+                </h5>
+                <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="promotePackageForm" action="{% url 'promote_bundle' 0 %}" method="POST"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body direction-rtl-custom text-end">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">اختر مدة حملة الترويج للإعلان: *</label>
+                        <select name="duration_days" class="form-select select-duration-field">
+                            <option value="3">3 أيام (إعلان سريع خاطف)</option>
+                            <option value="7" selected>7 أيام (أسبوع كامل)</option>
+                            <option value="15">15 يوم (نصف شهر احترافي)</option>
+                            <option value="30">30 يوم (شهر كامل لسيادة السوق)</option>
+                        </select>
+                    </div>
+
+                    {% if promotions_count == 0 %}
+                    <div class="alert alert-success small message-free-status">
+                        <strong>🎁 هذا ترويجك الأول (مجاني بالكامل لأول 7 أيام أو 3 أيام)!</strong><br>
+                        إذا اخترت مدة 15 يوم أو شهر، سيتطلب ذلك منك رفع وصل الدفع يدوي بالأسفل.
+                    </div>
+                    {% elif promotions_count < 3 %} <div class="alert alert-primary small message-free-status"><strong>⚡
+                            متاح لك ترويج مجاني لحدود الـ 3 أيام فقط لا غير!</strong><br>
+                        اختيار مدد أكبر (أسبوع، 15 يوم، شهر) سيحتاج تحويل مالي يدوي ورفع الوصل أدناه.
+                </div>
+                {% else %}
+                <div class="alert alert-danger small message-free-status">
+                    <strong>💳 لقد استهلكت جميع الحملات المجانية (3/3)</strong><br>
+                    أي ترويج جديد يتطلب تحويلاً مالياً يدوياً للمحفظة بالأسفل وإرفاق الوصل للمراجعة من الإدارة.
+                </div>
+                {% endif %}
+
+                <div class="payment-premium-section mt-3">
+                    <div class="qr-holder">
+                        <div class="small fw-bold text-dark">محفظة كاش الإدارة والماستر المعتمدة للتحويل:</div>
+                        <div class="badge bg-dark fs-6 my-2 text-white">077XXXXXXXX</div>
+                        <br>
+                        <small class="text-muted">امسح الكود أو حول للمحفظة مباشرة:</small>
+                        <br>
+                        <img src="{% static 'images/my_master_qr.png' %}" alt="QR Code Payment"
+                            class="img-fluid rounded border mt-2">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-danger">ارفَع صورة وصل التحويل (في حال اختيار باقة
+                            مدفوعة):</label>
+                        <input type="file" name="receipt_image" class="form-control" accept="image/*">
+                        {% if 'promotions_count>=3' %}
+                        required
+                        {% endif %}>
+                    </div>
+                </div>
+        </div>
+        <div class="modal-footer direction-rtl-custom">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+            <button type="submit" class="btn btn-orange-primary text-white">تأكيد وإرسال طلب الإعلان 🚀</button>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/create_bundle.js' %}?v={% now 'U' %}"></script>
+{% endblock %}

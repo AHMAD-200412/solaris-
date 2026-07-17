@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - Solaris</title>
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/static_page.css' %}">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+</head>
+<body>
+    <div class="app">
+        <div class="screen">
+            <div class="page-header">
+                <a href="javascript:history.back()" class="back-btn"><i class="fa-solid fa-arrow-right"></i></a>
+                <h1>{{ page_title }}</h1>
+            </div>
+            <div class="content-card">
+                {% if page_name == 'about' %}
+                    {% include 'user_dashboard/pages/about.html' %}
+                {% elif page_name == 'privacy' %}
+                    {% include 'user_dashboard/pages/privacy.html' %}
+                {% elif page_name == 'terms' %}
+                    {% include 'user_dashboard/pages/terms.html' %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

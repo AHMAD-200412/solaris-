@@ -1,0 +1,197 @@
+/* ==========================================
+   Choose Account Type – Solaris Unified Theme
+   متجاوب بالكامل مع جميع الشاشات
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(231, 180, 94, .10), transparent 25%),
+        radial-gradient(circle at 85% 90%, rgba(231, 180, 94, .08), transparent 20%),
+        linear-gradient(180deg, #07111f, #050d18);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* ========== وهج الخلفية – محفوظ كما هو ========== */
+.background-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(231, 180, 94, 0.12) 0%, rgba(15, 23, 42, 0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+/* ========== الحاوية الرئيسية ========== */
+.container {
+    background: linear-gradient(180deg, rgba(16, 29, 49, 0.95), rgba(9, 19, 33, 0.95));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(231, 180, 94, 0.15);
+    padding: 40px 30px;
+    border-radius: 28px;
+    width: 90%;
+    max-width: 480px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    font-size: 26px;
+    color: #f8fafc;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #aeb9c8;
+    font-size: 14px;
+    margin-bottom: 35px;
+    line-height: 1.7;
+}
+
+/* ========== بطاقات الاختيار ========== */
+.options-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(180deg, #101d31, #091321);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    border-radius: 18px;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.3s ease;
+    text-align: right;
+}
+
+.option-card:hover {
+    border-color: #e7b45e;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(231, 180, 94, 0.15);
+}
+
+.option-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(231, 180, 94, 0.1);
+    border: 1px solid rgba(231, 180, 94, 0.2);
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #e7b45e;
+    margin-left: 18px;
+    flex-shrink: 0;
+}
+
+.option-info {
+    flex: 1;
+}
+
+.option-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.option-desc {
+    font-size: 12px;
+    color: #aeb9c8;
+    line-height: 1.5;
+}
+
+/* ========== رابط العودة ========== */
+.back-to-login {
+    display: inline-block;
+    margin-top: 30px;
+    color: #e7b45e;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.back-to-login:hover {
+    text-decoration: underline;
+    color: #f2ca7b;
+}
+
+.back-to-login i {
+    margin-left: 5px;
+}
+
+/* ========== تجاوب الموبايل ========== */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 12px;
+    }
+    .container {
+        padding: 30px 20px;
+        border-radius: 24px;
+    }
+    h2 {
+        font-size: 22px;
+    }
+    p {
+        font-size: 13px;
+        margin-bottom: 28px;
+    }
+    .option-card {
+        padding: 16px;
+        border-radius: 16px;
+    }
+    .option-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+        margin-left: 14px;
+        border-radius: 12px;
+    }
+    .option-title {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        padding: 24px 16px;
+    }
+    h2 {
+        font-size: 20px;
+    }
+    .option-card {
+        padding: 14px;
+        gap: 10px;
+    }
+    .option-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+    .option-title {
+        font-size: 14px;
+    }
+    .option-desc {
+        font-size: 11px;
+    }
+}

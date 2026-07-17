@@ -1,0 +1,404 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>شراء منظومة شمسية | سوق العروض</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/marketplace.css' %}">
+</head>
+
+<body>
+    {% csrf_token %}
+
+    <div class="app-shell">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-grid"></div>
+
+        <div class="app">
+            <div class="screen">
+
+                <header class="topbar">
+                    <button class="icon-btn" onclick="history.back()" aria-label="رجوع">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    <div class="topbar-title">
+                        <i class="fa-solid fa-store"></i> سوق العروض
+                    </div>
+                </header>
+
+                <section class="search-row">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input id="searchInput" type="text" placeholder="ابحث عن شركة، باقة، أو قدرة..."
+                            autocomplete="off" />
+                        <button id="clearSearchBtn" class="clear-search-btn" aria-label="مسح البحث"
+                            style="display: none;">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <nav class="tabs" id="tabs">
+                    <a href="?"
+                        class="tab {% if not request.GET.amp and not request.GET.is_installment %}active{% endif %}">
+                        <i class="fa-solid fa-border-all"></i> الكل
+                    </a>
+
+                    <a href="?is_installment=true"
+                        class="tab {% if request.GET.is_installment %}active{% endif %} installment-tab">
+                        <i class="fa-solid fa-credit-card"></i> اقساط
+                    </a>
+
+                    <a href="?amp=5" class="tab {% if request.GET.amp == '5' %}active{% endif %}">
+                        <i class="fa-solid fa-bolt"></i> 5 أمبير
+                    </a>
+
+                    <a href="?amp=10" class="tab {% if request.GET.amp == '10' %}active{% endif %}">
+                        <i class="fa-solid fa-bolt-lightning"></i> 10 أمبير
+                    </a>
+
+                    <a href="?amp=15" class="tab {% if request.GET.amp == '15' %}active{% endif %}">
+                        <i class="fa-solid fa-plug"></i> 15 أمبير
+                    </a>
+
+                    <a href="?amp=20" class="tab {% if request.GET.amp == '20' %}active{% endif %}">
+                        <i class="fa-solid fa-charging-station"></i> 20 أمبير وأكثر
+                    </a>
+                </nav>
+
+                <section class="gps-row">
+                    <button class="gps-btn pulse-glow" id="nearMeBtn">
+                        <i class="fa-solid fa-location-crosshairs"></i> عرض الشركات بالقرب مني
+                    </button>
+                </section>
+
+                <div id="featuredWrapper">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-fire text-danger"></i> عروض مميزة
+                    </h2>
+                    <section class="featured-slider" id="featuredSlider">
+                        {% for package in featured_packages %}
+                        {% if package.is_promotion_active %}
+                        <article class="product-card feat-card animate-up" style="--i: {{ forloop.counter }};">
+
+                            <div class="card-visual">
+                                <div class="product-badge badge-promoted"><i class="fa-solid fa-fire"></i></div>
+                                {% if package.package_image %}
+                                <img src="{{ package.package_image.url }}" alt="{{ package.title }}"
+                                    class="package-image">
+                                {% else %}
+                                <img src="{% static 'user_dashboard/images/default_package.png' %}"
+                                    alt="Default Package" class="package-image fallback-image">
+                                {% endif %}
+                            </div>
+
+                            <div class="card-info">
+                                <div class="brand-row">
+                                    <div class="brand-name">
+                                        {% if package.company.logo %}
+                                        <img src="{{ package.company.logo.url }}" alt="Logo" class="company-logo">
+                                        {% else %}
+                                        <i class="fa-solid fa-building"></i>
+                                        {% endif %}
+                                        <span class="text-truncate">{{ package.company.company_name }}</span>
+                                        <span class="verified-icon text-success"><iclass="fa-solid
+                                                fa-circle-check"></i></span>
+                                    </div>
+                                    <div class="price">{{ package.formatted_price_iqd }}</div>
+                                </div>
+
+                                <h3 class="product-title">{{ package.title }}</h3>
+                                <p class="product-desc">{{ package.description }}</p>
+
+                                <div class="card-components-inline">
+                                    {% for item in package.package_components.all %}
+                                    <span class="badge bg-light text-dark border">
+                                        <i class="fa-solid fa-check text-success"></i>
+                                        <span class="fw-bold text-primary">{{ item.quantity }}×</span>
+                                        {{ item.product.name }}
+                                    </span>
+                                    {% endfor %}
+
+                                    {% if package.package_components.all.count > 3 %}
+                                    <span class="comp-mini more">+ المزيد</span>
+                                    {% endif %}
+                                </div>
+
+                                {% if package.is_installment_available %}
+                                <div class="installment-summary">
+                                    <div class="installment-item">
+                                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                                        <span>اضغط على زر تفاصيل لرؤية الاقساط</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="action-buttons-container">
+                                {% if package.is_requested %}
+                                <button class="details-btn btn-cancel" onclick="cancelBundle(`{{ package.id }}`)"><i
+                                        class="fa-solid fa-xmark"></i> إلغاء</button>
+                                {% if package.whatsapp_link %}
+                                <a href="{{ package.whatsapp_link }}" target="_blank"
+                                    class="details-btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                                {% endif %}
+                                {% else %}
+                                <button class="details-btn btn-request" onclick="requestBundle(`{{ package.id }}`)"><i
+                                        class="fa-solid fa-bolt"></i> طلب</button>
+                                {% endif %}
+
+                                <button class="details-btn btn-info" data-title="{{ package.title }}"
+                                    data-desc="{{ package.description }}" data-price="{{ package.formatted_price_iqd }}"
+                                    data-company="{{ package.company.company_name }}"
+                                    data-installments="{% if package.is_installment_available %}true{% else %}false{% endif %}"
+                                    data-down-payment="{{ package.formatted_down_payment }} دينار"
+                                    data-monthly="{{ package.formatted_monthly }} دينار"
+                                    data-months="{{ package.duration_months|default:'0' }}"
+                                    data-components="{% for item in package.package_components.all %}{{ item.quantity }}× {{ item.product.name }},{% endfor %}"
+                                    data-gps="{{ package.company.gps_coordinates|default:'' }}"
+                                    onclick="openModal(this)">
+                                    <i class="fa-solid fa-circle-info"></i> تفاصيل
+                                </button>
+                            </div>
+                        </article>
+                        {% endif %}
+                        {% empty %}
+                        <div class="empty-state">لا توجد عروض مميزة حالياً.</div>
+                        {% endfor %}
+                    </section>
+                </div>
+
+                <div class="section-title main-sections-title d-flex-between">
+                    <span><i class="fa-solid fa-box-open"></i> جميع الباقات</span>
+                    <span class="packages-count" id="packagesCounter">{{ packages|length }} باقة</span>
+                </div>
+
+                <section class="product-list" id="productList">
+                    {% for package in packages %}
+                    <article class="product-card animate-up" data-title="{{ package.title|lower }}"
+                        data-company="{{ package.company.company_name|lower }}"
+                        data-category="{{ package.category|default:'سكني وتجاري' }}"
+                        data-installment="{% if package.is_installment_available %}true{% else %}false{% endif %}"
+                        style="--i: {{ forloop.counter }};">
+
+                        <div class="card-visual">
+                            {% if package.is_installment_available %}
+                            <div class="installment-badge"><i class="fa-solid fa-money-check-dollar"></i> أقساط</div>
+                            {% else %}
+                            <div class="product-badge gold"><i class="fa-solid fa-sack-dollar"></i> كاش</div>
+                            {% endif %}
+
+                            {% if package.package_image %}
+                            <img src="{{ package.package_image.url }}" alt="{{ package.title }}" class="package-image">
+                            {% else %}
+                            <img src="{% static 'user_dashboard/images/default_package.png' %}" alt="Default Package"
+                                class="package-image fallback-image">
+                            {% endif %}
+                        </div>
+                        <div class="card-info">
+                            <div class="brand-row">
+                                <div class="brand-name">
+                                    {% if package.company.logo %}
+                                    <img src="{{ package.company.logo.url }}" alt="Logo" class="company-logo">
+                                    {% else %}
+                                    <i class="fa-solid fa-building"></i>
+                                    {% endif %}
+                                    <span class="text-truncate">{{ package.company.company_name }}</span>
+                                    <span class="verified-icon text-success"><i
+                                            class="fa-solid fa-circle-check"></i></span>
+                                </div>
+                                <div class="price">{{ package.formatted_price_iqd }}</div>
+                            </div>
+                            <h3 class="product-title">{{ package.title }}</h3>
+                            <div class="card-components-inline">
+                                {% for comp in package.package_components.all|slice:":2" %}
+                                <span class="comp-mini">
+                                    <i class="fa-solid fa-bolt"></i>
+                                    {{ comp.quantity }} × {{ comp.product.name }}
+                                </span>
+                                {% endfor %}
+
+                                {% if package.package_components.all.count > 2 %}
+                                <span class="comp-mini more">+ المزيد</span>
+                                {% endif %}
+                            </div>
+                            <p class="product-desc">{{ package.description }}</p>
+
+                            {% if package.is_installment_available %}
+                            <div class="installment-summary">
+                                <div class="installment-item">
+                                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                                    <span>المقدمة: {{ package.formatted_down_payment }} دينار</span>
+                                </div>
+                                <div class="installment-item">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <span>شهرياً: {{ package.formatted_monthly }} دينار</span>
+                                </div>
+                                <div class="installment-item">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span>{{ package.duration_months|default:"0" }} شهر</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="action-buttons-container">
+                            {% if package.is_requested %}
+                            <button class="details-btn btn-cancel" onclick="cancelBundle(`{{ package.id }}`)"><i
+                                    class="fa-solid fa-ban"></i> إلغاء</button>
+                            {% if package.whatsapp_link %}
+                            <a href="{{ package.whatsapp_link }}" target="_blank" class="details-btn btn-whatsapp"><i
+                                    class="fa-brands fa-whatsapp"></i> واتساب</a>
+                            {% endif %}
+                            {% else %}
+                            <button class="details-btn btn-request" onclick="requestBundle(`{{ package.id }}`)"><i
+                                    class="fa-solid fa-bolt-lightning"></i> طلب</button>
+                            {% endif %}
+
+                            <button class="details-btn btn-info" data-title="{{ package.title }}"
+                                data-desc="{{ package.description }}" data-price="{{ package.formatted_price_iqd }}"
+                                data-company="{{ package.company.company_name }}"
+                                data-installments="{% if package.is_installment_available %}true{% else %}false{% endif %}"
+                                data-down-payment="{{ package.formatted_down_payment }} دينار"
+                                data-monthly="{{ package.formatted_monthly }} دينار"
+                                data-months="{{ package.duration_months|default:'0' }}"
+                                data-components="{% for item in package.package_components.all %}{{ item.quantity }}× {{ item.product.name }},{% endfor %}"
+                                data-gps="{{ package.company.gps_coordinates|default:'' }}" onclick="openModal(this)">
+                                <i class="fa-solid fa-circle-info"></i> تفاصيل
+                            </button>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-box-open"
+                            style="font-size: 30px; margin-bottom: 10px; opacity: 0.5;"></i><br>
+                        لا توجد عروض حالياً بالمنصة.
+                    </div>
+                    {% endfor %}
+
+                    <div id="noResultsMsg" class="empty-state" style="display: none;">
+                        <i class="fa-solid fa-search"
+                            style="font-size: 30px; margin-bottom: 10px; opacity: 0.5;"></i><br>
+                        لم يتم العثور على باقات تطابق بحثك.
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="bundleModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="mTitle"><i class="fa-solid fa-solar-panel"></i> عنوان الباقة</h3>
+                <button class="close-btn" onclick="closeModal()" aria-label="إغلاق"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <p id="mDesc" style="color: var(--muted); margin-bottom: 15px; line-height: 1.6;"></p>
+
+                <div id="mComponentsBox" class="components-box" style="display: none;">
+                    <div class="components-title">
+                        <i class="fa-solid fa-boxes-stacked"></i> مكونات المنظومة المشمولة:
+                    </div>
+                    <div id="mComponentsList" class="components-list">
+                    </div>
+                </div>
+
+                <div id="mInstallmentsBox" class="installments-box" style="display: none;">
+                    <div class="inst-item">
+                        <span class="inst-label"><i class="fa-solid fa-hand-holding-dollar"></i> المقدمة</span>
+                        <span class="inst-val" id="mDownPayment">0 </span>
+                    </div>
+                    <div class="inst-item">
+                        <span class="inst-label"><i class="fa-solid fa-calendar-days"></i> القسط الشهري</span>
+                        <span class="inst-val" id="mMonthly">0 </span>
+                    </div>
+                    <div class="inst-item">
+                        <span class="inst-label"><i class="fa-solid fa-clock"></i> المدة</span>
+                        <span class="inst-val" id="mMonths">0 شهر</span>
+                    </div>
+                </div>
+                <div class="modal-footer-box" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span id="mPrice">0 </span>
+                        <span class="company-wrapper">
+                            <i class="fa-solid fa-shield-halved text-success"></i> مزود الخدمة: <br>
+                            <span id="mCompany"></span>
+                        </span>
+                    </div>
+                    <a id="mLocationLink" href="#" target="_blank" class="location-btn" style="display: none;">
+                        <i class="fa-solid fa-location-dot"></i> عرض موقع الشركة على الخريطة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد الطلب والموقع (الجديدة) -->
+    <div class="modal-overlay" id="orderConfirmModal">
+        <div class="modal-content order-modal-content">
+            <div class="modal-header order-modal-header">
+                <h3 class="order-modal-title">
+                    <i class="fa-solid fa-truck-fast text-success"></i> تأكيد الطلب والموقع
+                </h3>
+                <button class="close-btn order-close-btn" onclick="closeOrderModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body order-modal-body">
+
+                <p class="order-welcome-text">
+                    <strong class="text-gold">تعذر الوصول إلى موقعك 📍</strong><br>
+
+                    يبدو أنك رفضت السماح بالوصول إلى الموقع، أو أن خدمة الموقع غير مفعلة على جهازك.
+
+                    <br><br>
+
+                    <span class="order-secure-text">
+                        يمكنك كتابة عنوان التركيب يدوياً لإرسال الطلب.
+                        <br>
+                        <strong style="color:#ff4d4d;">
+                            لن يتم إرسال الطلب إذا كان العنوان فارغاً.
+                        </strong>
+                    </span>
+                </p>
+
+                <input type="hidden" id="gpsLat">
+                <input type="hidden" id="gpsLng">
+
+                <div class="manual-address-section">
+                    <label class="manual-address-label">
+                        عنوان التركيب
+                    </label>
+
+                    <textarea id="manualAddress" rows="3" class="manual-address-input"
+                        placeholder="مثال: بغداد / المنصور / قرب مول المنصور..."></textarea>
+                </div>
+
+            </div>
+
+            <button type="button" id="confirmOrderBtn" class="btn-confirm" onclick="submitOrder()">
+
+                إرسال الطلب
+            </button>
+        </div>
+    </div>
+
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script src="{% static 'user_dashboard/js/marketplace.js' %}?v=1.1"></script>
+</body>
+
+</html>

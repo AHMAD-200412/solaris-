@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | منظومة الطاقة الشمسية</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+
+    <div class="background-glow"></div>
+
+    <div class="login-container">
+        <div class="icon-box">
+            <i class="fa-solid fa-bolt"></i>
+        </div>
+
+        <h2>تسجيل الدخول</h2>
+        <p>مرحباً بعودتك! يرجى إدخال بياناتك للمتابعة.</p>
+
+        <div class="messages-wrapper" style="width: 100%; margin-bottom: 15px;">
+            
+            {% if request.GET.error == 'unapproved' %}
+            <div class="login-alert alert-error"
+                style="padding: 12px; border-radius: 8px; text-align: center; font-size: 0.9rem; font-weight: bold; background-color: rgba(255, 77, 79, 0.1); color: #ff4d4f; border: 1px solid rgba(255, 77, 79, 0.3); margin-bottom: 10px;">
+                <i class="fa-solid fa-circle-exclamation"></i> عذراً، تم إيقاف أو انتهاء اشتراك شركتك. يرجى التواصل مع الإدارة عبر الرقم 07870105877.
+            </div>
+            {% endif %}
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="login-alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                    style="padding: 12px; border-radius: 8px; text-align: center; font-size: 0.9rem; font-weight: bold; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.3); margin-bottom: 10px;">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+        </div>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <i class="fa-solid fa-envelope input-icon"></i>
+                <input type="email" name="email" class="form-input" placeholder="البريد الإلكتروني" required autofocus>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input type="password" name="password" id="passwordInput" class="form-input" placeholder="كلمة المرور" required>
+                <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+
+            <div class="forgot-pass-container">
+                <a href="/accounts/forgot-password/" class="forgot-pass-link">نسيت كلمة المرور؟</a>
+            </div>
+
+            <button type="submit" class="btn-login">دخول ألان</button>
+        </form>
+
+        <div class="register-link-container">
+            <span>ليس لديك حساب؟</span>
+            <a href="/accounts/choose-account-type/" class="register-link">إنشاء حساب جديد</a>
+        </div>
+    </div>
+
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+
+</html>

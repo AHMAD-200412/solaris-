@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>مساعد الطاقة الذكي</title>
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/ai_assistant_chat.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="assistant-app">
+        <!-- Background -->
+        <div class="assistant-background"></div>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <!-- Sidebar -->
+        <aside id="chatSidebar" class="chat-sidebar">
+            <div class="sidebar-header">
+                <button id="closeSidebar" class="sidebar-close" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <h2>المحادثات</h2>
+            </div>
+
+            <button id="newChatButton" class="new-chat-btn" type="button">
+                <i class="fa-solid fa-plus"></i>
+                <span>محادثة جديدة</span>
+            </button>
+
+            <div class="conversation-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="conversationSearch" type="text" placeholder="ابحث عن محادثة">
+            </div>
+
+            <div class="conversation-actions">
+                <button id="clearAllChatsBtn" class="clear-all-btn" type="button">
+                    <i class="fa-solid fa-trash"></i>
+                    <span>حذف جميع المحادثات</span>
+                </button>
+            </div>
+
+            <div id="conversationList" class="conversation-list">
+                <!-- يتم توليدها من JavaScript -->
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="assistant-main">
+            <!-- Header -->
+            <header class="assistant-header">
+                <div class="header-left">
+                    <button id="menuButton" class="header-btn" type="button">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+
+                <div class="assistant-profile">
+                    <div class="assistant-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="assistant-info">
+                        <h2>مساعد الطاقة الذكي</h2>
+                        <div class="assistant-status">
+                            <span class="status-dot"></span>
+                            <span>متصل الآن</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="themeToggle" class="header-btn" type="button">
+                        <i class="fa-regular fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Messages Container -->
+            <section id="messageContainer" class="message-container">
+                <!-- Welcome Message (يظهر في البداية) -->
+                <div class="message bot welcome-message">
+                    <div class="message-avatar">
+                        <div class="assistant-avatar">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            <h3>👋 أهلاً بك</h3>
+                            <p>أنا مساعد الطاقة الذكي.</p>
+                            <p>أستطيع مساعدتك بالإجابة عن الأسئلة المتعلقة بالطاقة الشمسية والبطاريات والإنفرترات وحساب
+                                الأحمال واختيار المنظومة المناسبة.</p>
+                            <p>ابدأ بكتابة سؤالك بالأسفل.</p>
+                        </div>
+                        <div class="message-time">الآن</div>
+                    </div>
+                </div>
+                <!-- Dynamic Messages -->
+                <div id="chatMessages" class="chat-messages">
+                    <!-- يتم تحميل الرسائل هنا من JavaScript -->
+                </div>
+
+                <!-- Typing Indicator -->
+                <div id="typingIndicator" class="typing-container hidden">
+                    <div class="message bot">
+                        <div class="message-avatar">
+                            <div class="assistant-avatar">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-bubble typing-bubble">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Message Template -->
+                <template id="userMessageTemplate">
+                    <div class="message user">
+                        <div class="message-avatar">
+                            <div class="user-avatar">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-bubble user-bubble">
+                                <div class="message-text"></div>
+                            </div>
+                            <div class="message-footer">
+                                <span class="message-time"></span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Assistant Message Template -->
+                <template id="assistantMessageTemplate">
+                    <div class="message bot">
+                        <div class="message-avatar">
+                            <div class="assistant-avatar">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-bubble assistant-bubble">
+                                <div class="message-text"></div>
+                            </div>
+                            <div class="message-footer">
+                                <span class="message-time"></span>
+                                <div class="message-actions">
+                                    <button class="copy-message-btn" type="button" title="نسخ">
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Quick Suggestions -->
+                <section id="quickSuggestions" class="quick-suggestions">
+                    <h3>⚡ أسئلة شائعة</h3>
+                    <div class="suggestions-grid">
+                        <button class="suggestion-card" data-question="كيف تعمل أنظمة الطاقة الشمسية؟">
+                            <i class="fa-solid fa-solar-panel"></i>
+                            <span>كيف تعمل أنظمة الطاقة الشمسية؟</span>
+                        </button>
+                        <button class="suggestion-card" data-question="ما هي أفضل البطاريات للطاقة الشمسية؟">
+                            <i class="fa-solid fa-car-battery"></i>
+                            <span>أفضل البطاريات للطاقة الشمسية</span>
+                        </button>
+                        <button class="suggestion-card" data-question="كيف أختار الإنفرتر المناسب؟">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>كيف أختار الإنفرتر المناسب؟</span>
+                        </button>
+                        <button class="suggestion-card" data-question="كيف أقلل استهلاك الكهرباء في المنزل؟">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span>تقليل استهلاك الكهرباء</span>
+                        </button>
+                        <button class="suggestion-card" data-question="ما هي مميزات الطاقة الشمسية؟">
+                            <i class="fa-solid fa-sun"></i>
+                            <span>مميزات الطاقة الشمسية</span>
+                        </button>
+                        <button class="suggestion-card" data-question="ما هي أفضل منظومة لمنزلي؟">
+                            <i class="fa-solid fa-house"></i>
+                            <span>أفضل منظومة للمنزل</span>
+                        </button>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Footer / Input Area -->
+            <footer class="chat-footer">
+                <div class="chat-input-container">
+                    <textarea id="messageInput" rows="1" maxlength="5000" autocomplete="off" spellcheck="false"
+                        placeholder="اكتب رسالتك هنا..."></textarea>
+                    <button id="sendButton" class="send-button" type="button" aria-label="إرسال">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </footer>
+        </main>
+    </div>
+    <!-- مودال إعادة التسمية -->
+    <div id="renameModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal">
+            <h3>إعادة تسمية المحادثة</h3>
+            <input id="renameInput" type="text" maxlength="255" placeholder="الاسم الجديد...">
+            <div class="modal-actions">
+                <button id="cancelRename" class="modal-btn cancel">إلغاء</button>
+                <button id="saveRename" class="modal-btn save">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تأكيد الحذف -->
+    <div id="deleteModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal">
+            <h3>حذف المحادثة</h3>
+            <p>هل أنت متأكد من حذف هذه المحادثة؟ لا يمكن التراجع.</p>
+            <div class="modal-actions">
+                <button id="cancelDelete" class="modal-btn cancel">إلغاء</button>
+                <button id="confirmDelete" class="modal-btn delete">حذف</button>
+            </div>
+        </div>
+    </div>
+    <!-- مودال حذف جميع المحادثات -->
+    <div id="deleteAllModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal">
+            <h3>🗑️ حذف جميع المحادثات</h3>
+            <p>هل أنت متأكد أنك تريد <strong>حذف جميع المحادثات</strong>؟ لا يمكن التراجع عن هذا الإجراء.</p>
+            <div class="modal-actions">
+                <button id="cancelDeleteAll" class="modal-btn cancel">إلغاء</button>
+                <button id="confirmDeleteAll" class="modal-btn delete">حذف الكل</button>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript Config -->
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+        const DJANGO_URLS = {
+            sendMessage: "{% url 'send_message' %}",
+            createConversation: "{% url 'create_conversation' %}",
+            conversationList: "{% url 'conversation_list' %}",
+            latestConversation: "{% url 'latest_conversation' %}",
+            searchConversation: "{% url 'search_conversations' %}",
+            clearAllConversations: "{% url 'clear_all_conversations' %}"
+        };
+    </script>
+    <script src="{% static 'user_dashboard/js/ai_assistant_chat.js' %}"></script>
+</body>
+
+</html>

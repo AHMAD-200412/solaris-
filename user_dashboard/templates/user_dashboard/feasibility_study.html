@@ -1,0 +1,257 @@
+{% load static %}
+{% load l10n %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>دراسة الجدوى</title>
+    <!-- الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- الأنماط -->
+
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/feasibility_study.css' %}">
+</head>
+
+<body>
+    <div class="app">
+        <div class="screen">
+            <!-- Hero -->
+            <section class="hero">
+                <div class="hero-glow"></div>
+                <div class="hero-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h1>دراسة الجدوى</h1>
+                <p>أدخل قيمة فاتورتك الحالية لتحليل الاستثمار في منظومة <strong>{{ package.title|default:"الطاقة الشمسية" }}</strong></p>
+            </section>
+
+            <!-- نموذج الإدخال -->
+            <section id="studyForm" class="study-form-section">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>الكهرباء الوطنية</h2>
+                            <span>الفاتورة الشهرية (د.ع)</span>
+                        </div>
+                        <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                    </div>
+                    <input type="number" id="nationalBill" placeholder="0" value="0">
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>المولد الأهلي</h2>
+                            <span>الكلفة الشهرية (د.ع)</span>
+                        </div>
+                        <div class="card-icon"><i class="fa-solid fa-plug-circle-bolt"></i></div>
+                    </div>
+                    <input type="number" id="generatorBill" placeholder="0" value="0">
+                </div>
+                <div class="card total-card">
+                    <div class="card-header">
+                        <div>
+                            <h2>إجمالي الإنفاق الشهري</h2>
+                            <span>يُحسب تلقائياً</span>
+                        </div>
+                        <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+                    </div>
+                    <div class="total-price"><span id="totalBill">0 د.ع</span></div>
+                </div>
+                <button id="createStudy" class="gold-btn">
+                    <i class="fa-solid fa-chart-column"></i> إنشاء دراسة الجدوى
+                </button>
+            </section>
+
+            <!-- النتائج (مخفية مبدئياً) -->
+            <section id="studyResult" class="hidden">
+                <!-- القسم الأول: استهلاكك الحالي -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fa-solid fa-receipt"></i></div>
+                        <div>
+                            <h2>استهلاكك الحالي</h2>
+                            <span>وضعك قبل تركيب المنظومة</span>
+                        </div>
+                    </div>
+                    <div class="result-grid">
+                        <div class="info-box"><i class="fa-solid fa-wallet"></i><strong id="currentMonthly">0
+                                د.ع</strong><span>الإنفاق الشهري</span></div>
+                        <div class="info-box"><i class="fa-solid fa-calendar"></i><strong id="currentYearly">0
+                                د.ع</strong><span>الإنفاق السنوي</span></div>
+                        <div class="info-box"><i class="fa-solid fa-bolt"></i><strong id="userConsumption">0
+                                kWh</strong><span>الاستهلاك اليومي</span></div>
+                    </div>
+                </div>
+
+                <!-- القسم الثاني: أداء المنظومة -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fa-solid fa-solar-panel"></i></div>
+                        <div>
+                            <h2>أداء المنظومة</h2>
+                            <span>بناءً على موقع العراق وظروف التشغيل</span>
+                        </div>
+                    </div>
+                    <div class="result-grid">
+                        <div class="info-box"><i class="fa-solid fa-sun"></i><strong id="realProduction">0
+                                kWh</strong><span>الإنتاج الحقيقي اليومي</span></div>
+                        <div class="info-box"><i class="fa-solid fa-percent"></i><strong
+                                id="coveragePercent">0%</strong><span>نسبة التغطية</span></div>
+                        <div class="info-box"><i class="fa-solid fa-circle-plus"></i><strong id="dailySurplus">0
+                                kWh</strong><span>الفائض اليومي</span></div>
+                        <div class="info-box"><i class="fa-solid fa-gauge"></i><strong
+                                id="efficiency">0%</strong><span>معامل الكفاءة</span></div>
+                    </div>
+                </div>
+
+                <!-- القسم الثالث: الجدوى المالية -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                        <div>
+                            <h2>الجدوى المالية</h2>
+                            <span>التوفير والعائد على الاستثمار</span>
+                        </div>
+                    </div>
+                    <div class="result-grid">
+                        <div class="info-box"><i class="fa-solid fa-piggy-bank"></i><strong id="savingMonthly">0
+                                د.ع</strong><span>التوفير الشهري</span></div>
+                        <div class="info-box"><i class="fa-solid fa-piggy-bank"></i><strong id="savingYearly">0
+                                د.ع</strong><span>التوفير السنوي</span></div>
+                        <div class="info-box"><i class="fa-solid fa-clock-rotate-left"></i><strong id="paybackPeriod">0
+                                سنة</strong><span>استرجاع رأس المال</span></div>
+                        <div class="info-box"><i class="fa-solid fa-coins"></i><strong id="profit25Years">0
+                                د.ع</strong><span>صافي الربح (25 سنة)</span></div>
+                    </div>
+                </div>
+
+                <!-- القسم الرابع: معلومات المنظومة -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <div class="card-icon"><i class="fa-solid fa-circle-info"></i></div>
+                        <div>
+                            <h2>معلومات المنظومة</h2>
+                            <span>المواصفات الأساسية</span>
+                        </div>
+                    </div>
+                    <div class="result-grid">
+                        <div class="info-box"><i class="fa-solid fa-table-cells-large"></i><strong id="panelInfo">0
+                                kWp</strong><span>قدرة الألواح</span></div>
+                        <div class="info-box"><i class="fa-solid fa-bolt"></i><strong id="inverterInfo">0
+                                kW</strong><span>قدرة الإنفرتر</span></div>
+                        <div class="info-box"><i class="fa-solid fa-car-battery"></i><strong id="batteryInfo">0
+                                kWh</strong><span>سعة البطارية</span></div>
+                        <div class="info-box"><i class="fa-solid fa-calendar-check"></i><strong id="lifetimeInfo">0
+                                سنة</strong><span>العمر الافتراضي</span></div>
+                    </div>
+                </div>
+                <!-- القسم الخامس: تحليل الذكاء الاصطناعي -->
+                <div class="assistant-card">
+                    <div class="assistant-message">
+                        <i class="fa-solid fa-robot"></i>
+                        <p id="aiAnalysis">جاري التحليل...</p>
+                    </div>
+                </div>
+
+                <!-- زر طلب المنظومة -->
+                <button id="requestBundleBtn" class="gold-btn">
+                    <i class="fa-solid fa-solar-panel"></i> طلب المنظومة
+                </button>
+            </section>
+        </div>
+    </div>
+
+    <!-- ========== المودالات (نفس الموجودة في best_recmmendation) ========== -->
+    <!-- مودال طلب الباقة -->
+    <div id="bundleRequestModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal">
+            <h3>تقديم طلب الباقة</h3>
+            <p>اختر طريقة تحديد موقعك لإرسال الطلب للشركة:</p>
+            <div class="modal-location-options">
+                <button id="btnUseGPS" class="location-option-btn"><i class="fa-solid fa-location-dot"></i> تحديد الموقع
+                    جغرافياً</button>
+                <button id="btnManualAddress" class="location-option-btn"><i class="fa-solid fa-pen"></i> كتابة العنوان
+                    يدوياً</button>
+            </div>
+            <div id="manualAddressDiv" class="hidden" style="margin-top:20px;">
+                <input type="text" id="manualAddressInput" placeholder="مثال: حي العدن، شارع..." class="modal-input">
+                <button id="btnSubmitManual" class="gold-btn" style="margin-top:10px; width:100%;">إرسال الطلب</button>
+            </div>
+            <div id="gpsLoadingMessage" class="hidden"
+                style="margin-top:20px; text-align:center; color:var(--primary);"><i
+                    class="fa-solid fa-spinner fa-spin"></i> جاري تحديد موقعك...</div>
+            <div class="modal-actions" style="margin-top:20px; justify-content:center;">
+                <button id="btnCancelRequest" class="modal-btn cancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال نجاح / خطأ -->
+    <div id="messageModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal">
+            <h3 id="messageModalTitle"></h3>
+            <p id="messageModalText"></p>
+            <div class="modal-actions" style="justify-content:center;">
+                <button id="messageModalOk" class="gold-btn">موافق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تفعيل الموقع الجغرافي -->
+    <div id="locationConsentModal" class="assistant-modal-overlay hidden">
+        <div class="assistant-modal location-consent-modal">
+            <div class="consent-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+            <h3>للحصول على تجربة أفضل</h3>
+            <p>ننصحك بتفعيل ميزة "دقة الموقع الجغرافي" على جهازك.</p>
+            <div class="consent-steps">
+                <div class="step"><i class="fa-solid fa-circle-check"></i> يسمح للتطبيق بتزويدنا بموقعك الحالي.</div>
+                <div class="step"><i class="fa-solid fa-circle-check"></i> يساعدنا في إرسال طلبك للشركة بدقة عالية.
+                </div>
+                <div class="step"><i class="fa-solid fa-circle-check"></i> يمكنك تغيير الإعداد لاحقاً من إعدادات الموقع.
+                </div>
+            </div>
+            <div class="consent-actions">
+                <button id="btnEnableLocation" class="gold-btn"><i class="fa-solid fa-check"></i> تفعيل</button>
+                <button id="btnCancelConsent" class="modal-btn cancel">لاحقاً</button>
+            </div>
+        </div>
+    </div>
+
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script>
+        console.log("Django package_price =", "{{ package_price }}");
+    </script>
+    <!-- تمرير البيانات من Django إلى JavaScript -->
+    <script>
+        var csrfToken = "{{ csrf_token }}";
+        var requestBundlePattern = "{% url 'request_bundle' 0 %}";
+        var packageIdFromURL = "{{ package.id|default_if_none:'' }}";
+        var packagePrice = parseFloat("{{ package_price|unlocalize }}") || 0;
+        var userDailyConsumption = parseFloat("{{ user_daily_consumption }}") || 0;
+        // بيانات المنظومة
+        var dailyProduction = parseFloat("{{ daily_production|floatformat:'2' }}") || 0;
+        var totalPanelPower = parseFloat("{{ total_panel_power|floatformat:'2' }}") || 0;
+        var inverterCapacity = parseFloat("{{ inverter_capacity|floatformat:'2' }}") || 0;
+        var batteryCapacity = parseFloat("{{ battery_capacity|floatformat:'2' }}") || 0;
+
+        // ثوابت
+        var systemLossFactor = parseFloat("{{ system_loss_factor }}") || 0.80;
+        var peakSunHours = parseFloat("{{ peak_sun_hours }}") || 5.5;
+        var systemLifetime = parseInt("{{ system_lifetime }}") || 25;
+        var maintenanceRate = parseFloat("{{ maintenance_rate }}") || 0.01;
+    </script>
+
+
+    <script src="{% static 'user_dashboard/js/feasibility_study.js' %}"></script>
+</body>
+
+</html>

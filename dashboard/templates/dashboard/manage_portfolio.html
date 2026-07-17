@@ -1,0 +1,165 @@
+{% extends 'dashboard/company_base.html' %}
+{% load static %}
+
+{% block title %}معرض المشاريع الحية | {{ company.company_name|default:"SolarLQ" }}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/manage_portfolio.css' %}">
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content" id="mainContent">
+
+    <div class="top-navbar">
+        <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars-staggered"></i></button>
+        <div class="page-title">
+            <i class="fas fa-camera-retro"></i><span>إدارة معرض المشاريع الحية</span>
+        </div>
+    </div>
+
+    <div class="pm-section-container">
+        <div class="pm-header-wrapper">
+            <div class="pm-header-title">
+                <h2>مشاريعنا المنفذة 📸</h2>
+                <p>إدارة واستعراض المنظومات الشمسية التي قامت شركتك بتركيبها في المواقع</p>
+            </div>
+            <button class="pm-btn pm-btn-success" id="openModalBtn">
+                <i class="fa-solid fa-plus"></i> إضافة مشروع جديد
+            </button>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="pm-alert pm-alert-success"><i class="fa-solid fa-circle-check"></i> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="pm-projects-grid">
+            {% for project in projects %}
+                <div class="pm-project-card">
+                    
+                    <div class="pm-card-image-box" onclick="openImagePreview('{% if project.main_image %}{{ project.main_image.url }}{% endif %}')" title="اضغط لتكبير الصورة">
+                        {% if project.main_image %}
+                            <img src="{{ project.main_image.url }}" alt="{{ project.title }}">
+                        {% endif %}
+                        <span class="pm-badge-location"><i class="fa-solid fa-location-dot"></i> {{ project.location }}</span>
+                    </div>
+                    
+                    <div class="pm-card-body">
+                        <span class="pm-badge-package">
+                            <i class="fa-solid fa-box"></i> 
+                            {% if project.package_reference %}{{ project.package_reference.name }}{% else %}منظومة مخصصة{% endif %}
+                        </span>
+                        <h3 class="pm-card-title">{{ project.title }}</h3>
+                        <p class="pm-card-desc">{{ project.description|truncatewords:15 }}</p>
+                        
+                        {% if project.customer_feedback %}
+                            <div class="pm-card-feedback">
+                                <i class="fa-solid fa-quote-right pm-quote-icon"></i>
+                                <p>"{{ project.customer_feedback }}"</p>
+                                <span class="pm-feedback-owner">- رأي الزبون</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="pm-card-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fa-solid fa-calendar-days"></i> {{ project.completion_date|date:"Y-m-d" }}</span>
+                        
+                        <div class="pm-card-actions">
+                            <button type="button" class="pm-action-btn pm-edit-btn" title="تعديل المشروع"
+                                data-url="{% url 'edit_project' project.id %}"
+                                data-title="{{ project.title }}"
+                                data-pkg="{{ project.package_reference.id|default:'' }}"
+                                data-location="{{ project.location }}"
+                                data-date="{{ project.completion_date|date:'Y-m-d' }}"data-desc="{{ project.description }}"
+                                data-feedback="{{ project.customer_feedback|default:'' }}"
+                                onclick="openEditModal(this)">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+
+                            <a href="{% url 'delete_project' project.id %}" class="pm-action-btn pm-delete-btn" title="حذف المشروع" onclick="return confirm('هل أنت متأكد من حذف هذا المشروع نهائياً؟');">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="pm-empty-state">
+                    <i class="fa-solid fa-images pm-empty-icon"></i>
+                    <h3>لا توجد مشاريع مضافة حالياً</h3>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 📌 نافذة إضافة مشروع (رجعناها بالكامل) -->
+    <!-- ========================================== -->
+    <div id="pmAddProjectModal" class="pm-modal-overlay">
+        <div class="pm-modal-content">
+            <div class="pm-modal-header">
+                <h3><i class="fa-solid fa-circle-plus"></i> إضافة مشروع منجز جديد</h3>
+                <span class="pm-modal-close" id="closeModalBtn">&times;</span>
+            </div>
+            <form method="POST" enctype="multipart/form-data" class="pm-modal-form">
+                {% csrf_token %}
+                <div class="pm-form-grid">
+                    <div class="pm-form-group pm-full-width"><label>عنوان المشروع</label>{{ form.title }}</div>
+                    <div class="pm-form-group"><label>الباقة المستخدمة</label>{{ form.package_reference }}</div>
+                    <div class="pm-form-group"><label>موقع التنفيذ</label>{{ form.location }}</div>
+                    <div class="pm-form-group"><label>تاريخ الإنجاز</label>{{ form.completion_date }}</div>
+                    <div class="pm-form-group"><label>صورة المشروع الحية</label>{{ form.main_image }}</div>
+                    <div class="pm-form-group pm-full-width"><label>وصف وتفاصيل المشروع</label>{{ form.description }}</div>
+                    <div class="pm-form-group pm-full-width"><label>رأي الزبون (اختياري)</label>{{ form.customer_feedback }}</div>
+                </div>
+                <div class="pm-modal-footer">
+                    <button type="button" class="pm-btn pm-btn-secondary" id="cancelModalBtn">إلغاء</button>
+                    <button type="submit" class="pm-btn pm-btn-success">حفظ ونشر المشروع ✨</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 📌 نافذة تعديل المشروع -->
+    <!-- ========================================== -->
+    <div id="pmEditProjectModal" class="pm-modal-overlay">
+        <div class="pm-modal-content">
+            <div class="pm-modal-header">
+                <h3><i class="fa-solid fa-pen-to-square"></i> تعديل تفاصيل المشروع</h3>
+                <span class="pm-modal-close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <form id="editProjectForm" method="POST" enctype="multipart/form-data" class="pm-modal-form">
+                {% csrf_token %}
+                <div class="pm-form-grid">
+                    <div class="pm-form-group pm-full-width"><label>عنوان المشروع</label><input type="text" name="title" id="edit_title" class="form-control" required></div>
+                    <div class="pm-form-group"><label>الباقة المستخدمة</label><select name="package_reference" id="edit_package" class="form-control"></select></div>
+                    <div class="pm-form-group"><label>موقع التنفيذ</label><input type="text" name="location" id="edit_location" class="form-control"></div><div class="pm-form-group"><label>تاريخ الإنجاز</label><input type="date" name="completion_date" id="edit_date" class="form-control" required></div>
+                    <div class="pm-form-group"><label>تغيير صورة المشروع (اختياري)</label><input type="file" name="main_image" class="form-control" accept="image/*"></div>
+                    <div class="pm-form-group pm-full-width"><label>وصف وتفاصيل المشروع</label><textarea name="description" id="edit_desc" class="form-control" rows="3" required></textarea></div>
+                    <div class="pm-form-group pm-full-width"><label>رأي الزبون (اختياري)</label><textarea name="customer_feedback" id="edit_feedback" class="form-control" rows="2"></textarea></div>
+                </div>
+                <div class="pm-modal-footer">
+                    <button type="button" class="pm-btn pm-btn-secondary" onclick="closeEditModal()">إلغاء</button>
+                    <button type="submit" class="pm-btn pm-btn-success">حفظ التعديلات 💾</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 📌 نافذة عرض الصورة المكبرة -->
+    <!-- ========================================== -->
+    <div id="pmImagePreviewModal" class="pm-image-modal-overlay" onclick="closeImagePreview()">
+        <span class="pm-image-modal-close">&times;</span>
+        <img id="pmPreviewImage" class="pm-image-modal-content" src="" onclick="event.stopPropagation();">
+    </div>
+
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/manage_portfolio.js' %}"></script>
+{% endblock %}

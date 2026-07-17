@@ -1,0 +1,709 @@
+/* --- الألوان والخطوط الأساسية --- */
+:root {
+    --gold: #d4af37;
+    --bg-color: #05070a;
+    --card-bg: rgba(20, 25, 35, 0.6);
+    --text-white: #ffffff;
+    --text-gray: #8a93a5;
+    --border-color: rgba(255, 255, 255, 0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+}
+
+body {
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.mobile-app {
+    width: 100%;
+    max-width: 414px;
+    height: 100vh;
+    background-color: var(--bg-color);
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 90px;
+    /* مساحة للشريط السفلي */
+}
+
+/* --- الهيدر والبار العلوي --- */
+.hero-section {
+    height: 400px;
+    background: linear-gradient(to bottom, rgba(5, 7, 10, 0.3), var(--bg-color)),
+        url('https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=600&auto=format&fit=crop') center/cover;
+    position: relative;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-white);
+    position: relative;
+    z-index: 20;
+}
+
+.logo-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1;
+}
+
+[dir="ltr"] .logo-text {
+    align-items: flex-start;
+}
+
+.brand {
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--text-white);
+}
+
+.sub-brand {
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+.logo-box i {
+    font-size: 24px;
+    color: var(--gold);
+}
+
+/* --- القائمة المنسدلة للغة --- */
+.lang-container {
+    position: relative;
+    display: inline-block;
+}
+
+.langSwitch {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.lang-dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: #090c11;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 8px;
+    z-index: 1000;
+    min-width: 100px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.lang-dropdown.show {
+    display: block;
+}
+
+.lang-option {
+    padding: 8px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    border-bottom: 1px solid #1a2233;
+    transition: 0.3s;
+}
+
+.lang-option:last-child {
+    border-bottom: none;
+}
+
+.lang-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--gold);
+}
+
+/* --- محتوى الترحيب --- */
+.hero-content {
+    position: absolute;
+    top: 22%;
+    right: 20px;
+    z-index: 10;
+}
+
+[dir="ltr"] .hero-content {
+    right: auto;
+    left: 20px;
+}
+
+.hero-title {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-white);
+    margin-bottom: 15px;
+}
+
+.hero-title .gold-text {
+    color: var(--gold);
+    display: block;
+}
+
+.hero-desc {
+    color: var(--text-gray);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    max-width: 250px;
+}
+
+.btn-gold {
+    background: linear-gradient(to left, #e0bc6b, #c39b4f);
+    color: #111;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+[dir="ltr"] .btn-gold i {
+    transform: rotate(180deg);
+}
+
+/* --- كارت المميزات --- */
+.features-card {
+    margin: -40px 20px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px 0;
+    display: flex;
+    position: relative;
+    z-index: 15;
+    backdrop-filter: blur(15px);
+}
+
+.feature-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.feature-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: var(--border-color);
+}
+
+[dir="ltr"] .feature-item:not(:last-child)::after {
+    left: auto;
+    right: 0;
+}
+
+.feature-icon {
+    width: 45px;
+    height: 45px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gold);
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.feature-title {
+    color: var(--text-white);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.feature-desc {
+    color: var(--text-gray);
+    font-size: 9px;
+    line-height: 1.4;
+    max-width: 80px;
+}
+
+/* --- كارت الحاسبة --- */
+.calc-card {
+    margin: 0 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(15px);
+}
+
+.calc-content {
+    display: flex;
+    gap: 15px;
+}
+
+.calc-icon {
+    width: 35px;
+    height: 35px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-gray);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.calc-text h3 {
+    color: var(--text-white);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.calc-text p {
+    color: var(--text-gray);
+    font-size: 10px;
+    line-height: 1.5;
+    max-width: 130px;
+}
+
+.calc-image {
+    width: 110px;
+    height: 75px;
+    border-radius: 10px;
+    object-fit: cover;
+    background: url('https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=300&auto=format&fit=crop') center/cover;
+}
+
+.dots-container {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background-color: #2a313c;
+    border-radius: 50%;
+}
+
+.dot.active {
+    width: 14px;
+    background-color: var(--gold);
+    border-radius: 4px;
+}
+
+/* --- شريط التنقل السفلي لـ 6 أزرار --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 414px;
+    background-color: #090c11;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0 5px 15px 5px;
+    height: 75px;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #5d6575;
+    text-decoration: none;
+    flex: 1;
+    /* يوزع الأزرار بالتساوي */
+    transition: all 0.3s ease;
+}
+
+.nav-item i {
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.nav-item span {
+    font-size: 8.5px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.nav-item .icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-item.active {
+    color: var(--gold);
+}
+
+.nav-item.active .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--gold);
+    background-color: #090c11;
+    margin-top: -20px;
+    /* رفع الأيقونة للأعلى */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/*//////////////////////
+/* --- ستايل الكروت الموحد لـ Solaris --- */
+.solaris-slider-section {
+    margin: 12px 16px;
+    position: relative;
+}
+
+.solaris-unified-container {
+    position: relative;
+    height: 96px;
+    background: linear-gradient(180deg, rgba(20, 32, 51, 0.7) 0%, rgba(12, 19, 31, 0.85) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.solaris-unified-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.solaris-unified-slide.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+}
+
+.solaris-unified-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 14px;
+    gap: 12px;
+    direction: rtl;
+}
+
+.solaris-unified-img-wrapper {
+    width: 72px;
+    height: 56px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.solaris-unified-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    color: transparent;
+    /* يخفي أيقونة المتصفح المكسورة الافتراضية */
+}
+
+.solaris-unified-text-wrapper {
+    flex: 1;
+    text-align: right;
+    overflow: hidden;
+}
+
+.solaris-unified-main-title {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* التعديل الذهبي لظهور النص كاملاً دون تغيير حجم الكارت */
+.solaris-unified-sub-desc {
+    color: #a0aec0;
+    font-size: 10.5px;
+    line-height: 1.35;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* يتيح ظهور 3 أسطر كاملة بدلاً من سطرين */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.solaris-unified-icon-box {
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #dfa535;
+}
+
+.solaris-unified-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.solaris-u-dot {
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.solaris-u-dot.active {
+    background-color: #dfa535;
+    width: 16px;
+    border-radius: 3px;
+}
+
+/* ==========================================
+   مودال الموافقة على الشروط (Terms Modal)
+   يظهر عند أول تسجيل دخول – Solaris Theme
+   ========================================== */
+
+/* طبقة الخلفية المعتمة */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+/* صندوق المودال الرئيسي */
+.terms-modal {
+    background: rgba(18, 32, 58, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 28px;
+    padding: 36px 28px;
+    width: 90%;
+    max-width: 420px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* أيقونة المودال */
+.terms-modal .modal-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+}
+
+/* العنوان */
+.terms-modal h3 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: #ffd36d;
+}
+
+/* النص التوضيحي */
+.terms-modal p {
+    color: #cfd8e4;
+    line-height: 1.8;
+    margin-bottom: 24px;
+    font-size: 15px;
+}
+
+/* روابط الشروط والخصوصية */
+.terms-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.terms-links a {
+    color: #f2ca7b;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: 0.2s;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.terms-links a:hover {
+    background: rgba(231, 180, 94, 0.1);
+    border-color: rgba(231, 180, 94, 0.3);
+    transform: translateY(-2px);
+}
+
+/* زر الموافقة */
+.gold-btn {
+    width: 100%;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f2ca7b, #dca84c);
+    color: #1c1407;
+    font-weight: 800;
+    font-size: 17px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(231, 180, 94, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.gold-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(231, 180, 94, 0.35);
+}
+
+.gold-btn:active {
+    transform: scale(0.97);
+}
+
+/* ========== الوضع الفاتح ========== */
+body.light-mode .modal-overlay {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+body.light-mode .terms-modal {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #1d2939;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+}
+
+body.light-mode .terms-modal h3 {
+    color: #b45309;
+}
+
+body.light-mode .terms-modal p {
+    color: #4b5563;
+}
+
+body.light-mode .terms-links a {
+    color: #b45309;
+    background: rgba(245, 245, 245, 0.8);
+    border-color: #e0e4ea;
+}
+
+body.light-mode .terms-links a:hover {
+    background: rgba(231, 180, 94, 0.1);
+    border-color: #e7b45e;
+}
+
+body.light-mode .gold-btn {
+    background: linear-gradient(135deg, #f2ca7b, #dca84c);
+    color: #1c1407;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== تأثيرات حركية ========== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ========== استجابة للموبايل ========== */
+@media (max-width: 480px) {
+    .terms-modal {
+        padding: 28px 20px;
+    }
+
+    .terms-modal h3 {
+        font-size: 20px;
+    }
+
+    .terms-modal .modal-icon {
+        font-size: 46px;
+    }
+}

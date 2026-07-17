@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlTag">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <title>Solaris Energy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="mobile-app">
+        <section class="hero-section">
+            <div class="top-bar">
+                <div class="lang-container">
+                    <div class="langSwitch" id="langSwitchBtn">
+                        <i class="fa-solid fa-globe"></i>
+                        <span id="txt-lang-name">العربية</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
+                    </div>
+
+                    <div class="lang-dropdown" id="langDropdown">
+                        <div class="lang-option" data-lang="ar">العربية</div>
+                        <div class="lang-option" data-lang="en">English</div>
+                    </div>
+                </div>
+
+                <div class="logo-box">
+                    <div class="logo-text">
+                        <span class="brand">SOLARIS</span>
+                        <span class="sub-brand">ENERGY</span>
+                    </div>
+                    <i class="fa-solid fa-sun"></i>
+                </div>
+            </div>
+
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span id="txt-hero-title1">طاقة الشمس</span><br>
+                    <span class="gold-text" id="txt-hero-title2">لمستقبل أفضل</span>
+                </h1>
+                <p class="hero-desc" id="txt-hero-desc">
+                    حلول ذكية ومستدامة للطاقة الشمسية<br>
+                    من أجل منزل أكثر كفاءة وكوكب أنظف.
+                </p>
+                <button class="btn-gold">
+                    <i class="fa-solid fa-arrow-left"></i> <span id="txt-btn-start">ابدأ رحلتك</span>
+                </button>
+            </div>
+        </section>
+
+        <div class="features-card">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h4 class="feature-title" id="txt-feat1-title">طاقة نظيفة</h4>
+                <p class="feature-desc" id="txt-feat1-desc">طاقة متجددة وصديقة للبيئة</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h4 class="feature-title" id="txt-feat2-title">توفير أكبر</h4>
+                <p class="feature-desc" id="txt-feat2-desc">قلل فواتير الكهرباء وزد من كفاءتك</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h4 class="feature-title" id="txt-feat3-title">موثوق وآمن</h4>
+                <p class="feature-desc" id="txt-feat3-desc">تقنيات عالية الجودة وضمان طويل الأمد</p>
+            </div>
+        </div>
+
+        <div class="solaris-slider-section">
+            <div class="solaris-unified-container" id="mainCardsContainer">
+
+                <div class="solaris-unified-slide main-card-slide active">
+                    <div class="solaris-unified-layout">
+                        <div class="solaris-unified-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=300&auto=format&fit=crop"
+                                alt="">
+                        </div>
+                        <div class="solaris-unified-text-wrapper">
+                            <h3 class="solaris-unified-main-title" id="txt-calc-title">احسب توفيرك الآن</h3>
+                            <p class="solaris-unified-sub-desc" id="txt-calc-desc">اكتشف كم يمكنك توفيره باستخدام الطاقة
+                                الشمسية</p>
+                        </div>
+                        <div class="solaris-unified-icon-box"><i class="fa-solid fa-calculator"></i></div>
+                    </div>
+                </div>
+
+                <div class="solaris-unified-slide main-card-slide">
+                    <div class="solaris-unified-layout">
+                        <div class="solaris-unified-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=300&auto=format&fit=crop"
+                                alt="">
+                        </div>
+                        <div class="solaris-unified-text-wrapper">
+                            <h3 class="solaris-unified-main-title" id="txt-ai-title">المساعد الذكي</h3>
+                            <p class="solaris-unified-sub-desc" id="txt-ai-desc">اسأل الذكاء الاصطناعي عن أفضل الحلول
+                                لمنزلك</p>
+                        </div>
+                        <div class="solaris-unified-icon-box"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    </div>
+                </div>
+
+                <div class="solaris-unified-slide main-card-slide">
+                    <div class="solaris-unified-layout">
+                        <div class="solaris-unified-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=300&auto=format&fit=crop"
+                                alt="">
+                        </div>
+                        <div class="solaris-unified-text-wrapper">
+                            <h3 class="solaris-unified-main-title" id="txt-pkg-title">العروض والباقات</h3>
+                            <p class="solaris-unified-sub-desc" id="txt-pkg-desc">اختر الباقة الأنسب لاحتياجاتك
+                                وميزانيتك</p>
+                        </div>
+                        <div class="solaris-unified-icon-box"><i class="fa-solid fa-solar-panel"></i></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="solaris-unified-dots">
+                <span class="solaris-u-dot main-dot active" onclick="changeMainSlide(0)"></span>
+                <span class="solaris-u-dot main-dot" onclick="changeMainSlide(1)"></span>
+                <span class="solaris-u-dot main-dot" onclick="changeMainSlide(2)"></span>
+            </div>
+        </div>
+
+        <div class="solaris-slider-section">
+            <div class="solaris-unified-container">
+                {% for tip in tips %}
+                <div class="solaris-unified-slide {% if forloop.first %}active{% endif %} solaris-tip-slide">
+                    <div class="solaris-unified-layout">
+                        <div class="solaris-unified-img-wrapper">
+                            {% if tip.image and tip.image.url %}
+                            <img src="{{ tip.image.url }}" alt="">
+                            {% else %}
+                            <div
+                                style="width: 100%; height: 100%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-solar-panel"
+                                    style="color: rgba(255,255,255,0.15); font-size: 16px;"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="solaris-unified-text-wrapper">
+                            <h3 class="solaris-unified-main-title">{{ tip.title }}</h3>
+                            <p class="solaris-unified-sub-desc">{{ tip.content }}</p>
+                        </div>
+                        <div class="solaris-unified-icon-box"><svg width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9 21H15M12 2V4M5.22 5.22L6.64 6.64M18.78 5.22L17.36 6.64M12 6C8.69 6 6 8.69 6 12C6 14.07 7.05 15.89 8.66 16.98C9.5 17.55 10 18.5 10 19.5V20H14V19.5C14 18.5 14.5 17.55 15.34 16.98C16.95 15.89 18 14.07 18 12C18 8.69 15.31 6 12 6Z"
+                                    stroke="#dfa535" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="solaris-unified-dots" id="tipsDotsContainer">
+                <span class="solaris-u-dot tip-dot active" data-dot="0"></span>
+                <span class="solaris-u-dot tip-dot" data-dot="1"></span>
+                <span class="solaris-u-dot tip-dot" data-dot="2"></span>
+                <span class="solaris-u-dot tip-dot" data-dot="3"></span>
+                <span class="solaris-u-dot tip-dot" data-dot="4"></span>
+            </div>
+        </div>
+
+
+    </div>
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script src="{% static 'user_dashboard/js/main.js' %}"></script>
+    <!-- مودال الموافقة على الشروط (يظهر مرة واحدة) -->
+    {% if not request.user.accepted_terms %}
+    <div id="termsModal" class="modal-overlay">
+        <div class="modal terms-modal">
+            <div class="modal-icon">☀️</div>
+            <h3>مرحباً بك في Solaris!</h3>
+            <p>يرجى قراءة وقبول شروط الاستخدام وسياسة الخصوصية للمتابعة.</p>
+            <div class="terms-links">
+                <a href="{% url 'static_page' 'terms' %}" target="_blank">📄 شروط الاستخدام</a>
+                <a href="{% url 'static_page' 'privacy' %}" target="_blank">🔒 سياسة الخصوصية</a>
+            </div>
+            <button id="acceptTermsBtn" class="gold-btn">أوافق وأتابع</button>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        {% if not request.user.accepted_terms %}
+        document.getElementById("acceptTermsBtn").addEventListener("click", async () => {
+            try {
+                const res = await fetch("{% url 'accept_terms' %}", {
+                    method: "POST",
+                    headers: { "X-CSRFToken": "{{ csrf_token }}" }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById("termsModal").style.display = "none";
+                }
+            } catch (e) {
+                alert("حدث خطأ، حاول مجدداً");
+            }
+        });
+        {% endif %}
+    </script>
+</body>
+
+</html>

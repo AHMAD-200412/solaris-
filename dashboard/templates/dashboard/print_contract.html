@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وثيقة الضمان الرقمي - #{{ contract.order_id|default:contract.id }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #111;
+        }
+
+        /* حاوية الورقة A4 */
+        .page-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        /* الهيدر الرئيسي - تم التعديل لتكون المعلومات يمين والشعار يسار */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #111;
+            padding-bottom: 15px;
+        }
+
+        .header-info {
+            width: 70%;
+            text-align: right;
+            /* معلومات الشركة على اليمين */
+            font-size: 14px;
+            line-height: 1.7;
+            color: #111;
+            vertical-align: middle;
+        }
+
+        .header-logo {
+            width: 30%;
+            text-align: left;
+            /* الشعار على اليسار */
+            vertical-align: middle;
+        }
+
+        /* تحسين جودة الشعار ومنع التشوش */
+        .header-logo img {
+            max-height: 85px;
+            width: auto;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            /* لزيادة وضوح الحواف عند الطباعة */
+        }
+
+        /* عنوان الوثيقة */
+        .doc-title {
+            text-align: center;
+            margin: 20px 0 30px 0;
+        }
+
+        .doc-title h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 700;
+            display: inline-block;
+            border-bottom: 2px solid #111;
+            padding-bottom: 5px;
+        }
+
+        /* جداول البيانات */
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            background-color: #f2f2f2;
+            padding: 6px 12px;
+            margin-bottom: 12px;
+            border-right: 4px solid #111;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .data-table th {
+            background-color: #fafafa;
+            font-weight: 700;
+            width: 22%;
+        }
+
+        /* جدول القطع المشمولة بالضمان */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .items-table th,
+        .items-table td {
+            border: 1px solid #111;
+            padding: 10px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .items-table th {
+            background-color: #111;
+            color: #fff;
+        }
+
+        /* الشروط والأحكام */
+        .terms-text {
+            font-size: 12px;
+            line-height: 1.8;
+            color: #222;
+            text-align: justify;
+            white-space: pre-line;
+            padding: 5px 10px;
+        }
+
+        /* قسم التواقيع والـ QR */
+        .footer-section {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .signature-box {
+            width: 38%;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .signature-line {
+            margin-top: 60px;
+            border-top: 1px dashed #111;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .qr-box {
+            width: 24%;
+            text-align: center;
+        }
+
+        .qr-box img {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 5px;
+        }
+
+        /* أزرار التحكم داخل النظام وتختفي عند الطباعة */
+        .print-btn-container {
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            text-align: left;
+        }
+
+        .btn-print {
+            background-color: #111;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-print:hover {
+            background-color: #333;
+        }
+
+        /* 🖨️ سحر التحكم بالطباعة الـ CSS */
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+
+            .page-container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .print-btn-container {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="print-btn-container">
+        <button class="btn-print" onclick="window.print()">🖨️ إبدأ الطباعة / حفظ PDF</button>
+    </div>
+
+    <div class="page-container">
+
+        <table class="header-table">
+            <tr>
+                <td class="header-info">
+                    <strong>
+                        {% if "شركة" in request.user.company_name or "شـركة" in request.user.company_name %}
+                        {{ request.user.company_name }}
+                        {% else %}
+                        شركة {{ request.user.company_name }}
+                        {% endif %}
+                    </strong><br>
+                    رقم الهاتف: {{ request.user.phone_number|default:"غير متوفر" }}<br>
+                    العنوان: {{ request.user.address|default:"غير متوفر" }}
+                </td>
+                <td class="header-logo">
+                    {% if request.user.logo %}
+                    <img src="{{ request.user.logo.url }}" alt="شعار الشركة">
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        <div class="doc-title">
+            <h1>وثيقة الضمان الرقمي وعقد البيع</h1>
+        </div>
+
+        <div class="info-section">
+            <div class="section-title">أولاً: بيانات العميل والوثيقة</div>
+            <table class="data-table">
+                <tr>
+                    <th>اسم المشترك (الزبون):</th>
+                    <td>{{ contract.order.customer.first_name|default:"غير محدد" }}</td>
+                    <th>رقم العقد / الطلب:</th>
+                    <td>#{{ contract.order_id|default:contract.id }}</td>
+                </tr>
+                <tr>
+                    <th>تاريخ الإصدار:</th>
+                    <td>{{ contract.issued_at|date:"Y-m-d" }}</td>
+                    <th>نوع المنظومة:</th>
+                    <td>
+                        {% if contract.panels_serial and contract.inverter_serial and contract.batteries_serial %}
+                        منظومة طاقة شمسية متكاملة
+                        {% else %}
+                        تجهيز مواد منظومة
+                        ({% if contract.panels_serial %}ألواح {% endif %}{% if contract.inverter_serial %}انفيرتر
+                        {%endif %}
+                        {% if contract.batteries_serial %}بطاريات
+                        {% endif %})
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="info-section">
+            <div class="section-title">ثانياً: المعدات المشمولة بالضمان والأرقام التسلسلية</div>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">نوع القطعة</th>
+                        <th style="width: 45%;">الرقم التسلسلي (S/N)</th>
+                        <th style="width: 25%;">مدة الضمان</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if contract.panels_serial %}
+                    <tr>
+                        <td><strong>الألواح الشمسية</strong></td>
+                        <td>{{ contract.panels_serial }}</td>
+                        <td>{{ contract.panel_warranty_years }} سنة</td>
+                    </tr>
+                    {% endif %}
+
+                    {% if contract.inverter_serial %}
+                    <tr>
+                        <td><strong>انفيرتر المنظومة</strong></td>
+                        <td>{{ contract.inverter_serial }}</td>
+                        <td>{{ contract.inverter_warranty_years }} سنة</td>
+                    </tr>
+                    {% endif %}
+
+                    {% if contract.batteries_serial %}
+                    <tr>
+                        <td><strong>خلايا البطاريات</strong></td>
+                        <td>{{ contract.batteries_serial }}</td>
+                        <td>{{ contract.battery_warranty_years }} سنة</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-section">
+            <div class="section-title">ثالثاً: الشروط والأحكام العامة للضمان</div>
+            <div class="terms-text">
+                {% if contract.terms_conditions %}
+                {{ contract.terms_conditions }}
+                {% elif contract.legal_terms %}
+                {{ contract.legal_terms }}
+                {% else %}
+                1. يغطي هذا الضمان العيوب المصنعية للقطع المذكورة أعلاه طوال فترة الضمان المحددة لها.<br>
+                2. يخرج المنتج من الضمان في حال تعرضه لكسر، فتح خارجي، صدمات كهربائية غير مستقرة، أو سوء استخدام.<br>
+                3. يعتبر هذا الضمان تفعيلاً رقمياً وموثقاً بداخل قاعدة بيانات الشركة عبر رمز الاستجابة السريعة (QR).
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="signature-box">
+                <p>توقيع وختم الشركة المصدرة</p>
+                <div class="signature-line"></div>
+            </div>
+
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ request.scheme }}://{{ request.get_host }}/dashboard/contracts/verify/{{ contract.id }}/" alt="QR Code">
+
+            <div class="signature-box">
+                <p>توقيع ومصادقة الزبون</p>
+                <div class="signature-line"></div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

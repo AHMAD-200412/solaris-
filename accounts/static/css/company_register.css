@@ -1,0 +1,316 @@
+/* ==========================================
+   Company Register – Solaris Unified Theme
+   متجاوب بالكامل مع جميع الشاشات
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(231, 180, 94, .10), transparent 25%),
+        radial-gradient(circle at 85% 90%, rgba(231, 180, 94, .08), transparent 20%),
+        linear-gradient(180deg, #07111f, #050d18);
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    padding: 40px 0;
+    color: #fff;
+}
+
+/* ========== الخلفية المتحركة (الفقاعات) – محفوظة كما هي ========== */
+.background span {
+    position: absolute;
+    display: block;
+    width: 25px;
+    height: 25px;
+    background: rgba(231, 180, 94, 0.15);
+    animation: animate 25s linear infinite;
+    bottom: -150px;
+    border-radius: 50%;
+}
+
+.background span:nth-child(1) {
+    left: 10%;
+    width: 80px;
+    height: 80px;
+    animation-duration: 15s;
+}
+
+.background span:nth-child(2) {
+    left: 35%;
+    width: 40px;
+    height: 40px;
+    animation-duration: 18s;
+}
+
+.background span:nth-child(3) {
+    left: 65%;
+    width: 60px;
+    height: 60px;
+    animation-duration: 12s;
+}
+
+.background span:nth-child(4) {
+    left: 85%;
+    width: 100px;
+    height: 100px;
+    animation-duration: 20s;
+}
+
+@keyframes animate {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-1200px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ========== الحاوية الرئيسية ========== */
+.company-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 520px;
+    padding: 0 18px;
+}
+
+.company-box {
+    width: 100%;
+    padding: 40px 30px;
+    border-radius: 28px;
+    background: linear-gradient(180deg, #101d31, #091321);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    color: #fff;
+    animation: fadeUp 0.7s ease;
+}
+
+.company-box h1 {
+    text-align: center;
+    margin-bottom: 32px;
+    color: #e7b45e;
+    font-weight: 800;
+    font-size: 28px;
+}
+
+/* ========== حقول الإدخال ========== */
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 15px 50px 15px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    outline: none;
+    border-radius: 14px;
+    background: #0d1829;
+    color: #fff;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.input-box input:focus {
+    border-color: #e7b45e;
+    box-shadow: 0 0 0 2px rgba(231, 180, 94, 0.25);
+}
+
+.input-box i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e7b45e;
+    font-size: 18px;
+}
+
+/* ========== Textarea ========== */
+.textarea-box {
+    margin-bottom: 20px;
+}
+
+.textarea-box textarea {
+    width: 100%;
+    height: 120px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    outline: none;
+    border-radius: 14px;
+    background: #0d1829;
+    color: #fff;
+    padding: 15px;
+    resize: none;
+    font-size: 15px;
+}
+
+.textarea-box textarea:focus {
+    border-color: #e7b45e;
+    box-shadow: 0 0 0 2px rgba(231, 180, 94, 0.25);
+}
+
+/* ========== رفع الملفات ========== */
+.upload-box {
+    margin-bottom: 24px;
+}
+
+.upload-box label {
+    display: block;
+    margin-bottom: 10px;
+    color: #e7b45e;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.upload-box input {
+    width: 100%;
+    color: #fff;
+}
+
+/* ========== زر التسجيل ========== */
+.register-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #f2ca7b, #dca84c);
+    color: #1c1407;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.register-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(231, 180, 94, 0.3);
+}
+
+/* ========== تأثيرات ========== */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== حقول Django Forms العامة ========== */
+.form-input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    outline: none;
+    border-radius: 14px;
+    background: #0d1829;
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.form-input:focus {
+    border-color: #e7b45e;
+    box-shadow: 0 0 0 2px rgba(231, 180, 94, 0.25);
+}
+
+.form-textarea {
+    width: 100%;
+    height: 120px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    outline: none;
+    border-radius: 14px;
+    background: #0d1829;
+    color: #fff;
+    resize: none;
+    margin-bottom: 20px;
+}
+
+.form-file {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* ========== تنسيق القائمة المنسدلة للمحافظة ========== */
+.custom-select {
+    width: 100%;
+    padding: 15px 18px;
+    border-radius: 14px;
+    background: #0d1829;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: "Cairo";
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 20px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23e7b45e' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: left 15px center;
+}
+
+.custom-select:focus {
+    border-color: #e7b45e;
+    box-shadow: 0 0 0 2px rgba(231, 180, 94, 0.25);
+}
+
+/* ========== تجاوب الموبايل ========== */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 0;
+    }
+
+    .company-container {
+        padding: 0 12px;
+    }
+
+    .company-box {
+        padding: 30px 20px;
+        border-radius: 24px;
+    }
+
+    .company-box h1 {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    .input-box input {
+        padding: 14px 45px 14px 15px;
+        font-size: 14px;
+    }
+
+    .register-btn {
+        padding: 14px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 400px) {
+    .company-box {
+        padding: 24px 16px;
+    }
+
+    .company-box h1 {
+        font-size: 22px;
+    }
+}

@@ -1,0 +1,788 @@
+/*==================================================
+        Recommendation Page
+==================================================*/
+
+:root {
+
+    --bg: #07111f;
+    --bg2: #091a2d;
+
+    --text: #f4f7fb;
+    --muted: #aeb9c8;
+
+    --gold: #e7b45e;
+    --gold2: #f0c878;
+
+    --card: #0d1829;
+    --card2: #111f33;
+
+    --border: rgba(255, 255, 255, .08);
+
+    --shadow: 0 14px 40px rgba(0, 0, 0, .35);
+
+    --radius: 28px;
+
+    --transition: .35s ease;
+
+}
+
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Tajawal", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+
+}
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at 15% 10%, rgba(231, 180, 94, .10), transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(231, 180, 94, .08), transparent 18%),
+        linear-gradient(180deg, #07111f, #050c17);
+
+    color: var(--text);
+
+    overflow-x: hidden;
+
+}
+
+/*=========================
+Background Grid
+=========================*/
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: .08;
+
+    background-image:
+
+        linear-gradient(rgba(231, 180, 94, .08) 1px, transparent 1px),
+
+        linear-gradient(90deg, rgba(231, 180, 94, .08) 1px, transparent 1px);
+
+    background-size: 45px 45px;
+
+}
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+
+        linear-gradient(120deg,
+            transparent,
+            rgba(231, 180, 94, .06),
+            transparent);
+
+    animation: energyMove 8s linear infinite;
+
+}
+
+@keyframes energyMove {
+
+    from {
+
+        transform: translateX(-100%);
+
+    }
+
+    to {
+
+        transform: translateX(100%);
+
+    }
+
+}
+
+/*=========================
+App
+=========================*/
+
+.app {
+
+    width: 100%;
+    max-width: 480px;
+
+    margin: auto;
+
+    min-height: 100vh;
+
+    background:
+
+        linear-gradient(180deg,
+            rgba(10, 20, 35, .98),
+            rgba(6, 12, 20, .98));
+
+    position: relative;
+
+    overflow: hidden;
+
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+
+}
+
+/*=========================
+Glow
+=========================*/
+
+.app::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 280px;
+    height: 280px;
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(circle,
+            rgba(231, 180, 94, .18),
+            transparent 70%);
+
+    top: -120px;
+    right: -100px;
+
+    filter: blur(25px);
+
+}
+
+/*=========================
+Screen
+=========================*/
+
+.screen {
+
+    position: relative;
+
+    z-index: 5;
+
+    padding: 20px 18px 130px;
+
+}
+
+/*=========================
+Topbar
+=========================*/
+
+.topbar {
+
+    display: flex;
+
+    justify-content: flex-start;
+
+    margin-bottom: 25px;
+
+}
+
+.circle-btn {
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, .08);
+
+    background: rgba(255, 255, 255, .04);
+
+    color: #fff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: .35s;
+
+}
+
+.circle-btn:hover {
+
+    border-color: var(--gold);
+
+    color: var(--gold2);
+
+    transform: translateY(-3px);
+
+}
+
+/*=========================
+Hero
+=========================*/
+
+.hero {
+
+    text-align: center;
+
+    margin-bottom: 35px;
+
+    position: relative;
+
+}
+
+.hero-glow {
+
+    position: absolute;
+
+    width: 210px;
+    height: 210px;
+
+    left: 50%;
+    top: 10px;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+
+        radial-gradient(circle,
+            rgba(231, 180, 94, .22),
+            transparent 70%);
+
+    filter: blur(25px);
+
+}
+
+.hero-icon {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 120px;
+    height: 120px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border: 2px solid rgba(231, 180, 94, .25);
+
+    background:
+
+        linear-gradient(180deg,
+            #13233a,
+            #091321);
+
+    box-shadow:
+
+        0 0 30px rgba(231, 180, 94, .15);
+
+}
+
+.hero-icon i {
+
+    font-size: 55px;
+
+    color: var(--gold2);
+
+}
+
+.hero h1 {
+
+    margin-top: 20px;
+
+    font-size: 30px;
+
+    font-weight: 800;
+
+}
+
+.hero p {
+
+    margin-top: 15px;
+
+    line-height: 2;
+    color: var(--muted);
+
+    font-size: 15px;
+
+}
+
+/*=========================================
+    Recommendation Card
+=========================================*/
+
+.recommendation-card {
+    margin-top: 26px;
+    padding: 24px;
+    border-radius: 28px;
+    background: linear-gradient(180deg,
+            #101d31,
+            #091321);
+    border: 1px solid rgba(255, 255, 255, .06);
+    box-shadow: var(--shadow);
+    animation: fadeUp .7s ease both;
+}
+
+.hidden {
+    display: none;
+}
+
+/*=========================================
+    Card Header
+=========================================*/
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.card-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(231, 180, 94, .08);
+    border: 1px solid rgba(231, 180, 94, .18);
+    flex-shrink: 0;
+}
+
+.card-icon i {
+    font-size: 26px;
+    color: var(--gold2);
+}
+
+.card-header h2 {
+    color: #fff;
+    font-size: 21px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.card-header span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/*=========================================
+    Source Options
+=========================================*/
+
+.source-options {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.source-card {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    padding: 24px 20px;
+    border-radius: 22px;
+    background: #0d1829;
+    border: 1px solid rgba(255, 255, 255, .06);
+    text-align: right;
+    transition: .35s;
+    color: #fff;
+}
+
+.source-card i {
+    font-size: 30px;
+    color: var(--gold2);
+    margin-bottom: 16px;
+}
+
+.source-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.source-card p {
+    color: #bfc9d6;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.source-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(231, 180, 94, .30);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, .30);
+}
+
+/*=========================================
+    Summary Grid
+=========================================*/
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.summary-box {
+    background: #0d1829;
+    border: 1px solid rgba(255, 255, 255, .06);
+    border-radius: 18px;
+    padding: 18px 10px;
+    text-align: center;
+}
+
+.summary-box span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.summary-box strong {
+    font-size: 22px;
+    color: var(--gold2);
+    font-weight: 800;
+}
+
+/*=========================================
+    Recommendation Modes
+=========================================*/
+
+.mode-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.mode-option {
+    padding: 20px;
+    border-radius: 22px;
+    background: #0d1829;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: .35s;
+    text-align: center;
+}
+
+.mode-option i {
+    font-size: 28px;
+    color: var(--gold2);
+    margin-bottom: 14px;
+}
+
+.mode-option h3 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.mode-option p {
+    color: #bfc9d6;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.mode-option:hover {
+    transform: translateY(-5px);
+    border-color: rgba(231, 180, 94, .30);
+}
+
+.mode-option.selected {
+    border-color: var(--gold);
+    background: rgba(231, 180, 94, .08);
+    box-shadow: 0 0 25px rgba(231, 180, 94, .15);
+}
+
+/*=========================================
+        Buttons
+=========================================*/
+
+.gold-btn,
+.outline-btn {
+
+    width: 100%;
+
+    height: 56px;
+
+    border-radius: 18px;
+
+    border: none;
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    transition: .35s;
+
+    margin-top: 20px;
+
+}
+
+.gold-btn {
+
+    color: #1c1407;
+
+    background: linear-gradient(180deg,
+            #f2ca7b,
+            #dca84c);
+
+    box-shadow:
+        0 10px 25px rgba(231, 180, 94, .18);
+
+}
+
+.gold-btn:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 30px rgba(231, 180, 94, .28);
+
+}
+
+.outline-btn {
+
+    background: transparent;
+
+    color: var(--gold2);
+
+    border: 1px solid rgba(231, 180, 94, .35);
+
+}
+
+.outline-btn:hover {
+
+    background: rgba(231, 180, 94, .08);
+
+    transform: translateY(-4px);
+
+}
+
+.gold-btn i,
+.outline-btn i {
+
+    font-size: 15px;
+
+}
+
+.gold-btn:active,
+.outline-btn:active {
+
+    transform: scale(.97);
+
+}
+
+/* ============================
+   Mobile Optimization
+============================ */
+
+@media (max-width:480px) {
+
+    .screen {
+        padding: 18px 14px 110px;
+    }
+
+    .study-card {
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .card-header {
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .card-header h2 {
+        font-size: 24px;
+    }
+
+    .card-header p {
+        font-size: 13px;
+    }
+
+    .card-icon {
+        width: 58px;
+        height: 58px;
+    }
+
+    .result-grid,
+    .calculator-grid {
+        gap: 12px;
+    }
+
+    .result-box,
+    .calc-box {
+        padding: 16px 10px;
+        min-height: 135px;
+    }
+
+    .result-box i,
+    .calc-box i {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .result-box strong,
+    .calc-box strong {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+
+    .result-box span,
+    .calc-box span {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .summary-value {
+        font-size: 28px;
+        padding: 18px;
+    }
+
+    .gold-btn {
+        height: 54px;
+        font-size: 15px;
+    }
+
+}
+
+/* ========== الوضع الفاتح ========== */
+body.light-mode {
+    background: #f5f7fb !important;
+    color: #1d2939 !important;
+}
+
+body.light-mode .app {
+    background: #ffffff !important;
+}
+
+body.light-mode .recommendation-card,
+body.light-mode .card,
+body.light-mode .result-card,
+body.light-mode .order-card,
+body.light-mode .menu-card,
+body.light-mode .package-card {
+    background: #ffffff !important;
+    border-color: #e0e4ea !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-mode .card-header h2,
+body.light-mode .order-info h2,
+body.light-mode .package-header h2 {
+    color: #1d2939 !important;
+}
+
+body.light-mode .card-header span,
+body.light-mode .order-company,
+body.light-mode .package-header span,
+body.light-mode .muted-text,
+body.light-mode .text-muted {
+    color: #4b5563 !important;
+}
+
+body.light-mode .gold-btn {
+    background: linear-gradient(180deg, #f2ca7b, #dca84c) !important;
+    color: #1c1407 !important;
+}
+
+body.light-mode .outline-btn {
+    color: #b45309 !important;
+    border-color: #e7b45e !important;
+}
+
+body.light-mode .modal-overlay {
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+body.light-mode .modal {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #1d2939 !important;
+}
+
+body.light-mode .modal h3 {
+    color: #b45309 !important;
+}
+
+body.light-mode .modal p {
+    color: #4b5563 !important;
+}
+
+body.light-mode .modal-input {
+    background: #eef3fa !important;
+    color: #1d2939 !important;
+    border-color: #dde3ec !important;
+}
+
+body.light-mode .modal-btn.cancel {
+    background: #e5e7eb !important;
+    color: #1d2939 !important;
+}
+
+body.light-mode .menu-item {
+    color: #1d2939 !important;
+}
+
+body.light-mode .menu-item:hover {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
+body.light-mode .section-title {
+    color: #b45309 !important;
+}
+
+body.light-mode .order-status.pending {
+    background: rgba(231, 180, 94, 0.1) !important;
+    color: #b45309 !important;
+}
+
+/* خلفية الجسم والشبكة */
+body.light-mode::before,
+body.light-mode .app::before {
+    display: none;
+}

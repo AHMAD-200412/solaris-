@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل شركة</title>
+
+    <link rel="stylesheet" href="{% static 'css/company_register.css' %}">
+
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="background">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="company-container">
+        <div class="company-box">
+            <h1>
+                <i class="fa-solid fa-building"></i>
+                تسجيل شركة
+            </h1>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger"
+                    style="color: #ff4a4a; margin-bottom: 15px; text-align: center; font-family: 'Cairo';">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <div class="input-box">
+                    {{ form.company_name }}
+                    <i class="fa-solid fa-building"></i>
+                </div>
+
+                <div class="input-box">
+                    {{ form.email }}
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+
+                <div class="input-box">
+                    {{ form.phone }}
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+
+                <div class="input-select-box" style="margin-bottom: 20px; position: relative; text-align: right;">
+                    <label
+                        style="color: #cbd5e1; display: block; margin-bottom: 8px; font-size: 14px; font-family: 'Cairo';">
+                        <i class="fa-solid fa-map-pin" style="margin-left: 5px; color: #e1b12c;"></i> اختر محافظة مقر
+                        الشركة الرئيسي:
+                    </label>
+                    {{ form.governorate }}
+                </div>
+
+                <div class="input-box">
+                    {{ form.address }}
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+
+                <div class="gps-box" style="margin-bottom: 25px; text-align: center;">
+                    <button type="button" id="getLocationBtn"
+                        style="width: 100%; padding: 12px; background: linear-gradient(135deg, #e1b12c, #f5cd79); color: #050a12; border: none; border-radius: 8px; font-weight: bold; font-family: 'Cairo'; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(225, 177, 44, 0.2);">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span id="gpsBtnText">📍 حدد موقع الشركة الحالي (مقركم الآن)</span>
+                    </button>
+                    {{ form.gps_coordinates }}
+                    <small
+                        style="color: #94a3b8; display: block; margin-top: 5px; font-size: 11px; font-family: 'Cairo';">
+                        اضغط على الزر أثناء تواجدك في مقر الشركة ليتم حفظ موقعكم على الخرائط بدقة.
+                    </small>
+                </div>
+
+                <div class="input-box">
+                    {{ form.password }}
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+
+                <div class="input-box">
+                    {{ form.description }}
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+
+                <div class="input-box file-box">
+                    <label class="form-label">
+                        <i class="fa-solid fa-image"></i>
+                        شعار الشركة
+                    </label>
+                    {{ form.logo }}
+                    <i class="fa-solid fa-image"></i>
+                </div>
+
+                <div class="input-box file-box">
+                    <label class="form-label">
+                        <i class="fa-solid fa-id-card"></i>
+                        السجل التجاري
+                    </label>
+                    {{ form.commercial_license }}
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+
+                <button type="submit" class="register-btn">
+                    تسجيل الشركة
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'js/company_register.js' %}"></script>
+</body>
+
+</html>

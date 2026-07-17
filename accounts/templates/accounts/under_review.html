@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحساب قيد المراجعة</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/under_review.css' %}">
+</head>
+<body>
+
+    <div class="review-box" id="reviewData" data-user-id="{{ user_id }}" data-dashboard-url="/dashboard/company/">
+        <i class="fa-solid fa-hourglass-half icon"></i>
+        <h2>مرحباً بشركة {{ company_name }}</h2>
+        <p>تم تأكيد بريدك الإلكتروني بنجاح!<br>حسابك الآن قيد المراجعة من قبل الإدارة. سيتم توجيهك تلقائياً بمجرد الموافقة على أوراقك عادةً تتم الموافقة خلال 24 ساعة.  يرجى التواصل معا الادارة عبر الرقم 07870105877</p>
+        <div class="loader"></div>
+    </div>
+
+    <script src="{% static 'js/under_review.js' %}"></script>
+</body>
+</html>

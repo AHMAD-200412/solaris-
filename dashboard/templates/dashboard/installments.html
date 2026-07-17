@@ -1,0 +1,173 @@
+{% extends 'dashboard/company_base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}إدارة الاقساط | {{ company.company_name|default:"SolarLQ" }}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/installments.css' %}">
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content" id="mainContent">
+
+    <div class="top-navbar">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+        <div class="page-title">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>إدارة الأقساط والتمويل</span>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-top">
+                <i class="fas fa-wallet" style="background: rgba(16, 185, 129, 0.12); color: #10b981;"></i>
+                <span class="stat-title">إجمالي خطط التقسيط</span>
+            </div>
+            <div class="stat-value">{{ plans_count|default:"0" }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <i class="fas fa-clock" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;"></i>
+                <span class="stat-title">أقساط قيد الانتظار</span>
+            </div>
+            <div class="stat-value">{{ pending_count|default:"0" }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <i class="fas fa-exclamation-circle" style="background: rgba(239, 68, 68, 0.12); color: #ef4444;"></i>
+                <span class="stat-title">دفعات متأخرة</span>
+            </div>
+            <div class="stat-value">{{ late_count|default:"0" }}</div>
+        </div>
+    </div>
+
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInstallments" placeholder="ابحث باسم المشترك أو رقم الطلب...">
+    </div>
+    <button class="btn-add" onclick="openModal()">
+        <i class="fas fa-plus"></i> إضافة مشترك جديد (مباشر)
+    </button>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>إضافة مشترك جديد</h2>
+            <form method="POST" action="{% url 'add_offline_installment' %}">
+                {% csrf_token %}
+                <input type="text" name="customer_name" placeholder="اسم المشترك" required>
+                <input type="text" name="phone_number" placeholder="رقم هاتف الزبون (واتساب)" required>
+                <input type="text" name="purchased_items" placeholder="تفاصيل المشتريات (مثال: بطارية ليثيوم)" required>
+                <input type="number" name="total_amount" placeholder="المبلغ الكلي ($)" required>
+                <input type="number" name="months" placeholder="عدد الأشهر" required>
+                
+                <button type="submit" class="btn-save">حفظ العملية</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDetailsModal()">&times;</span>
+            <h2><i class="fas fa-file-invoice"></i> كشف حساب الأقساط الكامل</h2>
+
+            <div class="customer-info-box">
+                <p><strong>اسم المشترك:</strong> <span id="detCustomerName"></span></p>
+                <p><strong>رقم الهاتف:</strong> <span id="detCustomerPhone"></span></p>
+                <p><strong>تفاصيل المشتريات:</strong> <span id="detPurchasedItems"></span></p> 
+                <p><strong>المبلغ الكلي للخطة:</strong> $<span id="detTotalAmount"></span></p>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="installments-table"><thead>
+                        <tr>
+                            <th>رقم القسط</th>
+                            <th>المبلغ المستحق</th>
+                            <th>تاريخ الاستحقاق</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailsTableBody"></tbody>
+                </table>
+            </div>
+
+            <div id="deleteActionContainer" class="delete-container"></div>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="installments-table">
+            <thead>
+                <tr>
+                    <th>رقم الطلب</th>
+                    <th>المشترك</th>
+                    <th>رقم الهاتف</th>
+                    <th>رقم القسط</th>
+                    <th>المبلغ المستحق</th>
+                    <th>تاريخ الاستحقاق</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr class="installment-row" data-customer="{{ payment.plan.order.customer.first_name }}"
+                    data-order="{{ payment.plan.order.id }}" data-phone="{{ payment.plan.order.phone_number }}">
+
+                    <td>#{{ payment.plan.order.id }}</td>
+                    <td>{{ payment.plan.order.customer.first_name }}</td>
+                    <td>{{ payment.plan.order.phone_number|default:"-" }}</td>
+                    <td>الشهر {{ payment.month_number }}</td>
+                    <td>{{ payment.amount|full_money }}</td>
+                    <td>{{ payment.due_date|date:"Y-m-d" }}</td>
+
+                    <td>
+                        {% if payment.status == 'paid' %}
+                        <span class="status-badge paid"><i class="fas fa-check-circle"></i> مدفوع</span>
+                        {% elif payment.status == 'late' %}
+                        <span class="status-badge late"><i class="fas fa-exclamation-circle"></i> متأخر</span>
+                        {% else %}
+                        <span class="status-badge pending"><i class="fas fa-clock"></i> قيد الانتظار</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <div class="actions-wrapper">
+                            <a href="javascript:void(0);" class="btn-action btn-view" title="عرض التفاصيل"
+                                onclick="openDetailsModal('{{ payment.plan.id }}')">
+                                <i class="fas fa-eye"></i>
+                            </a>
+
+                            {% if payment.status != 'paid' %}
+                            <a href="{% url 'collect_installment' payment.id %}" class="btn-action btn-collect"
+                                title="قبض الدفعة"
+                                onclick="return confirm('هل أنت متأكد من استلام وقبض مبلغ هذا القسط؟')">
+                                <i class="fas fa-cash-register"></i> قبض
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="empty-table-notice">
+                        <i class="fas fa-folder-open"></i>
+                        لا توجد دفعات أقساط مسجلة حالياً.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/installments.js' %}"></script>
+{% endblock %}

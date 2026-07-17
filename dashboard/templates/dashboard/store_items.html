@@ -1,0 +1,170 @@
+{% extends 'dashboard/company_base.html' %}
+{% load l10n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}المخزن والقطع | {{ company.company_name|default:"SolarLQ" }}{% endblock %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard_shared.css' %}">
+<link rel="stylesheet" href="{% static 'css/store_items.css' %}">
+{% endblock %}
+
+{% block page_content %}
+<main class="main-content" id="mainContent">
+    <header class="top-navbar">
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </div>
+        <div class="welcome-text">
+            <h2>المخزن والقطع 📦</h2>
+        </div>
+    </header>
+
+    <div class="store-controls">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن قطعة...">
+        </div>
+        <button type="button" class="btn-add-item" onclick="openAddModal()">
+            <i class="fa-solid fa-plus"></i> إضافة قطعة جديدة
+        </button>
+    </div>
+
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-image">
+
+                {% if product.image %}
+
+                <span onclick="openImageModal('{{ product.image.url }}')">
+                    <i class="fa-solid fa-expand"></i>
+                </span>
+
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+
+                {% else %}
+
+                <i class="fa-solid fa-solar-panel"></i>
+
+                {% endif %}
+
+                <span class="category-badge">
+                    {{ product.category|default:"قطعة" }}
+                </span>
+
+            </div>
+            <div class="product-details">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="price">{{ product.price|smart_money }}</p>
+                <div class="stock-info">
+                    <span><i class="fa-solid fa-cubes"></i> الكمية: {{ product.stock|default:"غير محدد" }}</span>
+                </div>
+            </div>
+            <div class="product-actions">
+                <span style="cursor: pointer;" onclick="openEditModal('{{ product.id }}')" class="btn-edit">
+                    <i class="fa-solid fa-pen-to-square"></i> تعديل
+                </span>
+                <a href="{% url 'delete_product' product.id %}" class="btn-delete"
+                    onclick="return confirm('هل أنت متأكد من حذف هذه القطعة؟');">
+                    <i class="fa-solid fa-trash"></i> حذف
+                </a>
+            </div>
+        </div>
+
+        <div id="editModal-{{ product.id }}" class="custom-edit-modal" style="display: none;">
+            <div class="edit-modal-content">
+                <span class="close-edit-modal" onclick="closeEditModal('{{ product.id }}')">&times;</span>
+                <h3>📝 تعديل بيانات القطعة</h3>
+                <hr>
+                <form method="POST" action="{% url 'edit_product' product.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>اسم القطعة أو المنتج</label>
+                        <input type="text" name="name" value="{{ product.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>السعر </label>
+                        <input type="number" step="0.01" name="price" value="{{ product.price|smart_money }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الكمية المتوفرة</label>
+                        <input type="number" name="stock" value="{{ product.stock }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>تغيير الصورة (اختياري)</label>
+                        <input type="file" name="image" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn-submit-edit">حفظ التعديلات ✨</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <i class="fa-solid fa-box-open" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 15px;"></i>
+            <p>المخزن فارغ حالياً. قم بإضافة قطع جديدة لتبدأ.</p>
+        </div>
+        {% endfor %}
+
+        <div id="noResultsMessage" class="empty-state"
+            style="display: none; grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <i class="fa-solid fa-magnifying-glass-minus"
+                style="font-size: 3rem; color: #cbd5e1; margin-bottom: 15px;"></i>
+            <p>عذراً، هذا المنتج غير متوفر أو لم يتم إضافته بعد!</p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="productModal" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-plus"></i> إضافة قطعة جديدة للمخزن</h3>
+                <button type="button" class="close-modal" id="closeModalBtn" onclick="closeAddModal()">&times;</button>
+            </div>
+            <form method="POST" action="{% url 'company_store' %}" enctype="multipart/form-data" class="modal-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>اسم القطعة أو المنتج</label>
+                    <input type="text" name="name" required placeholder="مثال: لوح طاقة شمسية 550 واط">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>السعر ($)</label>
+                        <input type="number" step="0.01" name="price" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>الكمية المتوفرة</label>
+                        <input type="number" name="stock" required placeholder="مثال: 50">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>فئة المنتج</label>
+                    <select name="category" required>
+                        <option value="" disabled selected>اختر الفئة...</option>
+                        <option value="ألواح شمسية">ألواح شمسية</option>
+                        <option value="انفيرترات">انفيرترات (Inverters)</option>
+                        <option value="بطاريات">بطاريات</option>
+                        <option value="منظومات تثبيت">هياكل ومنظومات تثبيت</option>
+                        <option value="ملحقات">أسلاك وملحقات</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>صورة المنتج (اختياري)</label>
+                    <input type="file" name="image" accept="image/*" class="file-input">
+                </div>
+                <button type="submit" class="btn-submit-form">حفظ القطعة ✨</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="customImageModal" class="img-popup-modal" style="display: none;">
+        <span class="close-popup" onclick="closeImageModal()">&times;</span>
+        <img class="popup-modal-content" id="popupExpandedImg">
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard_shared.js' %}"></script>
+<script src="{% static 'js/store_items.js' %}"></script>
+{% endblock %}

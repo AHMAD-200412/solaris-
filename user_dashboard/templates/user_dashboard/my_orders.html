@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلباتي - Solaris</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/my_orders.css' %}">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+</head>
+
+<body>
+    <div class="app">
+        <div class="screen">
+            <div class="page-header">
+                <a href="{% url 'account-user' %}" class="back-btn"><i class="fa-solid fa-arrow-right"></i></a>
+                <h1>طلباتي</h1>
+            </div>
+
+            {% if orders %}
+            <div class="orders-list">
+                {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-icon">
+                            {% if order.package and order.package.package_image %}
+                            <img src="{{ order.package.package_image.url }}" alt="{{ order.package.title }}">
+                            {% else %}
+                            <i class="fa-solid fa-solar-panel"></i>
+                            {% endif %}
+                        </div>
+                        <div class="order-info">
+                            <h2>{{ order.package.title|default:"طلب بدون باقة" }}</h2>
+                            <span class="order-company">{{ order.company.company_name }}</span>
+                        </div>
+                        <div class="order-status {{ order.status }}">
+                            {{ order.get_status_display }}
+                        </div>
+                    </div>
+                    <div class="order-details">
+                        <div class="detail-item">
+                            <span>التاريخ</span>
+                            <strong>{{ order.created_at|date:"Y/m/d" }}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>المبلغ</span>
+                            <strong>{{ order.formatted_price }}</strong>
+                        </div>
+                        {% if order.phone_number %}
+                        <div class="detail-item">
+                            <span>هاتف شركة</span>
+                            <strong>{{ order.phone_number }}</strong>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if order.installation_address %}
+                    <div class="order-address">
+                        <i class="fa-solid fa-location-dot"></i> {{ order.installation_address }}
+                    </div>
+                    {% endif %}
+
+                    <div class="order-actions">
+                        {% if order.status == 'pending' or order.status == 'survey' or order.status == 'preparing' %}
+                        <button class="cancel-order-btn" data-order-id="{{ order.id }}">
+                            <i class="fa-solid fa-xmark"></i> إلغاء الطلب
+                        </button>
+                        {% endif %}
+
+                        {% if order.status == 'canceled' or order.status == 'completed' %}
+                        <button class="delete-order-btn" data-order-id="{{ order.id }}">
+                            <i class="fa-solid fa-trash"></i> حذف من السجل
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fa-solid fa-box-open"></i>
+                <h2>لا توجد طلبات حالياً</h2>
+                <p>عند طلبك لإحدى الباقات، ستظهر هنا.</p>
+                <a href="{% url 'marketplace' %}" class="gold-btn">تصفح الباقات</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- مودال إلغاء الطلب -->
+    <div id="cancelOrderModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>إلغاء الطلب</h3>
+            <p>هل أنت متأكد من إلغاء هذا الطلب؟</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="cancelOrderCancel">تراجع</button>
+                <button class="modal-btn danger" id="confirmCancelBtn">إلغاء الطلب</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال حذف الطلب -->
+    <div id="deleteOrderModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>حذف الطلب</h3>
+            <p>هل أنت متأكد من حذف هذا الطلب نهائياً من سجلك؟</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="deleteOrderCancel">تراجع</button>
+                <button class="modal-btn danger" id="confirmDeleteOrderBtn">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+        let orderToModify = null;
+    </script>
+    <script src="{% static 'user_dashboard/js/my_orders.js' %}"></script>
+</body>
+
+</html>

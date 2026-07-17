@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>اختر نوع الحساب | SolarLQ</title>
+
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+    <link rel="stylesheet" href="/static/css/choose_account_type.css">
+</head>
+
+<body>
+
+    <div class="background-glow"></div>
+
+    <div class="container">
+        <h2>إنشاء حساب جديد</h2>
+        <p>يرجى تحديد نوع الحساب المناسب لك للبدء في استخدام المنصة</p>
+
+        <div class="options-wrapper">
+            <a href="/accounts/register/user/" class="option-card" id="userCard">
+                <div class="option-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="option-info">
+                    <div class="option-title">حساب مستخدم (أفراد)</div>
+                    <div class="option-desc">لحساب الأحمال الشمسية، واستكشاف العروض والمنتجات.</div>
+                </div>
+            </a>
+
+            <a href="/accounts/register/company/" class="option-card" id="companyCard">
+                <div class="option-icon">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <div class="option-info">
+                    <div class="option-title">حساب شركة / مزوّد خدمة</div>
+                    <div class="option-desc">لرفع منتجات الطاقة الشمسية، تقديم عروض الأسعار، وإدارة المشاريع.</div>
+                </div>
+            </a>
+        </div>
+
+        <a href="/accounts/login/" class="back-to-login">
+            <i class="fa-solid fa-arrow-right"></i> العودة لتسجيل الدخول
+        </a>
+    </div>
+
+    <script src="/static/js/choose_account_type.js"></script>
+</body>
+
+</html>

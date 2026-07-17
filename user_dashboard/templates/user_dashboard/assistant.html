@@ -1,0 +1,414 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>مساعد الطاقة الذكية</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/bottom_nav.css' %}">
+    <link rel="stylesheet" href="{% static 'user_dashboard/css/assistant.css' %}">
+
+</head>
+
+<body class="assistant-body">
+
+    <div class="assistant-app">
+
+        <div class="assistant-screen">
+
+            <!-- ========================= -->
+            <!-- Top Bar -->
+            <!-- ========================= -->
+
+            <header class="topbar">
+
+                <button class="circle-btn" id="backBtn">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+                <button class="circle-btn" id="historyBtn">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                </button>
+
+            </header>
+
+
+            <!-- ========================= -->
+            <!-- Hero -->
+            <!-- ========================= -->
+
+            <section class="assistant-hero">
+
+                <div class="hero-glow"></div>
+
+                <div class="robot-box">
+
+                    <div class="robot-circle">
+
+                        <i class="fa-solid fa-robot"></i>
+
+                    </div>
+
+                </div>
+
+                <h1>
+
+                    مساعد الطاقة الذكية
+
+                </h1>
+
+                <p>
+
+                    اختر أفضل منظومة طاقة شمسية تناسب استهلاكك،
+                    أو تحدث مع المساعد الذكي للحصول على إجابات
+                    دقيقة حول كل ما يتعلق بالطاقة الشمسية.
+
+                </p>
+
+            </section>
+
+
+            <!-- ========================= -->
+            <!-- Recommendation Card -->
+            <!-- ========================= -->
+
+            <section class="assistant-card recommendation-card">
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+
+                        <i class="fa-solid fa-solar-panel"></i>
+
+                    </div>
+
+                    <div class="card-title">
+
+                        <h2>
+
+                            اختيار أفضل منظومة
+
+                        </h2>
+
+                        <span>
+
+                            تحليل ذكي لاستهلاكك
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+
+                        سيقوم مساعد الطاقة بتحليل استهلاكك
+                        اليومي، ثم يقارن جميع الباقات الموجودة
+                        داخل النظام ويختار الأنسب لك حسب
+                        احتياجك وميزانيتك.
+
+                    </p>
+
+                    <ul class="feature-list">
+
+                        <li>
+
+                            <i class="fa-solid fa-check"></i>
+
+                            تحليل الأحمال الكهربائية
+
+                        </li>
+
+                        <li>
+
+                            <i class="fa-solid fa-check"></i>
+
+                            اختيار أفضل باقة
+
+                        </li>
+
+                        <li>
+
+                            <i class="fa-solid fa-check"></i>
+
+                            دراسة جدوى مالية
+
+                        </li>
+
+                        <li>
+
+                            <i class="fa-solid fa-check"></i>
+
+                            حساب التوفير الشهري
+
+                        </li>
+
+                    </ul>
+
+                    <button class="gold-btn" id="startRecommendation" data-url="{% url 'recmmendation' %}">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        حلول المنظومة المناسبة
+                    </button>
+
+                </div>
+
+            </section>
+            <!-- ========================= -->
+            <!-- AI Chat Card -->
+            <!-- ========================= -->
+
+            <section class="assistant-card chat-card">
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                    </div>
+
+                    <div class="card-title">
+
+                        <h2>
+
+                            تحدث مع مساعد الطاقة
+
+                        </h2>
+
+                        <span>
+
+                            اسأل... وسنجيبك فوراً
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+
+                        يمكنك التحدث مع مساعد الطاقة الذكية
+                        وسؤاله عن البطاريات، الإنفرترات،
+                        الألواح الشمسية، الصيانة،
+                        الأعطال، وطريقة اختيار المنظومة
+                        المناسبة لك.
+
+                    </p>
+
+                    <div class="chat-topics">
+
+                        <span class="topic-chip">
+                            🔋 البطاريات
+                        </span>
+
+                        <span class="topic-chip">
+                            ☀️ الألواح
+                        </span>
+
+                        <span class="topic-chip">
+                            ⚡ الإنفرترات
+                        </span>
+
+                        <span class="topic-chip">
+                            🏠 المنازل
+                        </span>
+
+                        <span class="topic-chip">
+                            💰 التوفير
+                        </span>
+
+                        <span class="topic-chip">
+                            🛠️ الصيانة
+                        </span>
+
+                    </div>
+
+                    <a href="{% url 'assistant' %}" class="outline-btn" id="startChat">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>ابدأ المحادثة</span>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- ========================= -->
+            <!-- Features -->
+            <!-- ========================= -->
+
+            <section class="assistant-features">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        لماذا تستخدم مساعد الطاقة؟
+
+                    </h2>
+
+                    <p>
+
+                        صممنا المساعد ليكون مهندساً افتراضياً
+                        يساعدك على اتخاذ القرار الصحيح.
+
+                    </p>
+
+                </div>
+
+                <div class="features-grid">
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+
+                            <i class="fa-solid fa-brain"></i>
+
+                        </div>
+
+                        <h3>
+
+                            تحليل ذكي
+
+                        </h3>
+
+                        <p>
+
+                            يحلل استهلاك الكهرباء ويقترح
+                            أفضل منظومة تناسب احتياجك.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                        </div>
+
+                        <h3>
+
+                            دراسة جدوى
+
+                        </h3>
+
+                        <p>
+
+                            يحسب التوفير الشهري والسنوي
+                            وفترة استرجاع تكلفة المنظومة.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+
+                            <i class="fa-solid fa-lightbulb"></i>
+
+                        </div>
+
+                        <h3>
+
+                            نصائح احترافية
+
+                        </h3>
+
+                        <p>
+
+                            يقدم توصيات هندسية تساعدك
+                            في تحسين أداء منظومتك.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </div>
+
+                        <h3>
+
+                            توصيات موثوقة
+
+                        </h3>
+
+                        <p>
+
+                            يعتمد على بيانات الباقات
+                            الموجودة داخل النظام وليس
+                            على التخمين.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ========================= -->
+            <!-- Footer -->
+            <!-- ========================= -->
+
+            <footer class="assistant-footer">
+
+                <div class="footer-icon">
+
+                    <i class="fa-solid fa-sun"></i>
+
+                </div>
+
+                <p>
+
+                    مساعد يعتمد على بيانات منظومات الطاقة الشمسية داخل التطبيق
+                    لمساعدتك في اختيار الحل المناسب لك.
+
+                </p>
+
+            </footer>
+
+        </div>
+        <!-- End Screen -->
+
+    </div>
+    <!-- End App -->
+    <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
+    {% include 'user_dashboard/bottom_nav.html' %}
+    <script src="{% static 'user_dashboard/js/recmmendation.js' %}"></script>
+</body>
+
+</html>
