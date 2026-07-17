@@ -69,7 +69,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'SolarLQ.urls'
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://solaris-production-157c.up.railway.app",
+]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
