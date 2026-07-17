@@ -85,11 +85,12 @@ class CustomUser(AbstractUser):
      )  
     )
     
-    commercial_license = models.ImageField(
+    commercial_license = models.ImageField(ResizedImageField(
         upload_to='commercial_licenses/', 
         size=[600, 400],            # أقصى أبعاد (سيتناسب تلقائياً)
         quality=75,                 # جودة ممتازة للويب
-        force_format='WEBP', 
+        force_format='WEBP',
+     ) 
     )
     
     is_approved = models.BooleanField(
