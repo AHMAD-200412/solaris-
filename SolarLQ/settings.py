@@ -177,3 +177,18 @@ AWS_S3_VERIFT=True
 # تخزين الميديا في B2
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com/"
+# ========== تحسينات الأداء (Performance) ==========
+
+# 1. ضغط الاستجابات (Gzip) - يقلل حجم الملفات المنقولة عبر الشبكة
+MIDDLEWARE.insert(1, 'django.middleware.gzip.GZipMiddleware')
+
+# 2. إعدادات الكاش (التخزين المؤقت) - يقلل الضغط على الخادم ويُسرّع الاستجابة
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-solaris-cache',
+    }
+}
+
+# 3. جعل الملفات الثابتة تُخزّن في متصفح الزبون لمدة 30 يومًا
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
