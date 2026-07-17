@@ -174,4 +174,4 @@ AWS_S3_VERIFT=True
 
 # تخزين الميديا في B2
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.us-west-002.backblazeb2.com/"
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com/"
