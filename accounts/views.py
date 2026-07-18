@@ -400,11 +400,13 @@ def forgot_password_view(request):
         if user_record:
             # توليد رمز عشوائي من 6 أرقام
             otp_code = str(random.randint(100000, 999999))
+            print("OTP GENERATED:", otp_code)
             
             # حفظ الحالات بالـ Session لصفحة الـ OTP والـ Reset
             request.session['is_password_reset'] = True
             request.session['reset_email'] = email
             request.session['reset_otp'] = otp_code
+            print("OTP SAVED:", request.session['reset_otp'])
             
             # استخدام الاسم المناسب: للشركات نفضل company_name، ثم الاسم الشخصي، ثم username
             if user_record.company_name:
