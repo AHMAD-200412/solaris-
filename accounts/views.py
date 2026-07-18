@@ -205,6 +205,12 @@ def verify_otp(request):
 
     if request.method == 'POST':
         user_otp = str(request.POST.get('otp', '')).strip()
+        return JsonResponse({
+          "user_otp": user_otp,
+          "session_otp": request.session.get("otp"),
+          "reset_otp": request.session.get("reset_otp"),
+          "is_password_reset": request.session.get("is_password_reset"),
+        })
         
         # 🔍 نتحقق هل المستخدم جاء من صفحة "نسيت كلمة المرور" أم تسجيل جديد؟
         is_password_reset = request.session.get('is_password_reset', False)
@@ -215,12 +221,6 @@ def verify_otp(request):
         else:
             session_otp = str(request.session.get('otp', '')).strip()
             user_id = request.session.get('user_id') or request.session.get('company_id')
-        print("========== OTP DEBUG ==========")
-        print("User OTP:", user_otp)
-        print("Session OTP:", session_otp)
-        print("Password Reset:", is_password_reset)
-        print("Session:", dict(request.session))
-        print("===============================")
         # فحص أن القيم موجودة ومتطابقة
         if user_otp and session_otp and user_otp == session_otp:
             
