@@ -1,16 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تأكيد رمز التحقق</title>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="{% static 'css/verify_otp.css' %}">
 </head>
+
 <body>
 
     <div class="background-glow"></div>
@@ -19,36 +21,38 @@
         <div class="icon-box">
             <i class="fa-solid fa-user-shield"></i>
         </div>
-        
+
         <h2>تأكيد الهوية</h2>
-        <p>مرحباً بك في منظومة الطاقة الشمسية. يرجى إدخال رمز التحقق المكون من 6 أرقام المرسل إلى بريدك الإلكتروني لتفعيل الحساب.</p>
-        
+        <p>مرحباً بك في منظومة الطاقة الشمسية. يرجى إدخال رمز التحقق المكون من 6 أرقام المرسل إلى بريدك الإلكتروني
+            لتفعيل الحساب.</p>
+
         <form method="POST">
             {% csrf_token %}
-            
+
             {% if error %}
-                <div class="error-container">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <span>{{ error }}</span>
-                </div>
-            {% endif %}
-            
-            <div class="input-wrapper">
-                <input type="text" 
-                       name="otp" 
-                       class="otp-input"
-                       inputmode="numeric" 
-                       pattern="[0-9]*" 
-                       maxlength="6" 
-                       placeholder="000000" 
-                       required 
-                       autofocus autocomplete="off">
+            <div class="error-container">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>{{ error }}</span>
             </div>
-            
+            {% endif %}
+
+            <div class="input-wrapper">
+                <input type="text" name="otp" class="otp-input" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+                    placeholder="000000" required autofocus autocomplete="off">
+            </div>
+
             <button type="submit" class="btn-verify">تأكيد وتفعيل الحساب</button>
         </form>
+        <div class="input-wrapper">
+            <input type="text" name="otp" class="otp-input" inputmode="numeric" maxlength="6" placeholder="000000"
+                required autofocus autocomplete="off">
+            <small style="display:block; text-align:center; color:#94a3b8; margin-top:8px;">الرمز هو 6 أرقام فقط (بدون
+                حروف أو مسافات)</small>
+        </div>
     </div>
+
 
     <script src="{% static 'js/verify_otp.js' %}"></script>
 </body>
+
 </html>
