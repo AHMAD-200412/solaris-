@@ -215,7 +215,12 @@ def verify_otp(request):
         else:
             session_otp = str(request.session.get('otp', '')).strip()
             user_id = request.session.get('user_id') or request.session.get('company_id')
-
+        print("========== OTP DEBUG ==========")
+        print("User OTP:", user_otp)
+        print("Session OTP:", session_otp)
+        print("Password Reset:", is_password_reset)
+        print("Session:", dict(request.session))
+        print("===============================")
         # فحص أن القيم موجودة ومتطابقة
         if user_otp and session_otp and user_otp == session_otp:
             
