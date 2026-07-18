@@ -22,6 +22,7 @@ idna==3.18
 jmespath==1.1.0
 packaging==26.2
 pillow==11.3.0
+psycopg2-binary==2.9.12
 pydantic==2.13.4
 pydantic-core==2.46.4
 python-dateutil==2.9.0.post0
