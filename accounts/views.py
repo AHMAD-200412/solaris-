@@ -195,36 +195,29 @@ def register_company(request):
 from django.contrib.auth import login # تأكد إن هاي موجودة فوگ بالملف
 
 def verify_otp(request):
+    # 🔐 [الحصن الأمني الحاسم]: توجيه المسجلين دخول مسبقاً
     if request.user.is_authenticated:
+        # 🔥 تم تصحيح الشرط هنا (شيلنا الـ hasattr الخبيثة)
         if getattr(request.user, 'user_type', '') == 'company':
-            return redirect('/dashboard/company/')
+            return redirect('/dashboard/company/')  
         else:
-            return redirect('/user/home/')
+            return redirect('/user/home/') # 🔥 يروح لواجهة توترز اللي صممناها
 
     if request.method == 'POST':
         user_otp = str(request.POST.get('otp', '')).strip()
+        
+        # 🔍 نتحقق هل المستخدم جاء من صفحة "نسيت كلمة المرور" أم تسجيل جديد؟
         is_password_reset = request.session.get('is_password_reset', False)
-
+        
         if is_password_reset:
             session_otp = str(request.session.get('reset_otp', '')).strip()
-            extra_info = f"(استعادة كلمة المرور - الجلسة: {request.session.get('reset_email')})"
+            email = request.session.get('reset_email')
         else:
             session_otp = str(request.session.get('otp', '')).strip()
-            extra_info = f"(تسجيل جديد - user_id في الجلسة: {request.session.get('user_id')})"
+            user_id = request.session.get('user_id') or request.session.get('company_id')
 
-        # طباعة تشخيصية (ستظهر في سجلات Railway)
-        print("="*40)
-        print(f"[OTP VERIFY] الرمز المُدخل: '{user_otp}'")
-        print(f"[OTP VERIFY] الرمز المخزن: '{session_otp}' {extra_info}")
-        print("="*40)
-
-        if not session_otp:
-            return render(request, 'accounts/verify_otp.html', {
-                'error': 'انتهت صلاحية الجلسة. يرجى إعادة طلب الرمز.'
-            })
-
-        if user_otp == session_otp:
-            # ... باقي المنطق الناجح (نفسه دون تغيير) ...
+        # فحص أن القيم موجودة ومتطابقة
+        if user_otp and session_otp and user_otp == session_otp:
             
             # ✨ [حالة نسيت كلمة المرور]
             if is_password_reset:
