@@ -1,3 +1,7 @@
+/* ==========================================
+   Calculator Page – Solaris Unified Theme
+   مرتب، واضح، وجذاب بصريًا
+   ========================================== */
 :root {
   --bg: #07111f;
   --bg2: #091a2d;
@@ -35,14 +39,13 @@ body {
   box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
 }
 
-/* مسافة الأمان الكبيرة للشريط السفلي */
 .screen {
   position: relative;
   z-index: 2;
   padding: 20px 16px 120px;
 }
 
-/* ========== Topbar & Hero ========== */
+/* ========== Topbar & Hero (بدون تغيير) ========== */
 .topbar {
   display: flex;
   align-items: center;
@@ -277,7 +280,7 @@ body {
   margin-top: 4px;
 }
 
-/* ========== Stats Row (مع الفولتية) ========== */
+/* ========== Stats Row ========== */
 .stats-row {
   margin-top: 16px;
   display: grid;
@@ -333,7 +336,168 @@ body {
   color: #fff;
 }
 
-/* ========== Devices List ========== */
+/* ========== الأجهزة الجاهزة (Presets) – تصميم جديد ومرتب ========== */
+.preset-categories {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0 20px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+}
+
+.preset-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e0;
+  padding: 14px 12px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.preset-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 3px 3px 0 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.preset-btn.active {
+  background: rgba(231, 180, 94, 0.15);
+  border-color: var(--gold);
+  color: var(--gold-2);
+  box-shadow: 0 4px 15px rgba(231, 180, 94, 0.2);
+  transform: translateY(-2px);
+}
+
+.preset-btn.active::after {
+  opacity: 1;
+}
+
+.preset-devices-wrapper {
+  background: linear-gradient(180deg, rgba(16, 29, 49, 0.8), rgba(8, 18, 31, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 20px 18px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(15px);
+  animation: fadeSlideIn 0.4s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.preset-heading {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gold-2);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preset-heading::before {
+  content: '⚡';
+  font-size: 22px;
+}
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.preset-card {
+  background: rgba(13, 24, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.preset-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(231, 180, 94, 0.2);
+  background: rgba(20, 32, 55, 0.95);
+}
+
+.preset-card-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.preset-card-name {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.preset-card-amp {
+  background: rgba(231, 180, 94, 0.12);
+  color: var(--gold);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border: 1px solid rgba(231, 180, 94, 0.25);
+}
+
+.preset-card-add {
+  width: 100%;
+  background: rgba(231, 180, 94, 0.15);
+  border: 1px solid rgba(231, 180, 94, 0.4);
+  color: var(--gold-2);
+  border-radius: 14px;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+.preset-card-add:hover {
+  background: var(--gold);
+  color: #1f1608;
+  border-color: var(--gold);
+  box-shadow: 0 4px 15px rgba(231, 180, 94, 0.3);
+}
+
+/* ========== Devices List (بدون تغيير) ========== */
 .device-card-container {
   margin-top: 18px;
   background: linear-gradient(180deg, rgba(13, 25, 42, .98), rgba(8, 16, 29, .98));
@@ -367,6 +531,10 @@ body {
   cursor: pointer;
   padding: 0 15px;
   transition: .25s;
+}
+
+.add-btn:hover {
+  background: rgba(231, 180, 94, 0.2);
 }
 
 .devices-list {
@@ -471,7 +639,6 @@ body {
   align-items: center;
   cursor: pointer;
   margin-top: 18px;
-  /* لمطابقة مستوى الانبوتس */
   font-size: 16px;
 }
 
@@ -482,7 +649,7 @@ body {
   text-align: right;
 }
 
-/* ========== AI Box (نصيحة المساعد الذكي) ========== */
+/* ========== AI Box ========== */
 .ai-recommendation-card {
   background: linear-gradient(135deg, #0f1c2f, #0a1322);
   border: 1px solid rgba(231, 180, 94, .4);
@@ -624,17 +791,7 @@ body {
   border: 1px solid rgba(255, 255, 255, .1);
 }
 
-@media (max-width: 430px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-visual {
-    order: -1;
-  }
-}
-
-/* ========== الوضع الفاتح ========== */
+/* ========== الوضع الفاتح (بدون تغيير) ========== */
 body.light-mode {
   background: #f5f7fb !important;
   color: #1d2939 !important;
@@ -725,128 +882,17 @@ body.light-mode .order-status.pending {
   color: #b45309 !important;
 }
 
-/* خلفية الجسم والشبكة */
-body.light-mode::before,
-body.light-mode .app::before {
-  display: none;
-}
-/* ... (كل الأنماط السابقة باقية دون تغيير) ... */
-
-/* ========== الأجهزة الجاهزة (Presets) ========== */
-.preset-categories {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-}
-
-.preset-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #cbd5e0;
-    padding: 10px 18px;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: 0.25s;
-}
-
-.preset-btn.active {
-    background: rgba(231, 180, 94, 0.15);
-    border-color: var(--gold);
-    color: var(--gold-2);
-    box-shadow: 0 0 12px rgba(231, 180, 94, 0.2);
-}
-
-.preset-devices-wrapper {
-    margin-bottom: 24px;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.preset-heading {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--gold-2);
-    margin-bottom: 12px;
-}
-
-.preset-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-}
-
-.preset-card {
-    background: linear-gradient(180deg, #111f33, #0c1829);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 18px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: 0.25s;
-}
-
-.preset-card:hover {
-    border-color: var(--gold);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.preset-card-icon {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.preset-card-name {
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 6px;
-    color: #fff;
-}
-
-.preset-card-amp {
-    background: rgba(231, 180, 94, 0.1);
-    color: var(--gold);
-    padding: 3px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-.preset-card-add {
-    width: 100%;
-    background: rgba(231, 180, 94, 0.15);
-    border: 1px solid rgba(231, 180, 94, 0.4);
-    color: var(--gold-2);
-    border-radius: 10px;
-    padding: 8px 0;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.preset-card-add:hover {
-    background: var(--gold);
-    color: #1f1608;
-}
-
 /* تحسينات للموبايل */
 @media (max-width: 430px) {
-    .preset-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    order: -1;
+  }
+
+  .preset-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
