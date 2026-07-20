@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>حاسبة الاستهلاك </title>
+    <title>حاسبة الاستهلاك</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
@@ -20,11 +20,11 @@
 <body>
     <div class="app">
         <div class="screen">
+            <!-- Hero + Summary (بدون تغيير) -->
             <section class="hero">
                 <div class="hero-text">
                     <h1>حاسبة الاستهلاك</h1>
                     <p>أضف أجهزتك واحسب استهلاكك اليومي من الكهرباء بدقة عالية.</p>
-
                     <div class="summary-card">
                         <div class="summary-title">إجمالي الاستهلاك اليومي</div>
                         <div class="metric-main">
@@ -34,7 +34,6 @@
                             </div>
                             <div class="bolt">⚡️</div>
                         </div>
-
                         <div class="metric-secondary">
                             <div class="label">إجمالي الاستهلاك الشهري (30 يوم)</div>
                             <div class="value" id="monthlyTotal">0.00</div>
@@ -42,7 +41,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="hero-visual">
                     <div class="hero-ring"></div>
                     <div class="solar-scene">
@@ -54,10 +52,7 @@
                         <div class="calc-device">
                             <div class="calc-screen">kWh</div>
                             <div class="calc-grid">
-                                <span></span><span></span><span></span>
-                                <span></span><span></span><span></span>
-                                <span></span><span></span><span></span>
-                                <span></span><span></span><span></span>
+                                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
                             </div>
                         </div>
                         <div class="platform"></div>
@@ -65,6 +60,7 @@
                 </div>
             </section>
 
+            <!-- Stats Row -->
             <section class="stats-row">
                 <div class="stat-box">
                     <div class="stat-icon">🔌</div>
@@ -80,75 +76,76 @@
                     <div class="stat-value"><span id="maxSurge">0</span> واط</div>
                 </div>
             </section>
+
+            <!-- قسم الأجهزة (مضاف إليه القوائم الجاهزة) -->
             <section class="device-card-container">
+                <!-- أزرار الفئات -->
+                <div class="preset-categories" id="presetCategories">
+                    <button class="preset-btn active" data-category="منزلي">🏠 منزلي</button>
+                    <button class="preset-btn" data-category="صناعي">🏭 صناعي</button>
+                    <button class="preset-btn" data-category="زراعي">🌾 زراعي</button>
+                </div>
+
+                <!-- بطاقات الأجهزة الجاهزة -->
+                <div class="preset-devices-wrapper" id="presetDevicesWrapper">
+                    <h3 class="preset-heading">أجهزة مقترحة</h3>
+                    <div class="preset-grid" id="presetDevicesContainer"></div>
+                </div>
+
+                <!-- رأس قائمة الأجهزة المضافة -->
                 <div class="device-header">
                     <h2>أجهزتك الكهربائية</h2>
-                    <button type="button" class="add-btn" onclick="openModal()">+ إضافة جهاز</button>
+                    <button type="button" class="add-btn" onclick="openModal()">+ إضافة جهاز مخصص</button>
                 </div>
 
-                <div class="devices-list" id="deviceList">
-                </div>
-
-                <div class="table-note" id="emptyStateMsg">
-                    • القائمة فارغة حالياً. اضغط على إضافة جهاز للبدء.
-                </div>
+                <div class="devices-list" id="deviceList"></div>
+                <div class="table-note" id="emptyStateMsg">• القائمة فارغة حالياً. اضغط على إضافة جهاز للبدء.</div>
             </section>
 
+            <!-- AI Card -->
             <div class="ai-recommendation-card" id="aiCard" style="display: none;">
                 <div class="ai-icon">🤖</div>
                 <div class="ai-content">
                     <h3>خطوتك القادمة!</h3>
                     <p>أرقامك صارت مضبوطة وجاهزة! هسة دوس على الزر الجوة وروح للمساعد الذكي مالتنا حتى يختارلك أفضل
                         منظومة شمسية تناسب استهلاكك.</p>
-                    <a href="{% url 'assistant' %}" class="btn-ai-action">تحدث مع المساعد الذكي الآن </a>
+                    <a href="{% url 'assistant' %}" class="btn-ai-action">تحدث مع المساعد الذكي الآن</a>
                 </div>
             </div>
-
         </div>
     </div>
 
+    <!-- المودال المخصص (بدون تغيير) -->
     <div class="overlay" id="customModal">
         <div class="modal">
-            <h3>إضافة جهاز جديد</h3>
-            <div class="form-group">
-                <label>اسم الجهاز</label>
-                <input type="text" id="m_name" class="form-control" placeholder="مثلاً: سبلت، ماطور، ثلاجة...">
-            </div>
-            <div class="form-group">
-                <label>طبيعة عمل الجهاز (لحساب النهضة)</label>
-                <select id="m_type" class="form-control">
-                    <option value="1.2">جهاز عادي (إنارة، شاشة، راوتر)</option>
-                    <option value="3.5">يحتوي محرك/كمبريسور (ثلاجة، سبلت، ماطور)</option>
-                    <option value="1.0">جهاز حراري (أوتي، سخان)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>السحب (أمبير)</label>
-                <input type="number" id="m_amp" class="form-control" step="0.1" placeholder="مثلاً: 4.5">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 1;">
-                    <label>العدد</label>
-                    <input type="number" id="m_qty" class="form-control" value="1" min="1">
-                </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>ساعات العمل</label>
-                    <input type="number" id="m_hours" class="form-control" value="5" min="1" max="24">
-                </div>
+            <h3>إضافة جهاز مخصص</h3>
+            <div class="form-group"><label>اسم الجهاز</label><input type="text" id="m_name" class="form-control"
+                    placeholder="مثلاً: سبلت، ماطور..."></div>
+            <div class="form-group"><label>طبيعة عمل الجهاز</label><select id="m_type" class="form-control">
+                    <option value="1.2">جهاز عادي (إنارة، شاشة)</option>
+                    <option value="3.5">محرك/كمبريسور (ثلاجة، ماطور)</option>
+                    <option value="1.0">جهاز حراري (سخان)</option>
+                </select></div>
+            <div class="form-group"><label>السحب (أمبير)</label><input type="number" id="m_amp" class="form-control"
+                    step="0.1" placeholder="مثلاً: 4.5"></div>
+            <div style="display:flex;gap:10px;">
+                <div class="form-group" style="flex:1;"><label>العدد</label><input type="number" id="m_qty"
+                        class="form-control" value="1" min="1"></div>
+                <div class="form-group" style="flex:1;"><label>ساعات العمل</label><input type="number" id="m_hours"
+                        class="form-control" value="5" min="1" max="24"></div>
             </div>
             <div class="modal-actions">
-                <button  type="button" class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
-                <button type="button"  class="btn btn-primary" onclick="addCustomDevice()">حفظ الجهاز</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="addCustomDevice()">حفظ الجهاز</button>
             </div>
         </div>
     </div>
 
     {% include 'user_dashboard/bottom_nav.html' %}
-
     <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
     <script src="{% static 'user_dashboard/js/theme.js' %}"></script>
     <script>
-        window.backendDevices = {{ saved_devices_json|safe }};
+        window.backendDevices = {{ saved_devices_json | safe }};
     </script>
     <script src="{% static 'user_dashboard/js/calculator.js' %}"></script>
 </body>
