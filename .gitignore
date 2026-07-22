@@ -26,3 +26,18 @@ staticfiles/
 # ========== ملفات النظام ==========
 .DS_Store
 Thumbs.db
+# Node.js
+node_modules/
+package-lock.json
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+
+# iOS
+ios/build/
+DerivedData/
+
+# Capacitor
+android/captures/

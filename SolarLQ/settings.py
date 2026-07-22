@@ -194,3 +194,24 @@ CACHES = {
 
 # 3. جعل الملفات الثابتة تُخزّن في متصفح الزبون لمدة 30 يومًا
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# ==========================
+# Session & Cookie Settings
+# ==========================
+
+# تبقى الجلسة لمدة 30 يوم
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+
+# لا تنتهي عند إغلاق المتصفح أو التطبيق
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# لأنك تستخدم HTTPS على Railway
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# يسمح بإرسال الكوكيز بشكل طبيعي
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+
+# حفظ الجلسة بكل طلب
+SESSION_SAVE_EVERY_REQUEST = True

@@ -1,0 +1,9 @@
+{
+  "appId": "com.solaris.com",
+  "appName": "Solaris",
+  "webDir": "www",
+  "server": {
+    "url": "https://solaris-production-157c.up.railway.app",
+    "cleartext": false
+  }
+}
