@@ -210,8 +210,13 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 # يسمح بإرسال الكوكيز بشكل طبيعي
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SAMESITE = "None"
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 # حفظ الجلسة بكل طلب
 SESSION_SAVE_EVERY_REQUEST = True
