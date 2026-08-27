@@ -163,47 +163,116 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// === 5. برمجة سلايدر النصائح الـ 100 الجوا (حركة تلقائية ويدوية) ===
+// ==========================================================
+// 5. سلايدر المقالات / النصائح
+// ==========================================================
 document.addEventListener("DOMContentLoaded", function () {
+
     const tipSlides = document.querySelectorAll(".solaris-tip-slide");
     const tipDots = document.querySelectorAll(".tip-dot");
+
+    if (!tipSlides.length) {
+        console.log("لا توجد مقالات لعرضها.");
+        return;
+    }
+
     let activeTipIndex = 0;
     const totalTips = tipSlides.length;
 
-    if (totalTips === 0) return;
+    console.log("عدد المقالات:", totalTips);
 
-    function rotateTips() {
-        tipSlides[activeTipIndex].classList.remove("active");
-        activeTipIndex = (activeTipIndex + 1) % totalTips;
-        tipSlides[activeTipIndex].classList.add("active");
+    // ------------------------------------------------------
+    // إظهار مقالة معينة
+    // ------------------------------------------------------
+    function showTip(index) {
 
-        const dotMap = activeTipIndex % 5;
-        tipDots.forEach((dot, idx) => {
-            if (idx === dotMap) dot.classList.add("active");
-            else dot.classList.remove("active");
+        if (index < 0) {
+            index = totalTips - 1;
+        }
+
+        if (index >= totalTips) {
+            index = 0;
+        }
+
+        // إزالة active من جميع المقالات
+        tipSlides.forEach((slide) => {
+            slide.classList.remove("active");
         });
+
+        // إضافة active للمقالة المطلوبة
+        tipSlides[index].classList.add("active");
+
+        activeTipIndex = index;
+
+        // تحديث النقاط
+        tipDots.forEach((dot, dotIndex) => {
+
+            dot.classList.remove("active");
+
+            if (dotIndex === (index % tipDots.length)) {
+                dot.classList.add("active");
+            }
+
+        });
+
+        console.log("المقال الحالي:", activeTipIndex + 1, "/", totalTips);
     }
 
-    let tipsInterval = setInterval(rotateTips, 8000);
+    // ------------------------------------------------------
+    // تشغيل المقالة الأولى
+    // ------------------------------------------------------
+    showTip(0);
 
-    // التحكم اليدوي لنقاط النصائح الجوا
-    tipDots.forEach((dot, index) => {
-        dot.addEventListener("click", () => {
+    // ------------------------------------------------------
+    // الانتقال التلقائي
+    // ------------------------------------------------------
+    let tipsInterval = setInterval(function () {
+
+        showTip(activeTipIndex + 1);
+
+    }, 8000);
+
+    // ------------------------------------------------------
+    // التحكم بالنقاط
+    // ------------------------------------------------------
+    tipDots.forEach((dot, dotIndex) => {
+
+        dot.addEventListener("click", function () {
+
             clearInterval(tipsInterval);
 
-            const currentBatch = Math.floor(activeTipIndex / 5);
-            let targetIndex = (currentBatch * 5) + index;
+            /*
+             * نحدد المجموعة الحالية.
+             *
+             * مثال:
+             * المقالات 1-5  -> المجموعة 0
+             * المقالات 6-10 -> المجموعة 1
+             * المقالات 11-15 -> المجموعة 2
+             */
 
-            if (targetIndex >= totalTips) targetIndex = index;
+            const currentBatch = Math.floor(activeTipIndex / tipDots.length);
 
-            tipSlides[activeTipIndex].classList.remove("active");
-            activeTipIndex = targetIndex;
-            tipSlides[activeTipIndex].classList.add("active");
+            let targetIndex =
+                (currentBatch * tipDots.length) + dotIndex;
 
-            tipDots.forEach(d => d.classList.remove("active"));
-            dot.classList.add("active");
+            // إذا تجاوزنا عدد المقالات
+            if (targetIndex >= totalTips) {
 
-            tipsInterval = setInterval(rotateTips, 8000);
+                targetIndex = dotIndex;
+
+            }
+
+            showTip(targetIndex);
+
+            // إعادة تشغيل السلايدر
+            tipsInterval = setInterval(function () {
+
+                showTip(activeTipIndex + 1);
+
+            }, 8000);
+
         });
+
     });
+
 });
