@@ -128,20 +128,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    // انتهاء شاشة البداية
+    // انتهاء شاشة البداية والانتقال إلى الصفحة الرئيسية
     setTimeout(() => {
 
         splash.classList.add("hide");
 
         setTimeout(() => {
 
-            splash.remove();
-
-            if (page) {
-
-                page.style.opacity = "1";
-
-            }
+            window.location.href = "/home/";
 
         }, 1300);
 
