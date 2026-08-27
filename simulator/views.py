@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 
+def splash(request):
+    return render(request, 'splash.html')
 def home(request):
     if request.user.is_authenticated:
         if request.user.user_type == 'company':
