@@ -123,7 +123,7 @@ function rotateMainSlides() {
     
     if (mainSlides.length === 0) return;
 
-    // إخفاء الحالي
+    // ااإخفاء الحالي
     mainSlides[activeMainIndex].classList.remove("active");
     // الانتقال للتالي تلقائياً
     activeMainIndex = (activeMainIndex + 1) % mainSlides.length;
